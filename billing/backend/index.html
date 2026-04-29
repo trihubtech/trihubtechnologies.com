@@ -1,0 +1,3287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="TriHub Technologies – The Central Hub For Digital Growth. We build websites, apps, digital marketing solutions and more for businesses in India and beyond." />
+  <meta name="keywords"
+    content="web development, mobile app, digital marketing, SEO, UI/UX, TriHub Technologies, Trichy, Pudukkottai" />
+  <meta name="author" content="TriHub Technologies" />
+  <title>TriHub Technologies – The Central Hub For Digital Growth</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Fonts: Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES & ROOT SETUP
+    ============================================================ */
+    :root {
+      --royal-blue: #1a3fc4;
+      --blue-dark: #0f2a8f;
+      --blue-light: #3a5fd9;
+      --blue-pale: #e8eefb;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --green-dark: #0f6e31;
+      --yellow: #f5c518;
+      --yellow-light: #fef9c3;
+      --violet: #7c3aed;
+      --violet-light: #ede9fe;
+      --white: #ffffff;
+      --off-white: #f8f9ff;
+      --black: #0d0d14;
+      --gray: #6b7280;
+      --gray-light: #f1f3f9;
+      --border: #e2e8f0;
+
+      --font-display: 'Roboto', sans-serif;
+      --font-body: 'Roboto', sans-serif;
+
+      --shadow-sm: 0 2px 8px rgba(26, 63, 196, .08);
+      --shadow-md: 0 8px 32px rgba(26, 63, 196, .12);
+      --shadow-lg: 0 20px 60px rgba(26, 63, 196, .16);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 36px;
+
+      --transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* ============================================================
+       GLOBAL RESET & BASE
+    ============================================================ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--black);
+      background: var(--white);
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--font-display);
+      line-height: 1.2;
+    }
+
+    a {
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    section {
+      padding: 90px 0;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--royal-blue);
+      background: var(--blue-pale);
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 18px;
+    }
+
+    .section-title span {
+      color: var(--royal-blue);
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 560px;
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    #mainNav {
+      background: rgba(255, 255, 255, .9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(26, 63, 196, .08);
+      box-shadow: 0 2px 20px rgba(26, 63, 196, .06);
+      transition: var(--transition);
+      z-index: 9999;
+    }
+
+    #mainNav.scrolled {
+      background: rgba(255, 255, 255, .98);
+      box-shadow: var(--shadow-md);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--royal-blue) !important;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: transparent;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-text span {
+      color: var(--green);
+    }
+
+    .navbar-nav .nav-link {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: .92rem;
+      color: var(--black) !important;
+      padding: 8px 14px !important;
+      border-radius: var(--radius-sm);
+      position: relative;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 14px;
+      width: 0;
+      height: 2px;
+      background: var(--royal-blue);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--royal-blue) !important;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      width: calc(100% - 28px);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--royal-blue), var(--blue-light));
+      color: #fff !important;
+      padding: 8px 20px !important;
+      border-radius: 50px !important;
+      font-weight: 600 !important;
+      font-size: .88rem !important;
+      box-shadow: 0 4px 15px rgba(26, 63, 196, .3);
+    }
+
+    .nav-cta::after {
+      display: none !important;
+    }
+
+    .nav-cta:hover {
+      color: #fff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26, 63, 196, .4);
+    }
+
+    .navbar-toggler {
+      border: none;
+      background: var(--blue-pale) !important;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231a3fc4' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #home {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 70% 60% at 75% 50%, rgba(26, 63, 196, .08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(22, 163, 74, .07) 0%, transparent 60%),
+        var(--off-white);
+      display: flex;
+      align-items: center;
+      padding-top: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #home::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(26, 63, 196, .06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    #home::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(22, 163, 74, .05) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-pale);
+      border: 1px solid rgba(26, 63, 196, .15);
+      color: var(--royal-blue);
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .6;
+        transform: scale(1.4);
+      }
+    }
+
+    .hero-headline {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+
+    .hero-headline .highlight {
+      color: var(--royal-blue);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-headline .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--yellow), var(--green));
+      border-radius: 4px;
+    }
+
+    .hero-headline .accent {
+      color: var(--green);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--gray);
+      margin-bottom: 36px;
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--royal-blue), var(--blue-light));
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: .95rem;
+      font-family: var(--font-body);
+      box-shadow: 0 6px 24px rgba(26, 63, 196, .3);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(26, 63, 196, .4);
+      color: #fff;
+    }
+
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--royal-blue);
+      border: 2px solid var(--royal-blue);
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: .95rem;
+      font-family: var(--font-body);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline-custom:hover {
+      background: var(--royal-blue);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 28px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .stat-number span {
+      color: var(--royal-blue);
+    }
+
+    .stat-label {
+      font-size: .8rem;
+      color: var(--gray);
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+
+    /* Hero Illustration */
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card-main {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green-light);
+      color: var(--green-dark);
+      font-size: .78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .hero-metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric-box {
+      background: var(--off-white);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .metric-box .m-val {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--royal-blue);
+      display: block;
+    }
+
+    .metric-box .m-lbl {
+      font-size: .72rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .hero-float-card {
+      position: absolute;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .82rem;
+      font-weight: 600;
+      z-index: 3;
+      animation: float-card 4s ease-in-out infinite;
+    }
+
+    .hero-float-card.card-1 {
+      top: -20px;
+      right: -20px;
+      animation-delay: 0s;
+    }
+
+    .hero-float-card.card-2 {
+      bottom: -20px;
+      left: -20px;
+      animation-delay: 2s;
+    }
+
+    @keyframes float-card {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .float-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       ABOUT SECTION
+    ============================================================ */
+    #about {
+      background: var(--white);
+    }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .about-img-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-img-card.tall {
+      grid-row: span 2;
+    }
+
+    .about-placeholder-img {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--blue-pale), #dde9ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--royal-blue);
+      border-radius: var(--radius-md);
+    }
+
+    .about-placeholder-img.tall {
+      aspect-ratio: .58;
+    }
+
+    .about-badge-float {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .about-badge-float .num {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--royal-blue);
+      display: block;
+      line-height: 1;
+    }
+
+    .about-badge-float .txt {
+      font-size: .7rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .hi-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .hi-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--black);
+      margin-bottom: 2px;
+    }
+
+    .hi-text {
+      font-size: .82rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SERVICES SECTION
+    ============================================================ */
+    #services {
+      background: var(--off-white);
+      position: relative;
+    }
+
+    .service-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      height: 100%;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--royal-blue), var(--green));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: var(--transition);
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .svc-icon-wrap {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+      transition: var(--transition);
+    }
+
+    .service-card:hover .svc-icon-wrap {
+      transform: scale(1.1) rotate(-4deg);
+    }
+
+    .svc-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .svc-desc {
+      font-size: .85rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    .svc-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--royal-blue);
+      margin-top: 14px;
+      transition: var(--transition);
+    }
+
+    .service-card:hover .svc-arrow {
+      gap: 10px;
+    }
+
+    /* ============================================================
+       PROCESS SECTION
+    ============================================================ */
+    #process {
+      background: var(--white);
+    }
+
+    .process-wrap {
+      position: relative;
+      padding-top: 20px;
+    }
+
+    .process-spine {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--blue-pale), var(--blue-light), var(--green-light));
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 767.98px) {
+      .process-spine {
+        left: 24px;
+      }
+    }
+
+    .process-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+
+    .process-step:nth-child(odd) {
+      flex-direction: row;
+    }
+
+    .process-step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    @media (max-width: 767.98px) {
+
+      .process-step,
+      .process-step:nth-child(even) {
+        flex-direction: row !important;
+        padding-left: 60px;
+      }
+    }
+
+    .process-node {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--royal-blue), var(--blue-light));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .9rem;
+      box-shadow: 0 4px 16px rgba(26, 63, 196, .3);
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (min-width: 768px) {
+      .process-step {
+        align-items: center;
+        margin-bottom: 48px;
+      }
+
+      .process-node {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        margin-top: -24px;
+      }
+
+      .process-step:nth-child(odd) .process-card {
+        margin-right: calc(50% + 40px);
+        margin-left: 0;
+      }
+
+      .process-step:nth-child(even) .process-card {
+        margin-left: calc(50% + 40px);
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .process-node {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 42px;
+        height: 42px;
+      }
+    }
+
+    .process-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .process-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .pc-step-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 4px;
+    }
+
+    .pc-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .pc-desc {
+      font-size: .84rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       TESTIMONIALS SECTION
+    ============================================================ */
+    #testimonials {
+      background: linear-gradient(135deg, #0f2a8f 0%, #1a3fc4 50%, #1e50e8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #testimonials::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 0% 50%, rgba(22, 163, 74, .12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 100% 20%, rgba(245, 197, 24, .08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    #testimonials .section-label {
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .15);
+    }
+
+    #testimonials .section-title {
+      color: #fff;
+    }
+
+    #testimonials .section-title span {
+      color: var(--yellow);
+    }
+
+    #testimonials .section-sub {
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .testimonial-card {
+      background: rgba(255, 255, 255, .07);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      height: 100%;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .testimonial-card:hover {
+      background: rgba(255, 255, 255, .12);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+    }
+
+    .quote-icon {
+      font-size: 2.5rem;
+      color: var(--yellow);
+      opacity: .5;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    .testimonial-text {
+      font-size: .92rem;
+      color: rgba(255, 255, 255, .9);
+      line-height: 1.75;
+      margin-bottom: 22px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .t-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .t-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #fff;
+      font-size: .95rem;
+      line-height: 1.2;
+    }
+
+    .t-loc {
+      font-size: .78rem;
+      color: rgba(255, 255, 255, .55);
+      margin-top: 2px;
+    }
+
+    .star-row {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 14px;
+      color: var(--yellow);
+      font-size: .85rem;
+    }
+
+    /* ============================================================
+       FAQ SECTION
+    ============================================================ */
+    #faq {
+      background: var(--off-white);
+    }
+
+    .faq-accordion .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm) !important;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .faq-accordion .accordion-button {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--black);
+      background: var(--white);
+      padding: 18px 22px;
+      border-radius: var(--radius-sm) !important;
+      box-shadow: none !important;
+    }
+
+    .faq-accordion .accordion-button:not(.collapsed) {
+      color: var(--royal-blue);
+      background: var(--blue-pale);
+    }
+
+    .faq-accordion .accordion-button::after {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%231a3fc4'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+    }
+
+    .faq-accordion .accordion-body {
+      font-size: .9rem;
+      color: var(--gray);
+      line-height: 1.75;
+      padding: 4px 22px 18px;
+    }
+
+    /* ============================================================
+       CONTACT SECTION
+    ============================================================ */
+    #contact {
+      background: var(--white);
+    }
+
+    .contact-info-card {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .contact-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .c-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      flex-shrink: 0;
+      background: var(--blue-pale);
+      color: var(--royal-blue);
+    }
+
+    .c-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 2px;
+    }
+
+    .c-val {
+      font-size: .92rem;
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    .c-val a {
+      color: var(--royal-blue);
+    }
+
+    .map-container {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 220px;
+      border: none;
+      display: block;
+    }
+
+    .contact-form-wrap {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+    }
+
+    .form-label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 16px;
+      font-family: var(--font-body);
+      font-size: .9rem;
+      background: var(--white);
+      color: var(--black);
+      transition: var(--transition);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 3px rgba(26, 63, 196, .1);
+      background: var(--white);
+    }
+
+    .social-links-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .social-link-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .social-link-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #footer {
+      background: #060b1a;
+      color: rgba(255, 255, 255, .75);
+    }
+
+    .footer-top {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .footer-logo .brand-icon {
+      background: transparent;
+    }
+
+    .footer-slogan {
+      font-size: .85rem;
+      color: rgba(255, 255, 255, .45);
+      max-width: 260px;
+      line-height: 1.6;
+    }
+
+    .footer-heading {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: .88rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .4);
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      font-size: .88rem;
+      color: rgba(255, 255, 255, .6);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links a:hover {
+      color: var(--yellow);
+      padding-left: 4px;
+    }
+
+    .footer-contact-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-contact-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: .86rem;
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .footer-contact-list li i {
+      color: var(--green);
+      width: 16px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .footer-contact-list a {
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .footer-contact-list a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      background: rgba(255, 255, 255, .06);
+      color: rgba(255, 255, 255, .6);
+      border: 1px solid rgba(255, 255, 255, .08);
+      transition: var(--transition);
+    }
+
+    .footer-social a:hover {
+      background: var(--royal-blue);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      padding: 20px 0;
+      font-size: .82rem;
+      color: rgba(255, 255, 255, .3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-bottom a {
+      color: rgba(255, 255, 255, .4);
+    }
+
+    .footer-bottom a:hover {
+      color: var(--yellow);
+    }
+
+    /* ============================================================
+       FLOATING ELEMENTS
+    ============================================================ */
+
+    /* WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 54px;
+      height: 54px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 24px rgba(37, 211, 102, .4);
+      z-index: 9990;
+      transition: var(--transition);
+      animation: bounce-wa 3s ease-in-out infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 32px rgba(37, 211, 102, .6);
+      color: #fff;
+    }
+
+    @keyframes bounce-wa {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* Scroll to top / bottom */
+    .scroll-btn {
+      position: fixed;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--royal-blue);
+      color: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      box-shadow: var(--shadow-md);
+      z-index: 9990;
+      transition: var(--transition);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scroll-btn.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #scrollTop {
+      bottom: 140px;
+    }
+
+    #scrollBottom {
+      bottom: 30px;
+      background: var(--green);
+    }
+
+    .scroll-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Floating social sidebar */
+    .float-social {
+      position: fixed;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 9990;
+    }
+
+    @media (max-width: 1199.98px) {
+      .float-social {
+        display: none;
+      }
+    }
+
+    .float-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      transition: var(--transition);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .float-social a:hover {
+      transform: translateX(4px) scale(1.1);
+    }
+
+    /* ============================================================
+       UTILITY / MISC
+    ============================================================ */
+    .green-bg {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    .blue-bg {
+      background: var(--blue-pale);
+      color: var(--blue-dark);
+    }
+
+    .yellow-bg {
+      background: var(--yellow-light);
+      color: #92400e;
+    }
+
+    .violet-bg {
+      background: var(--violet-light);
+      color: var(--violet);
+    }
+
+    .orange-bg {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .pink-bg {
+      background: #fce7f3;
+      color: #be185d;
+    }
+
+    .teal-bg {
+      background: #ccfbf1;
+      color: #0f766e;
+    }
+
+    .slate-bg {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    /* Divider */
+    .section-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--royal-blue), var(--green), var(--yellow));
+      border-radius: 3px;
+      width: 60px;
+      margin: 16px 0 24px;
+    }
+
+    /* Animated counter helper */
+    .counter {
+      display: inline-block;
+    }
+
+    /* Hero gradient text utility */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--royal-blue), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       RESPONSIVE HELPERS
+    ============================================================ */
+
+    /* ---------- Tablet (≤991px) ---------- */
+    @media (max-width: 991.98px) {
+      section {
+        padding: 70px 0;
+      }
+
+      /* Navbar */
+      .navbar-brand {
+        font-size: 1.15rem;
+      }
+
+      .nav-cta {
+        margin-top: 10px;
+        text-align: center;
+        justify-content: center;
+      }
+
+      /* Hero */
+      #home {
+        padding-top: 80px;
+        min-height: auto;
+      }
+
+      .hero-headline {
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+
+      .hero-sub {
+        font-size: 1rem;
+      }
+
+      .hero-visual {
+        margin-top: 20px;
+      }
+
+      /* Process */
+      .process-node {
+        left: 24px !important;
+        transform: none !important;
+      }
+
+      .process-step:nth-child(odd) .process-card,
+      .process-step:nth-child(even) .process-card {
+        margin: 0 !important;
+      }
+
+      .process-spine {
+        display: none;
+      }
+
+      /* Contact form */
+      .contact-form-wrap {
+        padding: 24px;
+      }
+
+      .contact-info-card {
+        padding: 22px;
+      }
+    }
+
+    /* ---------- Mobile (≤767px) ---------- */
+    @media (max-width: 767.98px) {
+      section {
+        padding: 48px 0;
+      }
+
+      /* Typography scaling */
+      .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+      }
+
+      .section-sub {
+        font-size: .95rem;
+      }
+
+      /* Hero */
+      #home {
+        padding-top: 72px;
+        padding-bottom: 36px;
+        text-align: center;
+      }
+
+      .hero-headline {
+        font-size: clamp(1.8rem, 7vw, 2.6rem);
+      }
+
+      .hero-sub {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: .95rem;
+      }
+
+      .hero-badge {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-stats {
+        gap: 16px;
+        justify-content: center;
+      }
+
+      .stat-divider {
+        display: none;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .d-flex.flex-wrap.gap-3 {
+        justify-content: center;
+      }
+
+      /* Hero buttons */
+      .btn-primary-custom,
+      .btn-outline-custom {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 24px;
+        font-size: .9rem;
+      }
+
+      /* Hero visual card */
+      .hero-card-main {
+        padding: 20px;
+      }
+
+      .hero-float-card.card-1 {
+        top: -10px;
+        right: -6px;
+        font-size: .75rem;
+        padding: 8px 12px;
+      }
+
+      .hero-float-card.card-2 {
+        bottom: -10px;
+        left: -6px;
+        font-size: .75rem;
+        padding: 8px 12px;
+      }
+
+      .hero-metric-grid {
+        gap: 8px;
+      }
+
+      .metric-box {
+        padding: 10px;
+      }
+
+      .metric-box .m-val {
+        font-size: 1.2rem;
+      }
+
+      /* About */
+      .about-img-grid {
+        gap: 10px;
+      }
+
+      .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      /* Services */
+      .service-card {
+        padding: 22px 18px;
+      }
+
+      /* Testimonials */
+      .testimonial-card {
+        padding: 24px 20px;
+      }
+
+      .testimonial-text {
+        font-size: .88rem;
+      }
+
+      /* FAQ */
+      .faq-accordion .accordion-button {
+        padding: 14px 16px;
+        font-size: .88rem;
+      }
+
+      .faq-accordion .accordion-body {
+        padding: 4px 16px 14px;
+        font-size: .85rem;
+      }
+
+      /* Contact */
+      .contact-form-wrap {
+        padding: 20px 16px;
+      }
+
+      .contact-info-card {
+        padding: 18px 16px;
+      }
+
+      .social-links-row {
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .map-container iframe {
+        height: 180px;
+      }
+
+      /* Footer */
+      .footer-top {
+        padding: 40px 0 30px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 6px;
+      }
+
+      .footer-social {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .footer-slogan {
+        max-width: 100%;
+      }
+
+      .footer-logo {
+        justify-content: center;
+      }
+
+      .footer-heading {
+        margin-top: 8px;
+      }
+
+      /* Floating elements */
+      .whatsapp-float {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+        bottom: 70px;
+        right: 14px;
+      }
+
+      .scroll-btn {
+        width: 38px;
+        height: 38px;
+        font-size: .8rem;
+        right: 14px;
+      }
+
+      #scrollTop {
+        bottom: 124px;
+      }
+
+      #scrollBottom {
+        bottom: 24px;
+      }
+    }
+
+    /* ---------- Small phones (≤480px) ---------- */
+    @media (max-width: 480px) {
+      section {
+        padding: 40px 0;
+      }
+
+      /* Hero */
+      .hero-headline {
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+      }
+
+      .hero-sub {
+        font-size: .88rem;
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+      }
+
+      /* Hero float cards - hide on very small screens */
+      .hero-float-card {
+        display: none;
+      }
+
+      /* Section labels & titles */
+      .section-title {
+        font-size: clamp(1.3rem, 7vw, 1.7rem);
+      }
+
+      .section-label {
+        font-size: .7rem;
+        padding: 5px 12px;
+      }
+
+      /* Buttons */
+      .btn-primary-custom,
+      .btn-outline-custom {
+        padding: 11px 20px;
+        font-size: .85rem;
+      }
+
+      /* Service cards */
+      .service-card {
+        padding: 18px 14px;
+      }
+
+      .svc-title {
+        font-size: .92rem;
+      }
+
+      .svc-desc {
+        font-size: .82rem;
+      }
+
+      /* About highlights */
+      .hi-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .hi-title {
+        font-size: .85rem;
+      }
+
+      .hi-text {
+        font-size: .78rem;
+      }
+
+      /* Process */
+      .process-card {
+        padding: 16px 14px;
+      }
+
+      .pc-title {
+        font-size: .92rem;
+      }
+
+      .pc-desc {
+        font-size: .8rem;
+      }
+
+      /* Testimonials */
+      .testimonial-card {
+        padding: 20px 16px;
+      }
+
+      .quote-icon {
+        font-size: 2rem;
+      }
+
+      .testimonial-text {
+        font-size: .84rem;
+      }
+
+      .t-name {
+        font-size: .88rem;
+      }
+
+      /* Contact */
+      .contact-form-wrap {
+        padding: 16px 12px;
+      }
+
+      .form-control,
+      .form-select {
+        padding: 9px 12px;
+        font-size: .85rem;
+      }
+
+      .c-icon {
+        width: 36px;
+        height: 36px;
+        font-size: .85rem;
+      }
+
+      .c-val {
+        font-size: .85rem;
+      }
+
+      .social-link-btn {
+        width: 38px;
+        height: 38px;
+        font-size: .9rem;
+      }
+
+      /* Footer */
+      .footer-logo {
+        font-size: 1rem;
+      }
+
+      .footer-links a {
+        font-size: .82rem;
+      }
+
+      .footer-contact-list li {
+        font-size: .82rem;
+      }
+
+      .footer-bottom {
+        font-size: .75rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+     FLOATING: WhatsApp Button
+============================================================ -->
+  <a href="https://wa.me/916374569225?text=Hi%20TriHub%20Technologies%2C%20I%27m%20interested%20in%20your%20services!"
+    class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- ============================================================
+     FLOATING: Scroll Buttons
+============================================================ -->
+  <button id="scrollTop" class="scroll-btn" aria-label="Scroll to top"> <i class="fas fa-chevron-up"></i> </button>
+  <button id="scrollBottom" class="scroll-btn" aria-label="Scroll to bottom"> <i class="fas fa-chevron-down"></i>
+  </button>
+
+  <!-- ============================================================
+     FLOATING: Social Sidebar
+============================================================ -->
+  <div class="float-social" aria-label="Social media links">
+    <a href="https://www.facebook.com/people/TriHub-Technologies/61572019447995/?rdid=qxmlaSUmcjh4igS9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1H8tms9zUM%2F"
+      style="background:#1877f2" aria-label="Facebook" target="_blank" rel="noopener"> <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://www.linkedin.com/company/trihub-technologies/" style="background:#0a66c2" aria-label="LinkedIn"
+      target="_blank" rel="noopener"> <i class="fab fa-linkedin-in"></i> </a>
+    <a href="https://www.instagram.com/trihubtech?utm_source=qr&igsh=MXJ2NjYyM3JldHN1MQ%3D%3D"
+      style="background:#e1306c" aria-label="Instagram" target="_blank" rel="noopener"> <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://wa.me/916374569225" style="background:#25d366" aria-label="WhatsApp" target="_blank"> <i
+        class="fab fa-whatsapp"></i> </a>
+  </div>
+
+  <!-- ============================================================
+     SECTION 1: NAVBAR
+============================================================ -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+
+      <!-- Brand / Logo -->
+      <a class="navbar-brand" href="#home" aria-label="TriHub Technologies Home">
+        <div class="brand-icon" aria-hidden="true">
+          <img src="favicon.svg" alt="TriHub Logo" width="38" height="38" />
+        </div>
+        <span class="brand-text">TriHub<span>Tech</span></span>
+      </a>
+
+      <!-- Hamburger toggler -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Nav links -->
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-link nav-cta ms-lg-2">Get Started →</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ============================================================
+     SECTION 2: HERO
+============================================================ -->
+  <section id="home" aria-label="Hero section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+
+        <!-- Left content -->
+        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="800">
+          <div class="hero-badge" role="status">
+            <span class="dot" aria-hidden="true"></span>
+            Available for New Projects
+          </div>
+
+          <h1 class="hero-headline">
+            Build Your<br>
+            <span class="highlight">Digital Empire</span><br>
+            with <span class="accent">Confidence</span>
+          </h1>
+
+          <p class="hero-sub">
+            TriHub Technologies is your end-to-end digital growth partner —
+            crafting powerful websites, smart apps, and data-driven marketing
+            strategies that transform ideas into impact.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#services" class="btn-primary-custom">
+              <i class="fas fa-rocket" aria-hidden="true"></i> Get Started
+            </a>
+            <a href="#contact" class="btn-outline-custom">
+              <i class="fas fa-paper-plane" aria-hidden="true"></i> Contact Us
+            </a>
+          </div>
+
+          <div class="hero-stats" role="list" aria-label="Key statistics">
+            <div class="stat-item" role="listitem">
+              <div class="stat-number"><span class="counter" data-target="3">0</span><span>+</span></div>
+              <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="stat-divider" aria-hidden="true"></div>
+            <div class="stat-item" role="listitem">
+              <div class="stat-number"><span class="counter" data-target="3">0</span><span>+</span></div>
+              <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-divider" aria-hidden="true"></div>
+            <div class="stat-item" role="listitem">
+              <div class="stat-number"><span class="counter" data-target="3">0</span><span>+</span></div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right visual card -->
+        <div class="col-lg-6 d-flex justify-content-center" data-aos="fade-left" data-aos-duration="800"
+          data-aos-delay="200">
+          <div class="hero-visual" style="max-width:420px; width:100%;">
+
+            <!-- Float card top-right -->
+            <div class="hero-float-card card-1" aria-hidden="true">
+              <div class="float-icon green-bg"
+                style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;">
+                <i class="fas fa-check" style="color:var(--green)"></i>
+              </div>
+              <div>
+                <div style="font-size:.78rem;font-weight:700;color:var(--black)">Project Live!</div>
+                <div style="font-size:.7rem;color:var(--gray)">Deployed in 4 weeks</div>
+              </div>
+            </div>
+
+            <!-- Main card -->
+            <div class="hero-card-main">
+              <div class="hero-card-badge">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                Digital Performance
+              </div>
+              <h3
+                style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--black);margin-bottom:4px;">
+                Your Growth Dashboard
+              </h3>
+              <p style="font-size:.8rem;color:var(--gray);margin-bottom:0">Driving results across all channels</p>
+
+              <div class="hero-metric-grid" role="list" aria-label="Metrics">
+                <div class="metric-box" role="listitem">
+                  <span class="m-val">↑ 3.2×</span>
+                  <span class="m-lbl">Traffic Growth</span>
+                </div>
+                <div class="metric-box" role="listitem">
+                  <span class="m-val">↑ 85%</span>
+                  <span class="m-lbl">Conversions</span>
+                </div>
+                <div class="metric-box" role="listitem">
+                  <span class="m-val">4.9★</span>
+                  <span class="m-lbl">Client Rating</span>
+                </div>
+                <div class="metric-box" role="listitem">
+                  <span class="m-val">98%</span>
+                  <span class="m-lbl">On-time Delivery</span>
+                </div>
+              </div>
+
+              <!-- Simple bar chart visual -->
+              <div style="margin-top:18px;">
+                <div style="font-size:.75rem;font-weight:600;color:var(--gray);margin-bottom:8px;">Monthly Project
+                  Activity</div>
+                <div style="display:flex;align-items:flex-end;gap:6px;height:52px;">
+                  <div
+                    style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:35%;transition:var(--transition)"
+                    class="bar-item"></div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:55%" class="bar-item">
+                  </div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:42%" class="bar-item">
+                  </div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:70%" class="bar-item">
+                  </div>
+                  <div
+                    style="flex:1;background:linear-gradient(0deg,var(--royal-blue),var(--blue-light));border-radius:4px 4px 0 0;height:90%"
+                    class="bar-item"></div>
+                  <div
+                    style="flex:1;background:linear-gradient(0deg,var(--green),#22c55e);border-radius:4px 4px 0 0;height:100%"
+                    class="bar-item"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Float card bottom-left -->
+            <div class="hero-float-card card-2" aria-hidden="true">
+              <div class="float-icon blue-bg"
+                style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;">
+                <i class="fas fa-users" style="color:var(--royal-blue)"></i>
+              </div>
+              <div>
+                <div style="font-size:.78rem;font-weight:700;color:var(--black)">3+ Clients</div>
+                <div style="font-size:.7rem;color:var(--gray)">Across India</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 3: ABOUT US
+============================================================ -->
+  <section id="about" aria-label="About TriHub Technologies">
+    <div class="container">
+      <div class="row align-items-center g-5">
+
+        <!-- Image grid -->
+        <div class="col-lg-5" data-aos="fade-right" data-aos-duration="700">
+          <div class="about-img-wrap">
+            <div class="about-img-grid">
+              <!-- Tall left card -->
+              <div class="about-img-card tall" aria-hidden="true">
+                <div class="about-placeholder-img tall"
+                  style="background:linear-gradient(160deg,#dde9ff,#c7d9ff); justify-content:center; display:flex; flex-direction:column; align-items:center; gap:12px;">
+                  <i class="fas fa-laptop-code" style="font-size:2.6rem;color:var(--royal-blue)"></i>
+                  <span
+                    style="font-size:.8rem;font-weight:600;color:var(--blue-dark);text-align:center;padding:0 12px">Digital
+                    Excellence Since Day One</span>
+                </div>
+              </div>
+              <!-- Two right cards -->
+              <div class="about-img-card" aria-hidden="true">
+                <div class="about-placeholder-img"
+                  style="background:linear-gradient(135deg,var(--green-light),#bbf7d0);">
+                  <i class="fas fa-chart-pie" style="font-size:2.2rem;color:var(--green)"></i>
+                </div>
+              </div>
+              <div class="about-img-card" aria-hidden="true">
+                <div class="about-placeholder-img" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);">
+                  <i class="fas fa-mobile-screen-button" style="font-size:2.2rem;color:var(--violet)"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="about-badge-float" aria-hidden="true">
+              <span class="num">3+</span>
+              <span class="txt">Clients Served</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-lg-7" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+          <span class="section-label" aria-hidden="true"><i class="fas fa-building"></i> About Us</span>
+          <h2 class="section-title">
+            We Build the Digital Future<br>
+            <span>for Growing Businesses</span>
+          </h2>
+          <div class="section-divider" aria-hidden="true"></div>
+
+          <p style="color:var(--gray);font-size:.95rem;margin-bottom:14px;">
+            Founded in Trichy, Tamil Nadu, <strong style="color:var(--black)">TriHub Technologies</strong> is a
+            full-service
+            digital agency dedicated to empowering businesses of all sizes with innovative technology and strategic
+            digital
+            solutions. We serve as <em>the central hub</em> where your growth journey begins and accelerates.
+          </p>
+
+          <p style="color:var(--gray);font-size:.95rem;margin-bottom:28px;">
+            From agile startups to established enterprises across Trichy, Pudukkottai and beyond, our team of passionate
+            developers, designers, and digital strategists collaborate to deliver solutions that not only look
+            exceptional
+            but drive measurable business results.
+          </p>
+
+          <!-- Highlight grid -->
+          <div class="highlight-grid" role="list" aria-label="Company highlights">
+            <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="100">
+              <div class="hi-icon blue-bg" aria-hidden="true"><i class="fas fa-eye"></i></div>
+              <div>
+                <div class="hi-title">Our Vision</div>
+                <div class="hi-text">To be Tamil Nadu's most trusted digital growth partner, enabling every business to
+                  thrive in the digital era.</div>
+              </div>
+            </div>
+            <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="200">
+              <div class="hi-icon green-bg" aria-hidden="true"><i class="fas fa-bullseye"></i></div>
+              <div>
+                <div class="hi-title">Our Mission</div>
+                <div class="hi-text">Deliver cutting-edge, affordable digital solutions with transparency, speed, and
+                  excellence in every engagement.</div>
+              </div>
+            </div>
+            <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="300">
+              <div class="hi-icon yellow-bg" aria-hidden="true"><i class="fas fa-star"></i></div>
+              <div>
+                <div class="hi-title">Proven Expertise</div>
+                <div class="hi-text">3+ years of hands-on experience across web, mobile, automation, and digital
+                  marketing domains.</div>
+              </div>
+            </div>
+            <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="400">
+              <div class="hi-icon violet-bg" aria-hidden="true"><i class="fas fa-handshake"></i></div>
+              <div>
+                <div class="hi-title">Client-Centric</div>
+                <div class="hi-text">Your goals are our goals. We maintain clear communication, timely delivery, and
+                  post-launch commitment.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3 mt-4" data-aos="fade-up" data-aos-delay="500">
+            <a href="#services" class="btn-primary-custom" style="font-size:.88rem;padding:11px 24px;">
+              <i class="fas fa-cubes" aria-hidden="true"></i> Explore Services
+            </a>
+            <a href="#contact" class="btn-outline-custom" style="font-size:.88rem;padding:9px 22px;">
+              <i class="fas fa-envelope" aria-hidden="true"></i> Let's Talk
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 4: SERVICES
+============================================================ -->
+  <section id="services" aria-label="Our services">
+    <div class="container">
+
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="section-label" aria-hidden="true"><i class="fas fa-grid-2"></i> What We Offer</span>
+        <h2 class="section-title">Comprehensive <span>Digital Services</span></h2>
+        <p class="section-sub mx-auto">
+          From concept to launch and beyond — we deliver end-to-end digital solutions
+          tailored to your unique business needs.
+        </p>
+      </div>
+
+      <div class="row g-4" role="list" aria-label="Services list">
+
+        <!-- Website Development -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="0">
+          <article class="service-card">
+            <div class="svc-icon-wrap blue-bg" aria-hidden="true"><i class="fas fa-code"></i></div>
+            <h3 class="svc-title">Website Development</h3>
+            <p class="svc-desc">Custom, responsive websites built with modern technologies — from elegant landing pages
+              to complex multi-page portals optimized for speed and SEO.</p>
+          </article>
+        </div>
+
+        <!-- Web Applications -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="60">
+          <article class="service-card">
+            <div class="svc-icon-wrap green-bg" aria-hidden="true"><i class="fas fa-window-restore"></i></div>
+            <h3 class="svc-title">Web Applications</h3>
+            <p class="svc-desc">Feature-rich, scalable web applications with intuitive interfaces — dashboards, CRM
+              systems, booking platforms, and custom business tools.</p>
+          </article>
+        </div>
+
+        <!-- WhatsApp Automation -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
+          <article class="service-card">
+            <div class="svc-icon-wrap" style="background:#dcfce7;color:#16a34a" aria-hidden="true"><i
+                class="fab fa-whatsapp"></i></div>
+            <h3 class="svc-title">WhatsApp Business Automation</h3>
+            <p class="svc-desc">Automate customer interactions, lead capture, and order management via WhatsApp Business
+              API — saving time and boosting engagement 24/7.</p>
+          </article>
+        </div>
+
+        <!-- Mobile App Development -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="0">
+          <article class="service-card">
+            <div class="svc-icon-wrap violet-bg" aria-hidden="true"><i class="fas fa-mobile-screen-button"></i></div>
+            <h3 class="svc-title">Mobile App Development</h3>
+            <p class="svc-desc">Cross-platform iOS and Android apps built with React Native or Flutter — delivering
+              native performance with a single, maintainable codebase.</p>
+          </article>
+        </div>
+
+        <!-- Digital Marketing -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="60">
+          <article class="service-card">
+            <div class="svc-icon-wrap yellow-bg" aria-hidden="true"><i class="fas fa-bullhorn"></i></div>
+            <h3 class="svc-title">Digital Marketing</h3>
+            <p class="svc-desc">Strategic campaigns including social media marketing, video editing, motion graphics,
+              poster design, Google Ads, and content creation that converts.</p>
+          </article>
+        </div>
+
+        <!-- SEO Optimization -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
+          <article class="service-card">
+            <div class="svc-icon-wrap" style="background:#fce7f3;color:#be185d" aria-hidden="true"><i
+                class="fas fa-magnifying-glass-chart"></i></div>
+            <h3 class="svc-title">SEO Optimization</h3>
+            <p class="svc-desc">Technical and on-page SEO audits, keyword strategy, backlink building, and performance
+              tuning to rank higher and drive organic traffic consistently.</p>
+          </article>
+        </div>
+
+        <!-- UI/UX Design -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="0">
+          <article class="service-card">
+            <div class="svc-icon-wrap orange-bg" aria-hidden="true"><i class="fas fa-pen-ruler"></i></div>
+            <h3 class="svc-title">UI/UX Design</h3>
+            <p class="svc-desc">Human-centred design with wireframes, interactive prototypes, design systems, and
+              pixel-perfect visual interfaces that delight and retain users.</p>
+          </article>
+        </div>
+
+        <!-- E-commerce Development -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="60">
+          <article class="service-card">
+            <div class="svc-icon-wrap teal-bg" aria-hidden="true"><i class="fas fa-cart-shopping"></i></div>
+            <h3 class="svc-title">E-commerce Development</h3>
+            <p class="svc-desc">End-to-end online store setup with product management, secure payment gateways,
+              inventory tracking, and seamless checkout experiences.</p>
+          </article>
+        </div>
+
+        <!-- API Integration -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
+          <article class="service-card">
+            <div class="svc-icon-wrap blue-bg" aria-hidden="true"><i class="fas fa-plug"></i></div>
+            <h3 class="svc-title">API Integration</h3>
+            <p class="svc-desc">Seamlessly connect third-party services — payment gateways, CRMs, ERPs, logistics APIs,
+              and social platforms to create a unified business ecosystem.</p>
+          </article>
+        </div>
+
+        <!-- Maintenance & Support -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="0">
+          <article class="service-card">
+            <div class="svc-icon-wrap green-bg" aria-hidden="true"><i class="fas fa-shield-halved"></i></div>
+            <h3 class="svc-title">Maintenance & Support</h3>
+            <p class="svc-desc">Proactive monitoring, security patches, performance updates, and dedicated support plans
+              to keep your digital assets running flawlessly.</p>
+          </article>
+        </div>
+
+        <!-- Branding & Logo Design -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="60">
+          <article class="service-card">
+            <div class="svc-icon-wrap violet-bg" aria-hidden="true"><i class="fas fa-palette"></i></div>
+            <h3 class="svc-title">Branding & Logo Design</h3>
+            <p class="svc-desc">Craft a memorable brand identity — from logo design and colour palettes to brand
+              guidelines and marketing collateral that tell your unique story.</p>
+          </article>
+        </div>
+
+        <!-- Free Consultations -->
+        <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
+          <article class="service-card">
+            <div class="svc-icon-wrap yellow-bg" aria-hidden="true"><i class="fas fa-handshake"></i></div>
+            <h3 class="svc-title">Free Consultations Forever</h3>
+            <p class="svc-desc">We proudly provide complimentary, expert consultations across all our services. Whether
+              you need strategic project scoping or technical guidance, we are always here to help refine your vision—at
+              zero cost.</p>
+          </article>
+        </div>
+
+        <!-- CTA card -->
+        <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="0" aria-hidden="true">
+          <div class="service-card d-flex flex-column justify-content-center align-items-center text-center"
+            style="background:linear-gradient(135deg,var(--royal-blue),var(--blue-light));border:none;min-height:200px;">
+            <i class="fas fa-comments" style="font-size:2rem;color:rgba(255,255,255,.6);margin-bottom:12px;"></i>
+            <h3 style="font-family:var(--font-display);font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:8px;">
+              Need a Custom Solution?
+            </h3>
+            <p style="font-size:.82rem;color:rgba(255,255,255,.75);margin-bottom:18px;">
+              Tell us about your project and we'll craft a bespoke package for you.
+            </p>
+            <a href="#contact" class="btn-primary-custom"
+              style="background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);font-size:.82rem;padding:9px 20px;">
+              Talk to Us →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 5: OUR PROCESS
+============================================================ -->
+  <section id="process" aria-label="Our work process">
+    <div class="container">
+
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="section-label" aria-hidden="true"><i class="fas fa-diagram-project"></i> How We Work</span>
+        <h2 class="section-title">Our Proven <span>Project Process</span></h2>
+        <p class="section-sub mx-auto">
+          A transparent, structured approach from first conversation to post-launch
+          support — so you always know exactly where your project stands.
+        </p>
+      </div>
+
+      <div class="process-wrap position-relative">
+        <div class="process-spine" aria-hidden="true"></div>
+
+        <!-- Step 1 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="0">
+          <div class="process-node" aria-label="Step 1">1</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 01</div>
+            <h3 class="pc-title"><i class="fas fa-comments me-2" style="color:var(--royal-blue)"
+                aria-hidden="true"></i>Consultation & Requirement Gathering</h3>
+            <p class="pc-desc">We begin with an in-depth discovery call to understand your business, goals, target
+              audience, and technical needs — laying the foundation for everything that follows.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="80">
+          <div class="process-node" aria-label="Step 2">2</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 02</div>
+            <h3 class="pc-title"><i class="fas fa-map me-2" style="color:var(--green)" aria-hidden="true"></i>Planning &
+              Strategy</h3>
+            <p class="pc-desc">Our team crafts a detailed project plan — technology stack selection, timeline,
+              milestones, resource allocation, and a clear roadmap aligned with your objectives.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="160">
+          <div class="process-node" aria-label="Step 3">3</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 03</div>
+            <h3 class="pc-title"><i class="fas fa-object-group me-2" style="color:var(--violet)"
+                aria-hidden="true"></i>Wireframe / Prototype Creation</h3>
+            <p class="pc-desc">We design interactive wireframes and clickable prototypes giving you a visual walkthrough
+              of the final product before any development begins.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="240">
+          <div class="process-node" aria-label="Step 4">4</div>
+          <div class="process-card">
+            <div class="pc-step-label"
+              style="color:var(--yellow);background:var(--yellow-light);padding:2px 10px;border-radius:50px;display:inline-block;">
+              Step 04</div>
+            <h3 class="pc-title" style="margin-top:8px"><i class="fas fa-file-signature me-2"
+                style="color:var(--yellow)" aria-hidden="true"></i>Client Approval & 50% Payment</h3>
+            <p class="pc-desc">Once you approve the prototype and project plan, we formalise the agreement and collect
+              50% of the project fee to initiate full-scale development.</p>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="320">
+          <div class="process-node" aria-label="Step 5">5</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 05</div>
+            <h3 class="pc-title"><i class="fas fa-laptop-code me-2" style="color:var(--royal-blue)"
+                aria-hidden="true"></i>Development Phase</h3>
+            <p class="pc-desc">Our developers build your solution using industry best practices — clean code, modular
+              architecture, version control, and regular internal reviews to ensure quality.</p>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="400">
+          <div class="process-node" aria-label="Step 6">6</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 06</div>
+            <h3 class="pc-title"><i class="fas fa-bell me-2" style="color:var(--green)" aria-hidden="true"></i>Progress
+              Updates (Every 25%)</h3>
+            <p class="pc-desc">You receive structured progress reports at every 25% milestone — screenshots, demo links,
+              and changelogs — keeping you informed and in control throughout.</p>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="480">
+          <div class="process-node" aria-label="Step 7">7</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 07</div>
+            <h3 class="pc-title"><i class="fas fa-bug-slash me-2" style="color:var(--violet)"
+                aria-hidden="true"></i>Testing & Quality Assurance</h3>
+            <p class="pc-desc">Rigorous multi-device, cross-browser testing, performance benchmarking, and security
+              audits ensure a polished, bug-free product before launch.</p>
+          </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="560">
+          <div class="process-node" aria-label="Step 8">8</div>
+          <div class="process-card">
+            <div class="pc-step-label">Step 08</div>
+            <h3 class="pc-title"><i class="fas fa-cloud-arrow-up me-2" style="color:var(--royal-blue)"
+                aria-hidden="true"></i>Deployment</h3>
+            <p class="pc-desc">We handle server setup, domain configuration, SSL certificates, CI/CD pipelines, and a
+              smooth zero-downtime go-live — your product launches with confidence.</p>
+          </div>
+        </div>
+
+        <!-- Step 9 -->
+        <div class="process-step" data-aos="fade-up" data-aos-delay="640">
+          <div class="process-node" aria-label="Step 9"
+            style="background:linear-gradient(135deg,var(--green),var(--green-dark))">9</div>
+          <div class="process-card" style="border-color:var(--green);border-width:1.5px">
+            <div class="pc-step-label" style="color:var(--green)">Step 09</div>
+            <h3 class="pc-title"><i class="fas fa-headset me-2" style="color:var(--green)"
+                aria-hidden="true"></i>Post-launch Support & Revisions</h3>
+            <p class="pc-desc">Our relationship doesn't end at launch. We provide ongoing support, performance
+              monitoring, content updates, and revisions to ensure your product continues to evolve.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 6: TESTIMONIALS
+============================================================ -->
+  <section id="testimonials" aria-label="Client testimonials">
+    <div class="container">
+
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="section-label" aria-hidden="true"><i class="fas fa-star"></i> Testimonials</span>
+        <h2 class="section-title">What Our <span>Clients Say</span></h2>
+        <p class="section-sub mx-auto" style="color:rgba(255,255,255,.65)">
+          Real words from real clients — their success stories fuel our passion for excellence.
+        </p>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Testimonial 1 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+          <article class="testimonial-card">
+            <p class="quote-icon" aria-hidden="true">"</p>
+            <p class="testimonial-text">
+              Trihub Technologies provided us with a complete digital solution, including a professional website and an
+              efficient CRM system tailored for our conference and the Diabetes Club of Tiruchirappalli.
+              This has significantly improved how we manage registrations, member data, and administrative operations.
+              Their ability to combine technical expertise with practical organizational needs made a real difference.
+              We now handle our events and club activities more efficiently thanks to their work.
+            </p>
+            <div class="testimonial-author"
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              <div class="t-avatar" aria-hidden="true" style="flex-shrink: 0;">RV</div>
+              <div style="flex-grow: 1; min-width: 0;">
+                <div class="t-name" style="color: #fff;">Dr. R. Vijayakumar</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Annai
+                  Hospital</div>
+                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Trichy
+                </div>
+                <a href="http://dctcontrichy.com/" target="_blank" rel="noopener"
+                  style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
+                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="120">
+          <article class="testimonial-card">
+            <p class="quote-icon" aria-hidden="true">"</p>
+            <p class="testimonial-text">
+              Trihub Technologies helped bring my vision to life in a way that truly reflects the purpose behind GoNXT.
+              What started as an emotional and meaningful mission needed a platform that people could trust and easily
+              use—and they delivered exactly that. The website makes wheelchair booking simple and accessible, helping
+              us serve elderly devotees with dignity. Their team understood the heart behind this project, not just the
+              technical side.
+            </p>
+            <div class="testimonial-author"
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              <div class="t-avatar" aria-hidden="true"
+                style="flex-shrink: 0; background:linear-gradient(135deg,var(--violet),#a855f7);">VS</div>
+              <div style="flex-grow: 1; min-width: 0;">
+                <div class="t-name" style="color: #fff;">Vinothraj Seshan</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">GoNXT Happy
+                  Wheels</div>
+                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i>
+                  Tiruvannamalai</div>
+                <a href="https://happywheelshub.com/" target="_blank" rel="noopener"
+                  style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
+                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="240">
+          <article class="testimonial-card">
+            <p class="quote-icon" aria-hidden="true">"</p>
+            <p class="testimonial-text">
+              Working with Trihub Technologies was one of the best decisions for my business. They truly understood my
+              vision and created a beautiful, user-friendly website that perfectly represents my mehendi work. Since
+              launching the site, I’ve seen a noticeable increase in customer inquiries and bookings. Their team was
+              professional, responsive, and delivered exactly what I needed to grow my business online.
+            </p>
+            <div class="testimonial-author"
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              <div class="t-avatar" aria-hidden="true"
+                style="flex-shrink: 0; background:linear-gradient(135deg,#f59e0b,#d97706);">AR</div>
+              <div style="flex-grow: 1; min-width: 0;">
+                <div class="t-name" style="color: #fff;">Asmath Raihana</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Asmath
+                  Mehandi</div>
+                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i>
+                  Pudukkottai</div>
+                <a href="https://asmath-professional-mehandhi.netlify.app/" target="_blank" rel="noopener"
+                  style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
+                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 7: FAQ
+============================================================ -->
+  <section id="faq" aria-label="Frequently asked questions">
+    <div class="container">
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+          <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-label" aria-hidden="true"><i class="fas fa-circle-question"></i> Got Questions?</span>
+            <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+            <p class="section-sub mx-auto">
+              Transparent answers to the questions we hear most — so you can make
+              informed decisions with confidence.
+            </p>
+          </div>
+
+          <div class="faq-accordion accordion" id="faqAccordion" data-aos="fade-up" data-aos-delay="100">
+
+            <!-- Q1 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1"
+                  aria-expanded="true" aria-controls="faq1">
+                  <i class="fas fa-cubes me-3 text-primary" aria-hidden="true"
+                    style="color:var(--royal-blue)!important"></i>
+                  What types of applications do you build?
+                </button>
+              </h3>
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We build a wide spectrum of digital products: business websites, landing pages, e-commerce stores,
+                  custom web applications (CRM, ERP, booking systems, portals), cross-platform mobile apps (iOS &
+                  Android),
+                  WhatsApp automation systems, and admin dashboards. Whether you need something straightforward or
+                  highly
+                  complex, we have the expertise to deliver it.
+                </div>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                  <i class="fas fa-code me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  What technologies and tech stack do you use?
+                </button>
+              </h3>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Our stack is modern and versatile. For web frontend we use HTML5, CSS3, JavaScript, React.js, Next.js,
+                  and
+                  Tailwind CSS. Backend technologies include Node.js, Express, Python (Django/FastAPI), and PHP
+                  (Laravel).
+                  For mobile apps we use React Native and Flutter. Databases include MySQL, PostgreSQL, MongoDB, and
+                  Firebase.
+                  We deploy on AWS, GCP, Vercel, and cPanel hosting depending on project requirements.
+                </div>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                  <i class="fas fa-clock me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  How long does a typical project take to complete?
+                </button>
+              </h3>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Timelines vary based on project scope and complexity. A basic website or landing page typically takes
+                  <strong>1–2 weeks</strong>. A custom web application or e-commerce store usually takes
+                  <strong>4–8 weeks</strong>. Mobile apps generally require <strong>8–16 weeks</strong>. We always
+                  provide
+                  a detailed timeline during the planning phase and keep you updated at every 25% milestone throughout
+                  development.
+                </div>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                  <i class="fas fa-indian-rupee-sign me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  What is your pricing model?
+                </button>
+              </h3>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We follow a milestone-based payment structure. After the project plan is finalised and the prototype
+                  is
+                  approved, we collect <strong>50% upfront</strong> to commence development. The remaining balance is
+                  due
+                  upon project completion and final delivery. For ongoing maintenance retainers, we offer flexible
+                  monthly
+                  or quarterly plans. All pricing is transparent — no hidden fees.
+                </div>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+                  <i class="fas fa-headset me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  Do you provide support after project delivery?
+                </button>
+              </h3>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Absolutely. Every project includes a complimentary post-launch support window (duration depends on
+                  project
+                  size) to address any bugs, minor adjustments, or deployment issues. Beyond that, we offer ongoing
+                  maintenance packages that cover security updates, performance monitoring, content changes, and
+                  priority
+                  support — ensuring your product remains reliable, secure, and up-to-date long after launch.
+                </div>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
+                  <i class="fas fa-location-dot me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  Do you work with clients outside Trichy / Tamil Nadu?
+                </button>
+              </h3>
+              <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes! While we're based in Trichy and Pudukkottai, we work with clients across India and
+                  internationally.
+                  Our entire workflow is optimised for remote collaboration — using Zoom, Google Meet, WhatsApp, and
+                  project
+                  management tools to ensure seamless communication regardless of your location. Distance is never a
+                  barrier
+                  to great work.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom CTA -->
+          <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="200">
+            <p style="color:var(--gray);margin-bottom:18px;">Still have questions? We're happy to help.</p>
+            <a href="#contact" class="btn-primary-custom">
+              <i class="fas fa-envelope" aria-hidden="true"></i> Send Us a Message
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 8: CONTACT US
+============================================================ -->
+  <section id="contact" style="background:var(--off-white);" aria-label="Contact us">
+    <div class="container">
+
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="section-label" aria-hidden="true"><i class="fas fa-paper-plane"></i> Get In Touch</span>
+        <h2 class="section-title">Let's Start Your <span>Digital Journey</span></h2>
+        <p class="section-sub mx-auto">
+          Have a project in mind? Fill out the form and we'll get back to you within 24 hours.
+        </p>
+      </div>
+
+      <div class="row g-4 align-items-start">
+
+        <!-- Info + Map -->
+        <div class="col-lg-5" data-aos="fade-right" data-aos-duration="700">
+
+          <div class="contact-info-card mb-4">
+            <h3
+              style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:22px;color:var(--black)">
+              Contact Information
+            </h3>
+
+            <div class="contact-item">
+              <div class="c-icon" aria-hidden="true"><i class="fas fa-location-dot"></i></div>
+              <div>
+                <div class="c-label">Office Address</div>
+                <div class="c-val">Trichy / Pudukkottai,<br>Tamil Nadu, India</div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="c-icon" aria-hidden="true"><i class="fas fa-phone"></i></div>
+              <div>
+                <div class="c-label">Phone / WhatsApp</div>
+                <div class="c-val"><a href="tel:+916374569225">+91 63745 69225</a></div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="c-icon" aria-hidden="true"><i class="fas fa-envelope"></i></div>
+              <div>
+                <div class="c-label">Email</div>
+                <div class="c-val"><a href="mailto:trihubtechnologies@gmail.com">trihubtechnologies@gmail.com</a></div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="c-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>
+              <div>
+                <div class="c-label">Website</div>
+                <div class="c-val"><a href="https://trihubtechnologies.com" target="_blank"
+                    rel="noopener">trihubtechnologies.com</a></div>
+              </div>
+            </div>
+
+            <div class="contact-item" style="margin-bottom:0">
+              <div class="c-icon" aria-hidden="true"><i class="fas fa-clock"></i></div>
+              <div>
+                <div class="c-label">Working Hours</div>
+                <div class="c-val">Mon – Sat: 9:00 AM – 7:00 PM IST</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social links -->
+          <div class="contact-info-card" style="padding-top:20px;padding-bottom:20px">
+            <h4
+              style="font-family:var(--font-display);font-weight:700;font-size:.9rem;color:var(--black);margin-bottom:14px;">
+              Follow Us
+            </h4>
+            <div class="social-links-row" role="list" aria-label="Social media links">
+              <a href="https://www.facebook.com/people/TriHub-Technologies/61572019447995/?rdid=qxmlaSUmcjh4igS9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1H8tms9zUM%2F"
+                class="social-link-btn" style="background:#1877f2;color:#fff;" aria-label="Facebook" role="listitem"
+                target="_blank" rel="noopener">
+                <i class="fab fa-facebook-f" aria-hidden="true"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/trihub-technologies/" class="social-link-btn"
+                style="background:#0a66c2;color:#fff;" aria-label="LinkedIn" role="listitem" target="_blank"
+                rel="noopener">
+                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+              </a>
+              <a href="https://www.instagram.com/trihubtech?utm_source=qr&igsh=MXJ2NjYyM3JldHN1MQ%3D%3D"
+                class="social-link-btn" style="background:#e1306c;color:#fff;" aria-label="Instagram" role="listitem"
+                target="_blank" rel="noopener">
+                <i class="fab fa-instagram" aria-hidden="true"></i>
+              </a>
+              <a href="https://wa.me/916374569225" class="social-link-btn" style="background:#25d366;color:#fff;"
+                aria-label="WhatsApp" target="_blank" rel="noopener" role="listitem">
+                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Embedded Google Map -->
+          <div class="map-container mt-4" data-aos="fade-up" data-aos-delay="200">
+            <iframe src="https://maps.google.com/maps?q=Trichy,Tamil+Nadu,India&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              title="TriHub Technologies office location – Trichy, Tamil Nadu" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              aria-label="Map showing office location in Trichy, Tamil Nadu">
+            </iframe>
+          </div>
+
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+          <div class="contact-form-wrap">
+            <h3
+              style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:24px;color:var(--black)">
+              Send Us a Message
+            </h3>
+
+            <form id="contactForm" novalidate aria-label="Contact form">
+              <div class="row g-3">
+
+                <div class="col-md-6">
+                  <label class="form-label" for="contactName">Full Name <span style="color:red"
+                      aria-hidden="true">*</span></label>
+                  <input type="text" class="form-control" id="contactName" name="name" placeholder="e.g. Nandha"
+                    required aria-required="true" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="contactEmail">Email Address <span style="color:red"
+                      aria-hidden="true">*</span></label>
+                  <input type="email" class="form-control" id="contactEmail" name="email" placeholder="you@example.com"
+                    required aria-required="true" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="contactPhone">Phone / WhatsApp</label>
+                  <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="+91 XXXXX XXXXX" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="contactService">Service Interested In</label>
+                  <select class="form-control form-select" id="contactService" name="service">
+                    <option value="">Select a service…</option>
+                    <option>Website Development</option>
+                    <option>Web Application</option>
+                    <option>Mobile App Development</option>
+                    <option>WhatsApp Business Automation</option>
+                    <option>Digital Marketing</option>
+                    <option>SEO Optimization</option>
+                    <option>UI/UX Design</option>
+                    <option>E-commerce Development</option>
+                    <option>API Integration</option>
+                    <option>Maintenance & Support</option>
+                    <option>Branding & Logo Design</option>
+                    <option>Other / Custom</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="contactSubject">Subject <span style="color:red"
+                      aria-hidden="true">*</span></label>
+                  <input type="text" class="form-control" id="contactSubject" name="subject"
+                    placeholder="Brief subject of your enquiry" required aria-required="true" />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="contactMessage">Message <span style="color:red"
+                      aria-hidden="true">*</span></label>
+                  <textarea class="form-control" id="contactMessage" name="message" rows="5"
+                    placeholder="Tell us about your project, goals, and any specific requirements…" required
+                    aria-required="true"></textarea>
+                </div>
+
+                <div class="col-12">
+                  <button type="submit" class="btn-primary-custom w-100 justify-content-center"
+                    style="border:none;cursor:pointer;">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message
+                  </button>
+                  <p style="font-size:.75rem;color:var(--gray);margin-top:10px;text-align:center;">
+                    <i class="fas fa-lock" aria-hidden="true" style="margin-right:4px;"></i>
+                    Your message opens your email client pre-filled — we never store form data.
+                  </p>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     SECTION 9: FOOTER
+============================================================ -->
+  <footer id="footer" aria-label="Site footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row g-5">
+
+          <!-- Brand column -->
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-logo">
+              <div class="brand-icon" aria-hidden="true"><img src="favicon.svg" alt="TriHub Logo" width="38"
+                  height="38" /></div>
+              <span>TriHub <span style="color:var(--green)">Technologies</span></span>
+            </div>
+            <p class="footer-slogan">The Central Hub For Digital Growth — your end-to-end partner for web, mobile, and
+              marketing excellence.</p>
+
+            <div class="footer-social mt-3" aria-label="Footer social links">
+              <a href="https://www.facebook.com/people/TriHub-Technologies/61572019447995/?rdid=qxmlaSUmcjh4igS9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1H8tms9zUM%2F"
+                aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"
+                  aria-hidden="true"></i></a>
+              <a href="https://www.linkedin.com/company/trihub-technologies/" aria-label="LinkedIn" target="_blank"
+                rel="noopener"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+              <a href="https://www.instagram.com/trihubtech?utm_source=qr&igsh=MXJ2NjYyM3JldHN1MQ%3D%3D"
+                aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"
+                  aria-hidden="true"></i></a>
+              <a href="https://wa.me/916374569225" aria-label="WhatsApp" target="_blank" rel="noopener"><i
+                  class="fab fa-whatsapp" aria-hidden="true"></i></a>
+            </div>
+          </div>
+
+          <!-- Quick links -->
+          <div class="col-lg-2 col-md-6 col-6">
+            <p class="footer-heading">Quick Links</p>
+            <ul class="footer-links">
+              <li><a href="#home"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
+              <li><a href="#about"><i class="fas fa-chevron-right" aria-hidden="true"></i> About Us</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Services</a></li>
+              <li><a href="#process"><i class="fas fa-chevron-right" aria-hidden="true"></i> Process</a></li>
+              <li><a href="#testimonials"><i class="fas fa-chevron-right" aria-hidden="true"></i> Testimonials</a></li>
+              <li><a href="#faq"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a></li>
+              <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
+            </ul>
+          </div>
+
+          <!-- Services links -->
+          <div class="col-lg-3 col-md-6 col-6">
+            <p class="footer-heading">Our Services</p>
+            <ul class="footer-links">
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Website Development</a>
+              </li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Web Applications</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Mobile App Dev</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> WhatsApp Automation</a>
+              </li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Digital Marketing</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> SEO Optimization</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> UI/UX Design</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact details -->
+          <div class="col-lg-3 col-md-6">
+            <p class="footer-heading">Contact Details</p>
+            <ul class="footer-contact-list">
+              <li>
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+                <span>Trichy / Pudukkottai,<br>Tamil Nadu, India</span>
+              </li>
+              <li>
+                <i class="fas fa-phone" aria-hidden="true"></i>
+                <a href="tel:+916374569225">+91 63745 69225</a>
+              </li>
+              <li>
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+                <a href="mailto:trihubtechnologies@gmail.com">trihubtechnologies@gmail.com</a>
+              </li>
+              <li>
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <a href="https://trihubtechnologies.com" target="_blank" rel="noopener">trihubtechnologies.com</a>
+              </li>
+              <li>
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                <span>Mon–Sat: 9 AM – 7 PM IST</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer bottom bar -->
+    <div class="container">
+      <div class="footer-bottom">
+        <span>
+          &copy; <span id="footerYear"></span> TriHub Technologies. All rights reserved.
+        </span>
+        <span>
+          Crafted with <i class="fas fa-heart" style="color:var(--green);margin:0 3px;" aria-hidden="true"></i>
+          in Tamil Nadu, India
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+     SCRIPTS
+============================================================ -->
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    /* ============================================================
+       INIT
+    ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* ---------- AOS Init ---------- */
+      AOS.init({
+        once: true,
+        offset: 80,
+        duration: 650,
+        easing: 'ease-out-cubic',
+      });
+
+      /* ---------- Dynamic copyright year ---------- */
+      const yearEl = document.getElementById('footerYear');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      /* ---------- Navbar scroll behaviour ---------- */
+      const nav = document.getElementById('mainNav');
+      const handleScroll = () => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+        updateScrollBtns();
+      };
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      /* ---------- Close mobile menu on link click ---------- */
+      document.querySelectorAll('#navMenu .nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          const collapse = document.getElementById('navMenu');
+          const bsCollapse = bootstrap.Collapse.getInstance(collapse);
+          if (bsCollapse) bsCollapse.hide();
+        });
+      });
+
+      /* ---------- Counter Animation ---------- */
+      const counters = document.querySelectorAll('.counter');
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.target, 10);
+            const step = Math.ceil(target / 50);
+            let current = 0;
+            const timer = setInterval(() => {
+              current += step;
+              if (current >= target) { current = target; clearInterval(timer); }
+              el.textContent = current;
+            }, 30);
+            counterObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(c => counterObserver.observe(c));
+
+      /* ---------- Scroll Buttons ---------- */
+      const scrollTopBtn = document.getElementById('scrollTop');
+      const scrollBottomBtn = document.getElementById('scrollBottom');
+
+      const updateScrollBtns = () => {
+        const scrolled = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        scrollTopBtn.classList.toggle('visible', scrolled > 300);
+        scrollBottomBtn.classList.toggle('visible', scrolled < maxScroll - 100);
+      };
+
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      scrollBottomBtn.addEventListener('click', () => {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+      });
+
+      updateScrollBtns();
+
+      /* ---------- Contact Form → mailto ---------- */
+      const form = document.getElementById('contactForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('contactName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
+        const service = document.getElementById('contactService').value.trim();
+        const subject = document.getElementById('contactSubject').value.trim();
+        const message = document.getElementById('contactMessage').value.trim();
+
+        if (!name || !email || !subject || !message) {
+          alert('Please fill in all required fields (Name, Email, Subject, Message).');
+          return;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+
+        const bodyLines = [
+          `Name: ${name}`,
+          `Email: ${email}`,
+          phone ? `Phone: ${phone}` : '',
+          service ? `Service: ${service}` : '',
+          '',
+          `Message:`,
+          message,
+          '',
+          '---',
+          'Sent via trihubtechnologies.com contact form',
+        ].filter(l => l !== undefined);
+
+        const mailtoSubject = encodeURIComponent(`[TriHub Enquiry] ${subject}`);
+        const mailtoBody = encodeURIComponent(bodyLines.join('\n'));
+        const mailtoHref = `mailto:trihubtechnologies@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+
+        window.location.href = mailtoHref;
+
+        setTimeout(() => {
+          form.reset();
+        }, 800);
+      });
+
+      /* ---------- Active nav link highlighting ---------- */
+      const sections = document.querySelectorAll('section[id], footer[id]');
+      const navLinks = document.querySelectorAll('#navMenu .nav-link:not(.nav-cta)');
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.style.color = '';
+              const href = link.getAttribute('href');
+              if (href === `#${entry.target.id}`) {
+                link.style.color = 'var(--royal-blue)';
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+      sections.forEach(s => sectionObserver.observe(s));
+
+    });
+  </script>
+
+</body>
+
+</html>
