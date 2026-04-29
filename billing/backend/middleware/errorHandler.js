@@ -45,10 +45,7 @@ function errorHandler(err, req, res, next) {
   }
 
   
-  const message =
-    process.env.NODE_ENV === "production"
-      ? "Internal server error."
-      : err.message || "Something went wrong.";
+  const message = err.message;
 
   res.status(500).json({ ok: false, error: message });
 }
