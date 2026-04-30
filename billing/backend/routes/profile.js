@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const { pool, logActivity } = require("../config/db");
 const { body, query, validationResult } = require("express-validator");
-const { loadCompanyProfile } = require("../utils/tenancy");
+const { hasPermission, loadCompanyProfile } = require("../utils/tenancy");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -135,11 +135,11 @@ async function updateStorageUsed(executor, companyId, delta) {
 }
 
 function ensureCompanyManager(req, res) {
-  if (req.user?.is_platform_admin || req.user?.permissions?.includes("can_manage_company")) {
+  if (req.user?.is_platform_admin || hasPermission(req.user?.permissions, "can_edit_company")) {
     return true;
   }
 
-  res.status(403).json({ ok: false, error: "PERMISSION_DENIED", permission: "can_manage_company" });
+  res.status(403).json({ ok: false, error: "PERMISSION_DENIED", permission: "can_edit_company" });
   return false;
 }
 
@@ -167,7 +167,11 @@ router.put(
     body("salutation").optional().trim(),
     body("dob").optional({ checkFalsy: true }).isISO8601(),
     body("designation").optional({ checkFalsy: true }).trim(),
-    body("mobile").optional({ checkFalsy: true }).trim(),
+    body("mobile")
+      .optional({ checkFalsy: true })
+      .trim()
+      .matches(/^\+\d{1,3}\s?\d{10}$/)
+      .withMessage("Mobile number must include a country code (e.g., +91) and 10 digits"),
   ],
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -221,6 +225,10 @@ router.put(
 
 router.get("/company", async (req, res, next) => {
   try {
+    if (!req.user?.is_platform_admin && !hasPermission(req.user?.permissions, "can_view_company")) {
+      return res.status(403).json({ ok: false, error: "PERMISSION_DENIED", permission: "can_view_company" });
+    }
+
     const company = await loadCompanyProfile(pool, req.user.company_id);
     return res.json({ ok: true, data: company });
   } catch (err) {
@@ -234,7 +242,11 @@ router.put(
   [
     body("name").trim().notEmpty().withMessage("Company name is required"),
     body("address").optional({ checkFalsy: true }).trim(),
-    body("phone").optional({ checkFalsy: true }).trim(),
+    body("phone")
+      .optional({ checkFalsy: true })
+      .trim()
+      .matches(/^\+\d{1,3}\s?\d{10}$/)
+      .withMessage("Phone number must include a country code (e.g., +91) and 10 digits"),
     body("email").optional({ checkFalsy: true }).isEmail(),
     body("gstin").optional({ checkFalsy: true }).trim(),
     body("pan").optional({ checkFalsy: true }).trim(),

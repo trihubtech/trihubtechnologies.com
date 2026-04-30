@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { pool, getNextCode, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
+const { requirePermission } = require("../middleware/permissions");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -21,6 +22,7 @@ const productValidation = [
 
 router.get(
   "/",
+  requirePermission("can_list_products"),
   [
     query("page").optional().isInt({ min: 1 }).toInt(),
     query("pageSize").optional().isInt({ min: 1, max: 500 }).toInt(),
@@ -95,7 +97,7 @@ router.get(
   }
 );
 
-router.get("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
+router.get("/:id", requirePermission("can_view_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[product]] = await pool.execute(
       `SELECT p.*,
@@ -121,7 +123,7 @@ router.get("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
   }
 });
 
-router.post("/", productValidation, async (req, res, next) => {
+router.post("/", requirePermission("can_add_products"), productValidation, async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
 
@@ -162,7 +164,7 @@ router.post("/", productValidation, async (req, res, next) => {
   }
 });
 
-router.put("/:id", [param("id").isInt().toInt(), ...productValidation], async (req, res, next) => {
+router.put("/:id", requirePermission("can_edit_products"), [param("id").isInt().toInt(), ...productValidation], async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
 
@@ -191,7 +193,7 @@ router.put("/:id", [param("id").isInt().toInt(), ...productValidation], async (r
   }
 });
 
-router.delete("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
+router.delete("/:id", requirePermission("can_delete_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[existing]] = await pool.execute(
       "SELECT * FROM products WHERE id = ? AND user_id = ?",

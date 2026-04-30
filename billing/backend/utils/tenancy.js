@@ -1,43 +1,63 @@
-const ALL_PERMISSION_KEYS = [
-  "can_view_dashboard",
-  "can_manage_products",
-  "can_manage_inventory",
-  "can_manage_customers",
-  "can_manage_vendors",
-  "can_manage_invoices",
-  "can_manage_bills",
-  "can_view_reports",
-  "can_manage_company",
-  "can_manage_users",
+const MODULE_ACTIONS = {
+  dashboard: ["view"],
+  products: ["list", "view", "add", "edit", "delete"],
+  inventory: ["list", "view", "add"],
+  customers: ["list", "view", "add", "edit", "delete"],
+  vendors: ["list", "view", "add", "edit", "delete"],
+  invoices: ["list", "view", "add", "edit", "delete"],
+  bills: ["list", "view", "add", "edit", "delete"],
+  reports: ["list", "view"],
+  company: ["view", "edit"],
+  users: ["list", "view", "add", "edit", "delete"],
+};
+
+function buildPermissionKey(action, moduleKey) {
+  return `can_${action}_${moduleKey}`;
+}
+
+function buildModulePermissions(moduleKey) {
+  return (MODULE_ACTIONS[moduleKey] || []).map((action) => buildPermissionKey(action, moduleKey));
+}
+
+const ALL_PERMISSION_KEYS = Object.keys(MODULE_ACTIONS).flatMap((moduleKey) => buildModulePermissions(moduleKey));
+
+const LEGACY_PERMISSION_EXPANSIONS = {
+  can_view_dashboard: buildModulePermissions("dashboard"),
+  can_manage_products: buildModulePermissions("products"),
+  can_manage_inventory: buildModulePermissions("inventory"),
+  can_manage_customers: buildModulePermissions("customers"),
+  can_manage_vendors: buildModulePermissions("vendors"),
+  can_manage_invoices: buildModulePermissions("invoices"),
+  can_manage_bills: buildModulePermissions("bills"),
+  can_view_reports: buildModulePermissions("reports"),
+  can_manage_company: buildModulePermissions("company"),
+  can_manage_users: buildModulePermissions("users"),
+};
+
+const LEGACY_PERMISSION_DEFINITIONS = [
+  { key: "can_manage_products", label: "Manage Products (Legacy)", module: "products" },
+  { key: "can_manage_inventory", label: "Manage Inventory (Legacy)", module: "inventory" },
+  { key: "can_manage_customers", label: "Manage Customers (Legacy)", module: "customers" },
+  { key: "can_manage_vendors", label: "Manage Vendors (Legacy)", module: "vendors" },
+  { key: "can_manage_invoices", label: "Manage Invoices (Legacy)", module: "invoices" },
+  { key: "can_manage_bills", label: "Manage Bills (Legacy)", module: "bills" },
+  { key: "can_manage_company", label: "Manage Company (Legacy)", module: "company" },
+  { key: "can_manage_users", label: "Manage Users (Legacy)", module: "users" },
 ];
 
 const PERMISSION_DEFINITIONS = [
-  { key: "can_view_dashboard", label: "View dashboard", module: "dashboard" },
-  { key: "can_manage_products", label: "Manage products", module: "products" },
-  { key: "can_manage_inventory", label: "Manage inventory", module: "inventory" },
-  { key: "can_manage_customers", label: "Manage customers", module: "customers" },
-  { key: "can_manage_vendors", label: "Manage vendors", module: "vendors" },
-  { key: "can_manage_invoices", label: "Manage invoices", module: "invoices" },
-  { key: "can_manage_bills", label: "Manage bills", module: "bills" },
-  { key: "can_view_reports", label: "View reports", module: "reports" },
-  { key: "can_manage_company", label: "Manage company", module: "company" },
-  { key: "can_manage_users", label: "Manage users", module: "users" },
+  { key: "can_view_dashboard", label: "View Dashboard", module: "dashboard", action: "view" },
+  ...Object.entries(MODULE_ACTIONS)
+    .filter(([moduleKey]) => moduleKey !== "dashboard")
+    .flatMap(([moduleKey, actions]) =>
+      actions.map((action) => ({
+        key: buildPermissionKey(action, moduleKey),
+        label: `${action.charAt(0).toUpperCase()}${action.slice(1)} ${moduleKey.charAt(0).toUpperCase()}${moduleKey.slice(1)}`,
+        module: moduleKey,
+        action,
+      }))
+    ),
 ];
-
-const ROLE_DEFAULT_PERMISSIONS = {
-  MASTER: ALL_PERMISSION_KEYS,
-  ADMIN: [
-    "can_view_dashboard",
-    "can_manage_products",
-    "can_manage_inventory",
-    "can_manage_customers",
-    "can_manage_vendors",
-    "can_manage_invoices",
-    "can_manage_bills",
-    "can_view_reports",
-  ],
-  NORMAL: [],
-};
 
 function normalizeRole(role) {
   switch (role) {
@@ -50,9 +70,40 @@ function normalizeRole(role) {
   }
 }
 
-function cleanPermissionList(values = []) {
-  return [...new Set((values || []).filter((value) => ALL_PERMISSION_KEYS.includes(value)))].sort();
+function expandPermissionKey(permissionKey) {
+  if (LEGACY_PERMISSION_EXPANSIONS[permissionKey]) {
+    return LEGACY_PERMISSION_EXPANSIONS[permissionKey];
+  }
+
+  if (ALL_PERMISSION_KEYS.includes(permissionKey)) {
+    return [permissionKey];
+  }
+
+  return [];
 }
+
+function expandPermissionKeys(values = []) {
+  return (values || []).flatMap((value) => expandPermissionKey(value));
+}
+
+function cleanPermissionList(values = []) {
+  return [...new Set(expandPermissionKeys(values))].sort();
+}
+
+const ROLE_DEFAULT_PERMISSIONS = {
+  MASTER: [...ALL_PERMISSION_KEYS],
+  ADMIN: cleanPermissionList([
+    ...buildModulePermissions("dashboard"),
+    ...buildModulePermissions("products"),
+    ...buildModulePermissions("inventory"),
+    ...buildModulePermissions("customers"),
+    ...buildModulePermissions("vendors"),
+    ...buildModulePermissions("invoices"),
+    ...buildModulePermissions("bills"),
+    ...buildModulePermissions("reports"),
+  ]),
+  NORMAL: [],
+};
 
 function getDefaultPermissionsForRole(role) {
   if (role === "MASTER") {
@@ -71,6 +122,30 @@ function getEffectivePermissions(role, assignedPermissions = []) {
     ...getDefaultPermissionsForRole(role),
     ...(assignedPermissions || []),
   ]);
+}
+
+function hasPermission(permissions = [], permissionKey) {
+  return cleanPermissionList(permissions).includes(permissionKey);
+}
+
+async function syncPermissionCatalog(executor) {
+  const definitions = [...PERMISSION_DEFINITIONS, ...LEGACY_PERMISSION_DEFINITIONS];
+
+  if (!definitions.length) {
+    return;
+  }
+
+  const values = definitions.map(() => "(?, ?, ?)").join(", ");
+  const params = definitions.flatMap((definition) => [definition.key, definition.label, definition.module]);
+
+  await executor.execute(
+    `INSERT INTO permissions (permission_key, label, module)
+     VALUES ${values}
+     ON DUPLICATE KEY UPDATE
+       label = VALUES(label),
+       module = VALUES(module)`,
+    params
+  );
 }
 
 async function getUserPermissions(executor, userId) {
@@ -191,7 +266,7 @@ function mapUserForResponse(user) {
     auth_provider: user.auth_provider,
     email_verified_at: user.email_verified_at,
     is_platform_admin: Boolean(user.is_platform_admin),
-    permissions: user.permissions || [],
+    permissions: cleanPermissionList(user.permissions || []),
     sub_plan: user.sub_plan || user.subscription_plan || "TRIAL",
     sub_status: user.sub_status || user.subscription_status || "ACTIVE",
     trial_ends_at: user.trial_ends_at,
@@ -215,13 +290,19 @@ async function loadAuthContext(executor, userId) {
 
 module.exports = {
   ALL_PERMISSION_KEYS,
+  LEGACY_PERMISSION_EXPANSIONS,
+  MODULE_ACTIONS,
   PERMISSION_DEFINITIONS,
+  buildModulePermissions,
   cleanPermissionList,
+  expandPermissionKeys,
   getDefaultPermissionsForRole,
   getEffectivePermissions,
+  hasPermission,
   loadAuthContext,
   loadCompanyProfile,
   loadTenantUser,
   mapUserForResponse,
   normalizeRole,
+  syncPermissionCatalog,
 };

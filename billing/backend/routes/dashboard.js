@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { pool } = require("../config/db");
 const { query } = require("express-validator");
+const { requirePermission } = require("../middleware/permissions");
 
 function getPresetDates(preset) {
   const now = new Date();
@@ -27,6 +28,7 @@ function formatDate(date) {
 
 router.get(
   "/",
+  requirePermission("can_view_dashboard"),
   [
     query("preset").optional().trim(),
     query("from").optional().isISO8601(),

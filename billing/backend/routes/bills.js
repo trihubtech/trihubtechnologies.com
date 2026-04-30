@@ -6,6 +6,7 @@ const router = require("express").Router();
 const { pool, getNextCode, adjustStock, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
 const { numberToWords, round2 } = require("../utils/helpers");
+const { requirePermission } = require("../middleware/permissions");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -36,6 +37,7 @@ function calcBillTotals(items, discount) {
 
 router.get(
   "/",
+  requirePermission("can_list_bills"),
   [
     query("page").optional().isInt({ min: 1 }).toInt(),
     query("pageSize").optional().isInt({ min: 1, max: 200 }).toInt(),
@@ -101,6 +103,7 @@ router.get(
 
 router.get(
   "/:id",
+  requirePermission("can_view_bills"),
   [param("id").isInt().toInt()],
   async (req, res, next) => {
     try {
@@ -155,6 +158,7 @@ const billValidation = [
 
 router.post(
   "/",
+  requirePermission("can_add_bills"),
   billValidation,
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -174,7 +178,7 @@ router.post(
 
       
       const [[vendor]] = await conn.execute(
-        "SELECT id, name FROM vendors WHERE id = ? AND user_id = ? AND is_active = 1",
+        "SELECT id, name, balance FROM vendors WHERE id = ? AND user_id = ? AND is_active = 1",
         [vendor_id, req.user.id]
       );
       if (!vendor) {
@@ -207,8 +211,10 @@ router.post(
 
       const { subTotal, totalTax, roundOff, grandTotal } = calcBillTotals(processedItems, discount);
       const amountInWords = numberToWords(grandTotal);
-      const balance = round2(Math.max(grandTotal - paidAmount, 0));
-      const status  = balance <= 0 ? "PAID" : (paidAmount > 0 ? "PARTIAL" : "UNPAID");
+      const previousBalance = round2(Number(vendor.balance || 0));
+      const netPayable = round2(grandTotal - previousBalance);
+      const balance = round2(previousBalance + paidAmount - grandTotal);
+      const status  = balance >= -0.01 ? "PAID" : (paidAmount > 0 ? "PARTIAL" : "UNPAID");
 
       const billCode = await getNextCode(conn, "BILL");
 
@@ -217,15 +223,21 @@ router.post(
         `INSERT INTO bills
            (user_id, code, number, vendor_invoice_number, date, term, vendor_id,
             sub_total, discount, total_tax, round_off, grand_total,
-            amount_in_words, paid_amount, balance, status, notes)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            amount_in_words, paid_amount, balance, status, notes, previous_balance)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           req.user.id, billCode, billCode, vendor_invoice_number, date, term, vendor_id,
           subTotal, discount, totalTax, roundOff, grandTotal,
-          amountInWords, paidAmount, balance, status, notes,
+          amountInWords, paidAmount, balance, status, notes, previousBalance
         ]
       );
       const billId = billResult.insertId;
+
+      // Update vendor balance
+      await conn.execute(
+        "UPDATE vendors SET balance = balance + ? - ? WHERE id = ?",
+        [paidAmount, grandTotal, vendor_id]
+      );
 
       
       for (const item of processedItems) {
@@ -282,6 +294,7 @@ router.post(
 
 router.put(
   "/:id",
+  requirePermission("can_edit_bills"),
   [param("id").isInt().toInt(), ...billValidation],
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -373,8 +386,22 @@ router.put(
 
       const { subTotal, totalTax, roundOff, grandTotal } = calcBillTotals(processedItems, discount);
       const amountInWords = numberToWords(grandTotal);
-      const balance       = round2(Math.max(grandTotal - paidAmount, 0));
-      const status        = balance <= 0 ? "PAID" : (paidAmount > 0 ? "PARTIAL" : "UNPAID");
+      const previousBalance = round2(Number(existing.previous_balance || 0));
+      const netPayable = round2(grandTotal - previousBalance);
+      const balance       = round2(previousBalance + paidAmount - grandTotal);
+      const status        = balance >= -0.01 ? "PAID" : (paidAmount > 0 ? "PARTIAL" : "UNPAID");
+
+      // Update vendor balance
+      const oldEffect = round2(Number(existing.paid_amount) - Number(existing.grand_total));
+      const newEffect = round2(paidAmount - grandTotal);
+      
+      if (existing.vendor_id === vendor_id) {
+        const deltaEffect = round2(newEffect - oldEffect);
+        await conn.execute("UPDATE vendors SET balance = balance + ? WHERE id = ?", [deltaEffect, vendor_id]);
+      } else {
+        await conn.execute("UPDATE vendors SET balance = balance - ? WHERE id = ?", [oldEffect, existing.vendor_id]);
+        await conn.execute("UPDATE vendors SET balance = balance + ? WHERE id = ?", [newEffect, vendor_id]);
+      }
 
       await conn.execute(
         `UPDATE bills SET
@@ -423,6 +450,7 @@ router.put(
 
 router.delete(
   "/:id",
+  requirePermission("can_delete_bills"),
   [param("id").isInt().toInt()],
   async (req, res, next) => {
     const conn = await pool.getConnection();
@@ -457,6 +485,12 @@ router.delete(
           inventoryCode: stockCode,
         });
       }
+
+      const oldEffect = round2(Number(bill.paid_amount) - Number(bill.grand_total));
+      await conn.execute(
+        "UPDATE vendors SET balance = balance - ? WHERE id = ?",
+        [oldEffect, bill.vendor_id]
+      );
 
       await conn.execute("DELETE FROM bills WHERE id = ? AND user_id = ?", [req.params.id, req.user.id]);
 

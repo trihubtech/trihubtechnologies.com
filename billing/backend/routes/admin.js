@@ -466,7 +466,11 @@ router.post(
   "/payment-details",
   [
     body("upi_id").optional({ checkFalsy: true }).trim(),
-    body("upi_mobile").optional({ checkFalsy: true }).trim(),
+    body("upi_mobile")
+      .optional({ checkFalsy: true })
+      .trim()
+      .matches(/^\+\d{1,3}\s?\d{10}$/)
+      .withMessage("UPI Mobile must include a country code (e.g., +91) and 10 digits"),
   ],
   async (req, res, next) => {
     const err = validationErrors(req, res);

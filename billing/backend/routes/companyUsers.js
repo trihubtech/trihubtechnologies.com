@@ -33,13 +33,11 @@ async function syncUserPermissions(executor, userId, permissions) {
   );
 }
 
-router.use(requirePermission("can_manage_users"));
-
-router.get("/permissions", async (req, res) => {
+router.get("/permissions", requirePermission("can_view_users"), async (req, res) => {
   return res.json({ ok: true, data: PERMISSION_DEFINITIONS });
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", requirePermission("can_list_users"), async (req, res, next) => {
   try {
     const [users] = await pool.execute(
       `SELECT
@@ -81,6 +79,7 @@ router.get("/", async (req, res, next) => {
 
 router.post(
   "/",
+  requirePermission("can_add_users"),
   [
     body("name").trim().notEmpty().withMessage("Name is required"),
     body("email").isEmail().normalizeEmail().withMessage("Valid email is required"),
@@ -167,6 +166,7 @@ router.post(
 
 router.patch(
   "/:id",
+  requirePermission("can_edit_users"),
   [
     param("id").isInt().toInt(),
     body("role").optional().isIn(["MASTER", "ADMIN", "NORMAL"]).withMessage("Invalid role"),

@@ -5,6 +5,7 @@ const router  = require("express").Router();
 const { pool, getNextCode, adjustStock, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
 const { numberToWords, round2 } = require("../utils/helpers");
+const { requirePermission } = require("../middleware/permissions");
 
 
 
@@ -43,6 +44,7 @@ function calcInvoiceTotals(items, discount) {
 
 router.get(
   "/",
+  requirePermission("can_list_invoices"),
   [
     query("page").optional().isInt({ min: 1 }).toInt(),
     query("pageSize").optional().isInt({ min: 1, max: 200 }).toInt(),
@@ -116,6 +118,7 @@ router.get(
 
 router.get(
   "/:id",
+  requirePermission("can_view_invoices"),
   [param("id").isInt().toInt()],
   async (req, res, next) => {
     try {
@@ -172,6 +175,7 @@ const invoiceValidation = [
 
 router.post(
   "/",
+  requirePermission("can_add_invoices"),
   invoiceValidation,
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -338,6 +342,7 @@ router.post(
 
 router.put(
   "/:id",
+  requirePermission("can_edit_invoices"),
   [param("id").isInt().toInt(), ...invoiceValidation],
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -508,6 +513,7 @@ router.put(
 
 router.delete(
   "/:id",
+  requirePermission("can_delete_invoices"),
   [param("id").isInt().toInt()],
   async (req, res, next) => {
     const conn = await pool.getConnection();

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { pool, getNextCode, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
+const { requirePermission } = require("../middleware/permissions");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -13,7 +14,12 @@ function validationErrors(req, res) {
 const vendorValidation = [
   body("salutation").trim().notEmpty().withMessage("Salutation is required"),
   body("name").trim().notEmpty().withMessage("Name is required"),
-  body("mobile").trim().notEmpty().withMessage("Mobile is required"),
+  body("mobile")
+    .trim()
+    .notEmpty()
+    .withMessage("Mobile is required")
+    .matches(/^\+\d{1,3}\s?\d{10}$/)
+    .withMessage("Mobile number must include a country code (e.g., +91) and 10 digits"),
   body("address").trim().notEmpty().withMessage("Address is required"),
   body("email").optional({ checkFalsy: true }).isEmail().withMessage("Invalid email"),
   body("gstin").optional({ checkFalsy: true }).trim(),
@@ -21,6 +27,7 @@ const vendorValidation = [
 
 router.get(
   "/",
+  requirePermission("can_list_vendors"),
   [
     query("page").optional().isInt({ min: 1 }).toInt(),
     query("pageSize").optional().isInt({ min: 1, max: 500 }).toInt(),
@@ -69,7 +76,7 @@ router.get(
   }
 );
 
-router.get("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
+router.get("/:id", requirePermission("can_view_vendors"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[vendor]] = await pool.execute(
       "SELECT * FROM vendors WHERE id = ? AND user_id = ?",
@@ -82,7 +89,7 @@ router.get("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
   }
 });
 
-router.post("/", vendorValidation, async (req, res, next) => {
+router.post("/", requirePermission("can_add_vendors"), vendorValidation, async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
 
@@ -123,7 +130,7 @@ router.post("/", vendorValidation, async (req, res, next) => {
   }
 });
 
-router.put("/:id", [param("id").isInt().toInt(), ...vendorValidation], async (req, res, next) => {
+router.put("/:id", requirePermission("can_edit_vendors"), [param("id").isInt().toInt(), ...vendorValidation], async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
 
@@ -150,7 +157,7 @@ router.put("/:id", [param("id").isInt().toInt(), ...vendorValidation], async (re
   }
 });
 
-router.delete("/:id", [param("id").isInt().toInt()], async (req, res, next) => {
+router.delete("/:id", requirePermission("can_delete_vendors"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[existing]] = await pool.execute(
       "SELECT * FROM vendors WHERE id = ? AND user_id = ?",

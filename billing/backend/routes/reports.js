@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const { pool } = require("../config/db");
 const { query, param } = require("express-validator");
+const { requirePermission } = require("../middleware/permissions");
 
-router.get("/", (req, res) => {
+router.get("/", requirePermission("can_list_reports"), (req, res) => {
   return res.json({
     ok: true,
     data: [
@@ -19,6 +20,7 @@ router.get("/", (req, res) => {
 
 router.get(
   "/:id",
+  requirePermission("can_view_reports"),
   [
     param("id").isIn([
       "sales_summary",

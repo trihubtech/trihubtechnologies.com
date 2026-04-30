@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { pool, getNextCode, adjustStock, logActivity } = require("../config/db");
 const { body, query, validationResult } = require("express-validator");
+const { requirePermission } = require("../middleware/permissions");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -12,6 +13,7 @@ function validationErrors(req, res) {
 
 router.get(
   "/",
+  requirePermission("can_list_inventory"),
   [
     query("page").optional().isInt({ min: 1 }).toInt(),
     query("pageSize").optional().isInt({ min: 1, max: 200 }).toInt(),
@@ -79,7 +81,7 @@ router.get(
   }
 );
 
-router.get("/stock-summary", async (req, res, next) => {
+router.get("/stock-summary", requirePermission("can_view_inventory"), async (req, res, next) => {
   try {
     const [rows] = await pool.execute(
       `SELECT p.id, p.code, p.name, p.unit, p.category,
@@ -104,6 +106,7 @@ router.get("/stock-summary", async (req, res, next) => {
 
 router.post(
   "/",
+  requirePermission("can_add_inventory"),
   [
     body("product_id").isInt({ min: 1 }).withMessage("Product is required"),
     body("adjustment")
