@@ -13,7 +13,11 @@ const pool = mysql.createPool({
   queueLimit:         0,
   dateStrings:        true,
   charset:            "utf8mb4",
-  decimalNumbers:     true,     
+  decimalNumbers:     true,
+  ssl:
+  process.env.NODE_ENV === "production"
+    ? { rejectUnauthorized: false }
+    : undefined,   
 });
 
 
