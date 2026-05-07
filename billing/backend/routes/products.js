@@ -11,6 +11,37 @@ function validationErrors(req, res) {
   return null;
 }
 
+/**
+ * Generate a unique EAN-13-style barcode (13 digits, starts with 9).
+ * Format: 9 + 7-digit timestamp suffix + 4-digit random + check digit.
+ * We verify uniqueness against the DB before returning.
+ */
+async function generateUniqueBarcode(conn) {
+  const MAX_ATTEMPTS = 10;
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    const tsPart = String(Date.now()).slice(-7);
+    const randPart = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+    const raw = `9${tsPart}${randPart}`; // 12 digits
+    const checkDigit = calcEAN13Check(raw);
+    const barcode = `${raw}${checkDigit}`;
+
+    const [[existing]] = await conn.execute(
+      "SELECT id FROM products WHERE barcode = ? LIMIT 1",
+      [barcode]
+    );
+    if (!existing) return barcode;
+  }
+  throw new Error("Could not generate a unique barcode — please retry.");
+}
+
+function calcEAN13Check(twelveDigits) {
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    sum += parseInt(twelveDigits[i], 10) * (i % 2 === 0 ? 1 : 3);
+  }
+  return String((10 - (sum % 10)) % 10);
+}
+
 const productValidation = [
   body("name").trim().notEmpty().withMessage("Name is required"),
   body("category").trim().notEmpty().withMessage("Category is required"),
@@ -20,6 +51,7 @@ const productValidation = [
   body("tax_rate").optional().isFloat({ min: 0, max: 100 }).withMessage("Tax rate must be 0-100"),
 ];
 
+/* ── GET /products?page&pageSize&search&category&active ──────────────── */
 router.get(
   "/",
   requirePermission("can_list_products"),
@@ -44,8 +76,8 @@ router.get(
 
       if (search) {
         const like = `%${search}%`;
-        where.push("(p.code LIKE ? OR p.name LIKE ? OR p.category LIKE ?)");
-        params.push(like, like, like);
+        where.push("(p.code LIKE ? OR p.name LIKE ? OR p.category LIKE ? OR p.barcode LIKE ?)");
+        params.push(like, like, like, like);
       }
 
       if (category) {
@@ -97,6 +129,39 @@ router.get(
   }
 );
 
+/* ── GET /products/barcode/:barcode  (barcode lookup for scanner) ─────── */
+router.get(
+  "/barcode/:barcode",
+  requirePermission("can_list_products"),
+  [param("barcode").trim().notEmpty()],
+  async (req, res, next) => {
+    try {
+      const [[product]] = await pool.execute(
+        `SELECT p.*,
+           COALESCE((
+             SELECT new_qty
+             FROM inventory
+             WHERE product_id = p.id AND user_id = ?
+             ORDER BY id DESC
+             LIMIT 1
+           ), 0) AS current_stock
+         FROM products p
+         WHERE p.barcode = ? AND p.user_id = ? AND p.is_active = 1`,
+        [req.user.id, req.params.barcode, req.user.id]
+      );
+
+      if (!product) {
+        return res.status(404).json({ ok: false, error: "Product not found for this barcode" });
+      }
+
+      return res.json({ ok: true, data: product });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/* ── GET /products/:id ───────────────────────────────────────────────── */
 router.get("/:id", requirePermission("can_view_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[product]] = await pool.execute(
@@ -123,6 +188,7 @@ router.get("/:id", requirePermission("can_view_products"), [param("id").isInt().
   }
 });
 
+/* ── POST /products ──────────────────────────────────────────────────── */
 router.post("/", requirePermission("can_add_products"), productValidation, async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
@@ -133,11 +199,12 @@ router.post("/", requirePermission("can_add_products"), productValidation, async
 
     const { name, category, unit, mrp, price, description, tax_rate = 0 } = req.body;
     const code = await getNextCode(conn, "PRODUCT");
+    const barcode = await generateUniqueBarcode(conn);
 
     const [result] = await conn.execute(
-      `INSERT INTO products (user_id, code, name, category, unit, mrp, price, description, tax_rate)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [req.user.id, code, name, category, unit, mrp, price, description || null, tax_rate]
+      `INSERT INTO products (user_id, code, barcode, name, category, unit, mrp, price, description, tax_rate)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [req.user.id, code, barcode, name, category, unit, mrp, price, description || null, tax_rate]
     );
 
     await logActivity(conn, {
@@ -164,35 +231,51 @@ router.post("/", requirePermission("can_add_products"), productValidation, async
   }
 });
 
+/* ── PUT /products/:id ───────────────────────────────────────────────── */
 router.put("/:id", requirePermission("can_edit_products"), [param("id").isInt().toInt(), ...productValidation], async (req, res, next) => {
   const err = validationErrors(req, res);
   if (err) return;
 
+  const conn = await pool.getConnection();
   try {
-    const [[existing]] = await pool.execute(
+    await conn.beginTransaction();
+
+    const [[existing]] = await conn.execute(
       "SELECT * FROM products WHERE id = ? AND user_id = ?",
       [req.params.id, req.user.id]
     );
 
     if (!existing) {
+      await conn.rollback();
       return res.status(404).json({ ok: false, error: "Product not found" });
+    }
+
+    // Back-fill barcode for legacy products that have none yet
+    let barcode = existing.barcode;
+    if (!barcode) {
+      barcode = await generateUniqueBarcode(conn);
     }
 
     const { name, category, unit, mrp, price, description, tax_rate = 0 } = req.body;
 
-    await pool.execute(
+    await conn.execute(
       `UPDATE products
-       SET name = ?, category = ?, unit = ?, mrp = ?, price = ?, description = ?, tax_rate = ?
+       SET name = ?, category = ?, unit = ?, mrp = ?, price = ?, description = ?, tax_rate = ?, barcode = ?
        WHERE id = ? AND user_id = ?`,
-      [name, category, unit, mrp, price, description || null, tax_rate, req.params.id, req.user.id]
+      [name, category, unit, mrp, price, description || null, tax_rate, barcode, req.params.id, req.user.id]
     );
 
+    await conn.commit();
     return res.json({ ok: true, message: "Product updated successfully" });
   } catch (error) {
+    await conn.rollback();
     next(error);
+  } finally {
+    conn.release();
   }
 });
 
+/* ── DELETE /products/:id ────────────────────────────────────────────── */
 router.delete("/:id", requirePermission("can_delete_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
     const [[existing]] = await pool.execute(
