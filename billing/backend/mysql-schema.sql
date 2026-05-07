@@ -504,6 +504,20 @@ PREPARE stmt_products_user_id FROM @products_user_id_sql;
 EXECUTE stmt_products_user_id;
 DEALLOCATE PREPARE stmt_products_user_id;
 
+SET @products_barcode_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'barcode'
+    ),
+    'SELECT 1',
+    'ALTER TABLE products ADD COLUMN barcode VARCHAR(13) NULL UNIQUE AFTER code'
+  )
+);
+PREPARE stmt_products_barcode FROM @products_barcode_sql;
+EXECUTE stmt_products_barcode;
+DEALLOCATE PREPARE stmt_products_barcode;
+
 -- ------------------------------------------------------------
 -- INVENTORY (stock ledger)
 -- ------------------------------------------------------------
@@ -1097,5 +1111,33 @@ SET @invoices_prev_balance_sql := (
 PREPARE stmt_invoices_prev_balance FROM @invoices_prev_balance_sql;
 EXECUTE stmt_invoices_prev_balance;
 DEALLOCATE PREPARE stmt_invoices_prev_balance;
+
+SET @vendors_balance_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'vendors' AND column_name = 'balance'
+    ),
+    'SELECT 1',
+    'ALTER TABLE vendors ADD COLUMN balance DECIMAL(12,2) NOT NULL DEFAULT 0.00'
+  )
+);
+PREPARE stmt_vendors_balance FROM @vendors_balance_sql;
+EXECUTE stmt_vendors_balance;
+DEALLOCATE PREPARE stmt_vendors_balance;
+
+SET @bills_prev_balance_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'bills' AND column_name = 'previous_balance'
+    ),
+    'SELECT 1',
+    'ALTER TABLE bills ADD COLUMN previous_balance DECIMAL(12,2) NOT NULL DEFAULT 0.00'
+  )
+);
+PREPARE stmt_bills_prev_balance FROM @bills_prev_balance_sql;
+EXECUTE stmt_bills_prev_balance;
+DEALLOCATE PREPARE stmt_bills_prev_balance;
 
 SET FOREIGN_KEY_CHECKS = 1;
