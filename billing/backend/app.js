@@ -16,14 +16,12 @@ const { syncPermissionCatalog } = require("./utils/tenancy");
 const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://trihubtechnologies.com",
-    "https://trihubtechnologies-com.onrender.com"
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -47,6 +45,7 @@ app.use("/api/subscription", require("./routes/subscription"));
 app.use("/api/invoices", requireAuth, require("./routes/invoices"));
 app.use("/api/bills", requireAuth, require("./routes/bills"));
 app.use("/api/products", requireAuth, require("./routes/products"));
+app.use("/api/hsn-sac", requireAuth, require("./routes/hsnSac"));
 app.use("/api/inventory", requireAuth, require("./routes/inventory"));
 app.use("/api/customers", requireAuth, require("./routes/customers"));
 app.use("/api/vendors", requireAuth, require("./routes/vendors"));

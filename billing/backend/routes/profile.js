@@ -6,6 +6,17 @@ const fs = require("fs");
 const { pool, logActivity } = require("../config/db");
 const { body, query, validationResult } = require("express-validator");
 const { hasPermission, loadCompanyProfile } = require("../utils/tenancy");
+const { ensureCompanyProfileSchemaCompatibility } = require("../utils/companyProfileSchema");
+const {
+  cleanOptional: cleanOptionalGst,
+  deriveStateFromGstin,
+  findStateByCode,
+  findStateByName,
+  isIndianCountry,
+  normalizeCountry,
+  normalizeStateCode,
+  validateGstin,
+} = require("../utils/gst");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -39,7 +50,8 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /\.(jpg|jpeg|png|gif|webp)$/i;
-    if (!allowed.test(path.extname(file.originalname))) {
+    const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"]);
+    if (!allowed.test(path.extname(file.originalname)) || !allowedMimeTypes.has(file.mimetype)) {
       cb(new Error("Only image files are allowed"));
       return;
     }
@@ -57,6 +69,57 @@ function cleanOptional(value) {
 function normalizeGstin(value) {
   const cleaned = cleanOptional(value);
   return cleaned ? cleaned.toUpperCase() : null;
+}
+
+function resolveCompanyTaxRegion(payload) {
+  const country = normalizeCountry(payload.country);
+  const gstin = normalizeGstin(payload.gstin);
+
+  if (!isIndianCountry(country)) {
+    if (gstin) {
+      const error = new Error("GSTIN can only be used when company country is India");
+      error.status = 422;
+      throw error;
+    }
+
+    const stateName = cleanOptionalGst(payload.state_name);
+    if (!stateName) {
+      const error = new Error("State / region is required");
+      error.status = 422;
+      throw error;
+    }
+
+    return {
+      country,
+      gstin: null,
+      stateName,
+      stateCode: null,
+    };
+  }
+
+  const stateFromCode = findStateByCode(payload.state_code);
+  const stateFromName = findStateByName(payload.state_name);
+  const stateFromGstin = deriveStateFromGstin(gstin);
+  const state = stateFromCode || stateFromName || stateFromGstin;
+
+  if (!state) {
+    const error = new Error("State is required for companies in India");
+    error.status = 422;
+    throw error;
+  }
+
+  if (stateFromGstin && stateFromGstin.code !== state.code) {
+    const error = new Error("Company state must match the GSTIN state code");
+    error.status = 422;
+    throw error;
+  }
+
+  return {
+    country,
+    gstin,
+    stateName: state.name,
+    stateCode: normalizeStateCode(state.code),
+  };
 }
 
 function toUploadPath(fileName) {
@@ -105,6 +168,8 @@ function duplicateFieldMessage(error) {
   return "This company detail is already registered.";
 }
 
+const INTERNATIONAL_PHONE_REGEX = /^\+\d{1,4}\s?\d{6,14}$/;
+
 async function ensureCompanyFieldUnique(executor, field, value, companyId, message) {
   if (!value) return;
 
@@ -128,7 +193,7 @@ async function updateStorageUsed(executor, companyId, delta) {
 
   await executor.execute(
     `UPDATE company_profiles
-     SET storage_used_bytes = GREATEST(COALESCE(storage_used_bytes, 0) + ?, 0)
+     SET storage_used_bytes = GREATEST(CAST(COALESCE(storage_used_bytes, 0) AS SIGNED) + ?, 0)
      WHERE company_id = ?`,
     [delta, companyId]
   );
@@ -170,8 +235,8 @@ router.put(
     body("mobile")
       .optional({ checkFalsy: true })
       .trim()
-      .matches(/^\+\d{1,3}\s?\d{10}$/)
-      .withMessage("Mobile number must include a country code (e.g., +91) and 10 digits"),
+      .matches(INTERNATIONAL_PHONE_REGEX)
+      .withMessage("Mobile number must include a country code and 6 to 14 digits"),
   ],
   async (req, res, next) => {
     const err = validationErrors(req, res);
@@ -225,6 +290,7 @@ router.put(
 
 router.get("/company", async (req, res, next) => {
   try {
+    await ensureCompanyProfileSchemaCompatibility(pool);
     if (!req.user?.is_platform_admin && !hasPermission(req.user?.permissions, "can_view_company")) {
       return res.status(403).json({ ok: false, error: "PERMISSION_DENIED", permission: "can_view_company" });
     }
@@ -245,14 +311,26 @@ router.put(
     body("phone")
       .optional({ checkFalsy: true })
       .trim()
-      .matches(/^\+\d{1,3}\s?\d{10}$/)
-      .withMessage("Phone number must include a country code (e.g., +91) and 10 digits"),
+      .matches(INTERNATIONAL_PHONE_REGEX)
+      .withMessage("Phone number must include a country code and 6 to 14 digits"),
     body("email").optional({ checkFalsy: true }).isEmail(),
-    body("gstin").optional({ checkFalsy: true }).trim(),
+    body("country").trim().notEmpty().withMessage("Country is required"),
+    body("gstin")
+      .optional({ checkFalsy: true })
+      .trim()
+      .custom((value) => validateGstin(value))
+      .withMessage("GSTIN must be a valid 15-character value"),
+    body("state_name").optional({ checkFalsy: true }).trim(),
+    body("state_code").optional({ checkFalsy: true }).trim(),
     body("pan").optional({ checkFalsy: true }).trim(),
     body("website").optional({ checkFalsy: true }).trim(),
+    body("bank_name").optional({ checkFalsy: true }).trim(),
+    body("bank_account_number").optional({ checkFalsy: true }).trim(),
+    body("bank_ifsc").optional({ checkFalsy: true }).trim(),
+    body("bank_branch").optional({ checkFalsy: true }).trim(),
     body("upi_id").optional({ checkFalsy: true }).trim(),
     body("upi_name").optional({ checkFalsy: true }).trim(),
+    body("terms_and_conditions").optional({ checkFalsy: true }).trim(),
   ],
   async (req, res, next) => {
     if (!ensureCompanyManager(req, res)) return;
@@ -264,10 +342,11 @@ router.put(
     const uploadedLogoPath = req.file ? toUploadPath(req.file.filename) : null;
 
     try {
+      await ensureCompanyProfileSchemaCompatibility(conn);
       await conn.beginTransaction();
 
       const existing = await loadCompanyProfile(conn, req.user.company_id);
-      const gstin = normalizeGstin(req.body.gstin);
+      const { country, gstin, stateName, stateCode } = resolveCompanyTaxRegion(req.body);
       const phone = cleanOptional(req.body.phone);
 
       await ensureCompanyFieldUnique(
@@ -298,8 +377,9 @@ router.put(
 
         await conn.execute(
           `UPDATE company_profiles
-           SET name = ?, address = ?, phone = ?, email = ?, gstin = ?, pan = ?, website = ?,
-               upi_id = ?, upi_name = ?, logo = ?
+           SET name = ?, address = ?, phone = ?, email = ?, gstin = ?, country = ?, pan = ?, website = ?,
+               bank_name = ?, bank_account_number = ?, bank_ifsc = ?, bank_branch = ?,
+               state_code = ?, state_name = ?, upi_id = ?, upi_name = ?, logo = ?, terms_and_conditions = ?
            WHERE company_id = ?`,
           [
             req.body.name.trim(),
@@ -307,11 +387,19 @@ router.put(
             phone,
             cleanOptional(req.body.email),
             gstin,
+            country,
             cleanOptional(req.body.pan),
             cleanOptional(req.body.website),
+            cleanOptional(req.body.bank_name),
+            cleanOptional(req.body.bank_account_number),
+            cleanOptional(req.body.bank_ifsc),
+            cleanOptional(req.body.bank_branch),
+            stateCode,
+            stateName,
             cleanOptional(req.body.upi_id),
             cleanOptional(req.body.upi_name),
             nextLogoPath,
+            cleanOptional(req.body.terms_and_conditions),
             req.user.company_id,
           ]
         );
@@ -325,8 +413,9 @@ router.put(
 
         await conn.execute(
           `INSERT INTO company_profiles (
-             company_id, user_id, name, address, phone, email, gstin, pan, website, upi_id, upi_name, logo, storage_used_bytes
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             company_id, user_id, name, address, phone, email, gstin, country, state_code, state_name, pan, website,
+             bank_name, bank_account_number, bank_ifsc, bank_branch, upi_id, upi_name, logo, storage_used_bytes, terms_and_conditions
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             req.user.company_id,
             req.user.member_id,
@@ -335,12 +424,20 @@ router.put(
             phone,
             cleanOptional(req.body.email),
             gstin,
+            country,
+            stateCode,
+            stateName,
             cleanOptional(req.body.pan),
             cleanOptional(req.body.website),
+            cleanOptional(req.body.bank_name),
+            cleanOptional(req.body.bank_account_number),
+            cleanOptional(req.body.bank_ifsc),
+            cleanOptional(req.body.bank_branch),
             cleanOptional(req.body.upi_id),
             cleanOptional(req.body.upi_name),
             nextLogoPath,
             req.file?.size || 0,
+            cleanOptional(req.body.terms_and_conditions),
           ]
         );
       }
@@ -396,6 +493,7 @@ router.post("/company/upi-qr", upload.single("upi_qr_image"), async (req, res, n
   const uploadedQrPath = toUploadPath(req.file.filename);
 
   try {
+    await ensureCompanyProfileSchemaCompatibility(conn);
     await conn.beginTransaction();
 
     const existing = await loadCompanyProfile(conn, req.user.company_id);
@@ -446,6 +544,7 @@ router.delete("/company/upi-qr", async (req, res, next) => {
   const conn = await pool.getConnection();
 
   try {
+    await ensureCompanyProfileSchemaCompatibility(conn);
     await conn.beginTransaction();
 
     const existing = await loadCompanyProfile(conn, req.user.company_id);
@@ -477,6 +576,110 @@ router.delete("/company/upi-qr", async (req, res, next) => {
     return res.json({
       ok: true,
       message: "UPI QR image removed successfully",
+      data: updatedCompany,
+    });
+  } catch (error) {
+    await conn.rollback();
+    next(error);
+  } finally {
+    conn.release();
+  }
+});
+
+router.post("/company/signature", upload.single("authorized_signature"), async (req, res, next) => {
+  if (!ensureCompanyManager(req, res)) return;
+
+  if (!req.file) {
+    return res.status(400).json({ ok: false, error: "Authorised signature image is required" });
+  }
+
+  const conn = await pool.getConnection();
+  const uploadedSignaturePath = toUploadPath(req.file.filename);
+
+  try {
+    await ensureCompanyProfileSchemaCompatibility(conn);
+    await conn.beginTransaction();
+
+    const existing = await loadCompanyProfile(conn, req.user.company_id);
+    if (!existing) {
+      await conn.rollback();
+      removeStoredFile(uploadedSignaturePath);
+      return res.status(404).json({ ok: false, error: "Company profile not found" });
+    }
+
+    const storageDelta = req.file.size - getStoredFileSize(existing.authorized_signature);
+
+    await conn.execute(
+      "UPDATE company_profiles SET authorized_signature = ? WHERE company_id = ?",
+      [uploadedSignaturePath, req.user.company_id]
+    );
+    await updateStorageUsed(conn, req.user.company_id, storageDelta);
+
+    await logActivity(conn, {
+      userId: req.authUserId || req.user.member_id,
+      type: "COMPANY_SIGNATURE_UPDATED",
+      description: "Company authorised signature image updated.",
+    });
+
+    await conn.commit();
+
+    if (existing.authorized_signature && existing.authorized_signature !== uploadedSignaturePath) {
+      removeStoredFile(existing.authorized_signature);
+    }
+
+    const updatedCompany = await loadCompanyProfile(pool, req.user.company_id);
+    return res.json({
+      ok: true,
+      message: "Authorised signature uploaded successfully",
+      data: updatedCompany,
+    });
+  } catch (error) {
+    await conn.rollback();
+    removeStoredFile(uploadedSignaturePath);
+    next(error);
+  } finally {
+    conn.release();
+  }
+});
+
+router.delete("/company/signature", async (req, res, next) => {
+  if (!ensureCompanyManager(req, res)) return;
+
+  const conn = await pool.getConnection();
+
+  try {
+    await ensureCompanyProfileSchemaCompatibility(conn);
+    await conn.beginTransaction();
+
+    const existing = await loadCompanyProfile(conn, req.user.company_id);
+    if (!existing?.authorized_signature) {
+      await conn.rollback();
+      return res.status(404).json({ ok: false, error: "No uploaded authorised signature image found" });
+    }
+
+    const previousPath = existing.authorized_signature;
+    const storageDelta = -getStoredFileSize(previousPath);
+
+    await conn.execute(
+      "UPDATE company_profiles SET authorized_signature = NULL WHERE company_id = ?",
+      [req.user.company_id]
+    );
+    await updateStorageUsed(conn, req.user.company_id, storageDelta);
+
+    await logActivity(conn, {
+      userId: req.authUserId || req.user.member_id,
+      type: "COMPANY_SIGNATURE_REMOVED",
+      description: "Company authorised signature image removed.",
+    });
+
+    await conn.commit();
+
+    removeStoredFile(previousPath);
+
+    const updatedCompany = await loadCompanyProfile(pool, req.user.company_id);
+    return res.json({
+      ok: true,
+      message: "Authorised signature removed successfully",
       data: updatedCompany,
     });
   } catch (error) {

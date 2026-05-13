@@ -40,7 +40,8 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /\.(jpg|jpeg|png|gif|webp|pdf)$/i;
-    if (!allowed.test(path.extname(file.originalname))) {
+    const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf"]);
+    if (!allowed.test(path.extname(file.originalname)) || !allowedMimeTypes.has(file.mimetype)) {
       cb(new Error("Only image or PDF proof files are allowed"));
       return;
     }

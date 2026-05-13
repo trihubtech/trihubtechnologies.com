@@ -2,6 +2,18 @@ const router = require("express").Router();
 const { pool, getNextCode, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
 const { requirePermission } = require("../middleware/permissions");
+const { ensureCustomerSchemaCompatibility } = require("../utils/contactSchema");
+const {
+  cleanOptional,
+  deriveStateFromGstin,
+  findStateByCode,
+  findStateByName,
+  isIndianCountry,
+  normalizeCountry,
+  normalizeGstin,
+  normalizeStateCode,
+  validateGstin,
+} = require("../utils/gst");
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -22,8 +34,55 @@ const customerValidation = [
     .withMessage("Mobile number must include a country code (e.g., +91) and 10 digits"),
   body("address").trim().notEmpty().withMessage("Address is required"),
   body("email").optional({ checkFalsy: true }).isEmail().withMessage("Invalid email"),
-  body("gstin").optional({ checkFalsy: true }).trim(),
+  body("gstin")
+    .optional({ checkFalsy: true })
+    .trim()
+    .custom((value) => validateGstin(value))
+    .withMessage("GSTIN must be a valid 15-character value"),
+  body("country").optional({ checkFalsy: true }).trim(),
+  body("state_name").optional({ checkFalsy: true }).trim(),
+  body("state_code").optional({ checkFalsy: true }).trim(),
+  body("billing_address").optional({ checkFalsy: true }).trim(),
+  body("shipping_address").optional({ checkFalsy: true }).trim(),
 ];
+
+function resolveCustomerTaxRegion(payload) {
+  const country = normalizeCountry(payload.country);
+  const gstin = normalizeGstin(payload.gstin);
+
+  if (!isIndianCountry(country)) {
+    return {
+      country,
+      gstin,
+      stateName: null,
+      stateCode: null,
+    };
+  }
+
+  const stateFromCode = findStateByCode(payload.state_code);
+  const stateFromName = findStateByName(payload.state_name);
+  const stateFromGstin = deriveStateFromGstin(gstin);
+  const state = stateFromCode || stateFromName || stateFromGstin;
+
+  if (!state) {
+    const error = new Error("State is required for customers in India");
+    error.status = 422;
+    throw error;
+  }
+
+  if (stateFromGstin && stateFromGstin.code !== state.code) {
+    const error = new Error("Customer state must match the GSTIN state code");
+    error.status = 422;
+    throw error;
+  }
+
+  return {
+    country,
+    gstin,
+    stateName: state.name,
+    stateCode: normalizeStateCode(state.code),
+  };
+}
 
 router.get(
   "/",
@@ -36,6 +95,7 @@ router.get(
   ],
   async (req, res, next) => {
     try {
+      await ensureCustomerSchemaCompatibility(pool);
       const page = req.query.page || 1;
       const pageSize = req.query.pageSize || 20;
       const offset = (page - 1) * pageSize;
@@ -78,6 +138,7 @@ router.get(
 
 router.get("/:id", requirePermission("can_view_customers"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
+    await ensureCustomerSchemaCompatibility(pool);
     const [[customer]] = await pool.execute(
       "SELECT * FROM customers WHERE id = ? AND user_id = ?",
       [req.params.id, req.user.id]
@@ -95,15 +156,35 @@ router.post("/", requirePermission("can_add_customers"), customerValidation, asy
 
   const conn = await pool.getConnection();
   try {
+    await ensureCustomerSchemaCompatibility(conn);
     await conn.beginTransaction();
 
-    const { salutation, name, mobile, address, email, gstin } = req.body;
+    const { salutation, name, mobile, address, email } = req.body;
+    const { country, gstin, stateName, stateCode } = resolveCustomerTaxRegion(req.body);
+    const billingAddress = cleanOptional(req.body.billing_address) || address.trim();
+    const shippingAddress = cleanOptional(req.body.shipping_address) || billingAddress;
     const code = await getNextCode(conn, "CUSTOMER");
 
     const [result] = await conn.execute(
-      `INSERT INTO customers (user_id, code, salutation, name, mobile, address, email, gstin)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [req.user.id, code, salutation, name, mobile, address, email || null, gstin || null]
+      `INSERT INTO customers (
+         user_id, code, salutation, name, mobile, address, billing_address, shipping_address,
+         email, gstin, country, state_name, state_code
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        req.user.id,
+        code,
+        salutation,
+        name,
+        mobile,
+        address.trim(),
+        billingAddress,
+        shippingAddress,
+        cleanOptional(email),
+        gstin,
+        country,
+        stateName,
+        stateCode,
+      ]
     );
 
     await logActivity(conn, {
@@ -124,6 +205,9 @@ router.post("/", requirePermission("can_add_customers"), customerValidation, asy
     return res.status(201).json({ ok: true, data: customer, message: "Customer created successfully" });
   } catch (error) {
     await conn.rollback();
+    if (error.status === 422) {
+      return res.status(422).json({ ok: false, error: error.message });
+    }
     next(error);
   } finally {
     conn.release();
@@ -135,6 +219,7 @@ router.put("/:id", requirePermission("can_edit_customers"), [param("id").isInt()
   if (err) return;
 
   try {
+    await ensureCustomerSchemaCompatibility(pool);
     const [[existing]] = await pool.execute(
       "SELECT * FROM customers WHERE id = ? AND user_id = ?",
       [req.params.id, req.user.id]
@@ -142,23 +227,45 @@ router.put("/:id", requirePermission("can_edit_customers"), [param("id").isInt()
 
     if (!existing) return res.status(404).json({ ok: false, error: "Customer not found" });
 
-    const { salutation, name, mobile, address, email, gstin } = req.body;
+    const { salutation, name, mobile, address, email } = req.body;
+    const { country, gstin, stateName, stateCode } = resolveCustomerTaxRegion(req.body);
+    const billingAddress = cleanOptional(req.body.billing_address) || address.trim();
+    const shippingAddress = cleanOptional(req.body.shipping_address) || billingAddress;
 
     await pool.execute(
       `UPDATE customers
-       SET salutation = ?, name = ?, mobile = ?, address = ?, email = ?, gstin = ?
+       SET salutation = ?, name = ?, mobile = ?, address = ?, billing_address = ?, shipping_address = ?,
+           email = ?, gstin = ?, country = ?, state_name = ?, state_code = ?
        WHERE id = ? AND user_id = ?`,
-      [salutation, name, mobile, address, email || null, gstin || null, req.params.id, req.user.id]
+      [
+        salutation,
+        name,
+        mobile,
+        address.trim(),
+        billingAddress,
+        shippingAddress,
+        cleanOptional(email),
+        gstin,
+        country,
+        stateName,
+        stateCode,
+        req.params.id,
+        req.user.id,
+      ]
     );
 
     return res.json({ ok: true, message: "Customer updated successfully" });
   } catch (error) {
+    if (error.status === 422) {
+      return res.status(422).json({ ok: false, error: error.message });
+    }
     next(error);
   }
 });
 
 router.delete("/:id", requirePermission("can_delete_customers"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
+    await ensureCustomerSchemaCompatibility(pool);
     const [[existing]] = await pool.execute(
       "SELECT * FROM customers WHERE id = ? AND user_id = ?",
       [req.params.id, req.user.id]

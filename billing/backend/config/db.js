@@ -12,12 +12,9 @@ const pool = mysql.createPool({
   connectionLimit:    20,
   queueLimit:         0,
   dateStrings:        true,
+  timezone:           "+05:30",
   charset:            "utf8mb4",
-  decimalNumbers:     true,
-  ssl:
-  process.env.NODE_ENV === "production"
-    ? { rejectUnauthorized: false }
-    : undefined,   
+  decimalNumbers:     true,     
 });
 
 

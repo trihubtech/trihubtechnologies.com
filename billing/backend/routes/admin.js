@@ -32,7 +32,8 @@ const qrUpload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /\.(jpg|jpeg|png|gif|webp)$/i;
-    if (!allowed.test(path.extname(file.originalname))) {
+    const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"]);
+    if (!allowed.test(path.extname(file.originalname)) || !allowedMimeTypes.has(file.mimetype)) {
       cb(new Error("Only image files (JPG, PNG, GIF, WebP) are allowed for QR codes"));
       return;
     }

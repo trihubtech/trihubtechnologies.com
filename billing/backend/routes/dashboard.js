@@ -2,29 +2,7 @@ const router = require("express").Router();
 const { pool } = require("../config/db");
 const { query } = require("express-validator");
 const { requirePermission } = require("../middleware/permissions");
-
-function getPresetDates(preset) {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  const presets = {
-    today: { from: today, to: new Date(today.getTime() + 86400000 - 1) },
-    yesterday: { from: new Date(today.getTime() - 86400000), to: new Date(today.getTime() - 1) },
-    last_week: { from: new Date(today.getTime() - 7 * 86400000), to: today },
-    last_month: { from: new Date(now.getFullYear(), now.getMonth() - 1, 1), to: new Date(now.getFullYear(), now.getMonth(), 0) },
-    this_month: { from: new Date(now.getFullYear(), now.getMonth(), 1), to: today },
-    last_quarter: { from: new Date(today.getTime() - 90 * 86400000), to: today },
-    last_half_year: { from: new Date(today.getTime() - 180 * 86400000), to: today },
-    last_year: { from: new Date(now.getFullYear() - 1, 0, 1), to: new Date(now.getFullYear() - 1, 11, 31) },
-    this_year: { from: new Date(now.getFullYear(), 0, 1), to: today },
-  };
-
-  return presets[preset] || presets.this_month;
-}
-
-function formatDate(date) {
-  return date.toISOString().split("T")[0];
-}
+const { getIndiaPresetDateRange } = require("../utils/time");
 
 router.get(
   "/",
@@ -43,9 +21,9 @@ router.get(
         from = req.query.from;
         to = req.query.to;
       } else {
-        const dates = getPresetDates(req.query.preset || "this_month");
-        from = formatDate(dates.from);
-        to = formatDate(dates.to);
+        const dates = getIndiaPresetDateRange(req.query.preset || "this_month");
+        from = dates.from;
+        to = dates.to;
       }
 
       const userId = req.user.id;

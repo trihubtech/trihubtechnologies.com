@@ -6,7 +6,7 @@ const { round2, numberToWords } = require("../utils/helpers");
 function calculateTotals(items, discount, paidAmount) {
   const subTotal = round2(items.reduce((sum, item) => sum + Number(item.value ?? 0), 0));
   const totalTax = round2(items.reduce((sum, item) => sum + Number(item.tax_value ?? 0), 0));
-  const rawGrand = round2(subTotal - discount + totalTax);
+  const rawGrand = round2(subTotal + totalTax);
   const grandTotal = round2(Math.round(rawGrand));
   const roundOff = round2(grandTotal - rawGrand);
   const balance = round2(Math.max(grandTotal - paidAmount, 0));

@@ -215,6 +215,8 @@ async function loadTenantUser(executor, userId) {
 async function loadCompanyProfile(executor, companyId) {
   if (!companyId) return null;
 
+  await ensureCompanyProfileSchemaCompatibility(executor);
+
   const [[company]] = await executor.execute(
     `SELECT
        c.id,
@@ -230,12 +232,21 @@ async function loadCompanyProfile(executor, companyId) {
        cp.phone,
        cp.email,
        cp.gstin,
+       cp.country,
+       cp.state_code,
+       cp.state_name,
        cp.pan,
        cp.website,
+       cp.bank_name,
+       cp.bank_account_number,
+       cp.bank_ifsc,
+       cp.bank_branch,
        cp.upi_id,
        cp.upi_name,
        cp.upi_qr_image,
+       cp.authorized_signature,
        cp.storage_used_bytes,
+       cp.terms_and_conditions,
        c.created_at,
        c.updated_at
      FROM companies c
@@ -306,3 +317,4 @@ module.exports = {
   normalizeRole,
   syncPermissionCatalog,
 };
+const { ensureCompanyProfileSchemaCompatibility } = require("./companyProfileSchema");

@@ -300,11 +300,19 @@ CREATE TABLE IF NOT EXISTS company_profiles (
   phone       VARCHAR(20)   NULL,
   email       VARCHAR(180)  NULL,
   gstin       VARCHAR(20)   NULL,
+  country     VARCHAR(120)  NOT NULL DEFAULT 'India',
+  state_code  VARCHAR(2)    NULL,
+  state_name  VARCHAR(120)  NULL,
   pan         VARCHAR(15)   NULL,
   website     VARCHAR(300)  NULL,
+  bank_name   VARCHAR(180)  NULL,
+  bank_account_number VARCHAR(120) NULL,
+  bank_ifsc   VARCHAR(40)   NULL,
+  bank_branch VARCHAR(180)  NULL,
   upi_id      VARCHAR(100)  NULL,        -- used in QR code generation
   upi_name    VARCHAR(120)  NULL,        -- merchant display name for UPI
   upi_qr_image VARCHAR(500) NULL,
+  authorized_signature VARCHAR(500) NULL,
   storage_used_bytes BIGINT UNSIGNED NOT NULL DEFAULT 0,
   created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -362,6 +370,23 @@ PREPARE stmt_company_profiles_upi_qr FROM @company_profiles_upi_qr_sql;
 EXECUTE stmt_company_profiles_upi_qr;
 DEALLOCATE PREPARE stmt_company_profiles_upi_qr;
 
+SET @company_profiles_country_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'country'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN country VARCHAR(120) NOT NULL DEFAULT "India" AFTER gstin'
+  )
+);
+PREPARE stmt_company_profiles_country FROM @company_profiles_country_sql;
+EXECUTE stmt_company_profiles_country;
+DEALLOCATE PREPARE stmt_company_profiles_country;
+
 SET @company_profiles_storage_sql := (
   SELECT IF(
     EXISTS(
@@ -378,6 +403,91 @@ SET @company_profiles_storage_sql := (
 PREPARE stmt_company_profiles_storage FROM @company_profiles_storage_sql;
 EXECUTE stmt_company_profiles_storage;
 DEALLOCATE PREPARE stmt_company_profiles_storage;
+
+SET @company_profiles_signature_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'authorized_signature'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN authorized_signature VARCHAR(500) NULL AFTER upi_qr_image'
+  )
+);
+PREPARE stmt_company_profiles_signature FROM @company_profiles_signature_sql;
+EXECUTE stmt_company_profiles_signature;
+DEALLOCATE PREPARE stmt_company_profiles_signature;
+
+SET @company_profiles_bank_name_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'bank_name'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN bank_name VARCHAR(180) NULL AFTER website'
+  )
+);
+PREPARE stmt_company_profiles_bank_name FROM @company_profiles_bank_name_sql;
+EXECUTE stmt_company_profiles_bank_name;
+DEALLOCATE PREPARE stmt_company_profiles_bank_name;
+
+SET @company_profiles_bank_account_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'bank_account_number'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN bank_account_number VARCHAR(120) NULL AFTER bank_name'
+  )
+);
+PREPARE stmt_company_profiles_bank_account FROM @company_profiles_bank_account_sql;
+EXECUTE stmt_company_profiles_bank_account;
+DEALLOCATE PREPARE stmt_company_profiles_bank_account;
+
+SET @company_profiles_bank_ifsc_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'bank_ifsc'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN bank_ifsc VARCHAR(40) NULL AFTER bank_account_number'
+  )
+);
+PREPARE stmt_company_profiles_bank_ifsc FROM @company_profiles_bank_ifsc_sql;
+EXECUTE stmt_company_profiles_bank_ifsc;
+DEALLOCATE PREPARE stmt_company_profiles_bank_ifsc;
+
+SET @company_profiles_bank_branch_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = DATABASE()
+        AND table_name = 'company_profiles'
+        AND column_name = 'bank_branch'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles ADD COLUMN bank_branch VARCHAR(180) NULL AFTER bank_ifsc'
+  )
+);
+PREPARE stmt_company_profiles_bank_branch FROM @company_profiles_bank_branch_sql;
+EXECUTE stmt_company_profiles_bank_branch;
+DEALLOCATE PREPARE stmt_company_profiles_bank_branch;
 
 SET @company_profiles_gstin_index_exists := (
   SELECT COUNT(*)
@@ -473,6 +583,8 @@ CREATE TABLE IF NOT EXISTS products (
   user_id     INT UNSIGNED    NOT NULL,
   code        VARCHAR(20)     NOT NULL UNIQUE,
   name        VARCHAR(200)    NOT NULL,
+  hsn_sac_code VARCHAR(20)    NOT NULL,
+  product_type ENUM('TRADING_GOODS','MANUFACTURED_GOODS','JOB_WORK_PROCESSING_SERVICE','SERVICES_OTHER') NOT NULL DEFAULT 'TRADING_GOODS',
   category    VARCHAR(100)    NOT NULL,
   unit        VARCHAR(30)     NOT NULL,
   mrp         DECIMAL(12,2)   NOT NULL DEFAULT 0.00,
@@ -569,8 +681,13 @@ CREATE TABLE IF NOT EXISTS customers (
   name        VARCHAR(200)  NOT NULL,
   mobile      VARCHAR(20)   NOT NULL,
   address     TEXT          NOT NULL,
+  billing_address  TEXT     NULL,
+  shipping_address TEXT     NULL,
   email       VARCHAR(180)  NULL,
   gstin       VARCHAR(20)   NULL,
+  country     VARCHAR(120)  NOT NULL DEFAULT 'India',
+  state_name  VARCHAR(120)  NULL,
+  state_code  VARCHAR(2)    NULL,
   is_active   TINYINT(1)    NOT NULL DEFAULT 1,
   created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -606,8 +723,32 @@ CREATE TABLE IF NOT EXISTS invoices (
   date           DATE           NOT NULL,
   term           ENUM('CASH','CARD','UPI','CREDIT') NOT NULL DEFAULT 'CASH',
   customer_id    INT UNSIGNED   NOT NULL,
+  customer_salutation VARCHAR(10) NULL,
+  customer_name  VARCHAR(200)   NULL,
+  customer_mobile VARCHAR(20)   NULL,
+  customer_email VARCHAR(180)   NULL,
+  customer_gstin VARCHAR(20)    NULL,
+  customer_billing_address TEXT NULL,
+  customer_shipping_address TEXT NULL,
+  customer_country VARCHAR(120) NOT NULL DEFAULT 'India',
+  customer_state_name VARCHAR(120) NULL,
+  customer_state_code VARCHAR(2) NULL,
+  place_of_supply_state_name VARCHAR(120) NULL,
+  place_of_supply_state_code VARCHAR(2) NULL,
+  place_of_supply_country VARCHAR(120) NULL,
+  company_state_name VARCHAR(120) NULL,
+  company_state_code VARCHAR(2) NULL,
+  supply_type   ENUM('INTRA_STATE','INTER_STATE','EXPORT') NOT NULL DEFAULT 'INTRA_STATE',
+  is_export     TINYINT(1)      NOT NULL DEFAULT 0,
+  price_includes_gst TINYINT(1) NOT NULL DEFAULT 0,
   sub_total      DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   discount       DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  discount_type  ENUM('PERCENTAGE','AMOUNT') NOT NULL DEFAULT 'PERCENTAGE',
+  discount_input DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  taxable_total  DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_cgst     DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_sgst     DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_igst     DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   total_tax      DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   round_off      DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   grand_total    DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
@@ -649,10 +790,20 @@ CREATE TABLE IF NOT EXISTS invoice_items (
   user_id     INT UNSIGNED   NOT NULL,
   invoice_id  INT UNSIGNED   NOT NULL,
   product_id  INT UNSIGNED   NOT NULL,
+  hsn_sac_code VARCHAR(20)   NOT NULL,
   rate        DECIMAL(12,2)  NOT NULL,
   quantity    DECIMAL(12,2)  NOT NULL,
+  base_value  DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  discount_value DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+  taxable_value DECIMAL(12,2) NOT NULL DEFAULT 0.00,
   value       DECIMAL(12,2)  NOT NULL,
   tax_rate    DECIMAL(5,2)   NOT NULL DEFAULT 0.00,
+  cgst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  cgst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  sgst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  sgst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  igst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  igst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   tax_value   DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   total_value DECIMAL(12,2)  NOT NULL,
   PRIMARY KEY (id),
@@ -689,8 +840,13 @@ CREATE TABLE IF NOT EXISTS vendors (
   name        VARCHAR(200)  NOT NULL,
   mobile      VARCHAR(20)   NOT NULL,
   address     TEXT          NOT NULL,
+  billing_address  TEXT     NULL,
+  shipping_address TEXT     NULL,
   email       VARCHAR(180)  NULL,
   gstin       VARCHAR(20)   NULL,
+  country     VARCHAR(120)  NOT NULL DEFAULT 'India',
+  state_name  VARCHAR(120)  NULL,
+  state_code  VARCHAR(2)    NULL,
   is_active   TINYINT(1)    NOT NULL DEFAULT 1,
   created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -726,8 +882,32 @@ CREATE TABLE IF NOT EXISTS bills (
   date                  DATE           NOT NULL,
   term                  ENUM('CASH','CARD','UPI','CREDIT') NOT NULL DEFAULT 'CASH',
   vendor_id             INT UNSIGNED   NOT NULL,
+  vendor_salutation     VARCHAR(10)    NULL,
+  vendor_name           VARCHAR(200)   NULL,
+  vendor_mobile         VARCHAR(20)    NULL,
+  vendor_email          VARCHAR(180)   NULL,
+  vendor_gstin          VARCHAR(20)    NULL,
+  vendor_billing_address TEXT          NULL,
+  vendor_shipping_address TEXT         NULL,
+  vendor_country        VARCHAR(120)   NOT NULL DEFAULT 'India',
+  vendor_state_name     VARCHAR(120)   NULL,
+  vendor_state_code     VARCHAR(2)     NULL,
+  place_of_supply_state_name VARCHAR(120) NULL,
+  place_of_supply_state_code VARCHAR(2)   NULL,
+  place_of_supply_country VARCHAR(120)    NULL,
+  company_state_name    VARCHAR(120)   NULL,
+  company_state_code    VARCHAR(2)     NULL,
+  supply_type           ENUM('INTRA_STATE','INTER_STATE','IMPORT') NOT NULL DEFAULT 'INTRA_STATE',
+  is_import             TINYINT(1)     NOT NULL DEFAULT 0,
+  price_includes_gst    TINYINT(1)     NOT NULL DEFAULT 0,
   sub_total             DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   discount              DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  discount_type         ENUM('PERCENTAGE','AMOUNT') NOT NULL DEFAULT 'PERCENTAGE',
+  discount_input        DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  taxable_total         DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_cgst            DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_sgst            DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  total_igst            DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   total_tax             DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   round_off             DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   grand_total           DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
@@ -769,10 +949,20 @@ CREATE TABLE IF NOT EXISTS bill_items (
   user_id     INT UNSIGNED   NOT NULL,
   bill_id     INT UNSIGNED   NOT NULL,
   product_id  INT UNSIGNED   NOT NULL,
+  hsn_sac_code VARCHAR(20)   NOT NULL,
   rate        DECIMAL(12,2)  NOT NULL,
   quantity    DECIMAL(12,2)  NOT NULL,
+  base_value  DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  discount_value DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+  taxable_value DECIMAL(12,2) NOT NULL DEFAULT 0.00,
   value       DECIMAL(12,2)  NOT NULL,
   tax_rate    DECIMAL(5,2)   NOT NULL DEFAULT 0.00,
+  cgst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  cgst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  sgst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  sgst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
+  igst_rate   DECIMAL(6,3)   NOT NULL DEFAULT 0.000,
+  igst_amount DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   tax_value   DECIMAL(12,2)  NOT NULL DEFAULT 0.00,
   total_value DECIMAL(12,2)  NOT NULL,
   PRIMARY KEY (id),
@@ -797,6 +987,39 @@ SET @bill_items_user_id_sql := (
 PREPARE stmt_bill_items_user_id FROM @bill_items_user_id_sql;
 EXECUTE stmt_bill_items_user_id;
 DEALLOCATE PREPARE stmt_bill_items_user_id;
+
+-- ------------------------------------------------------------
+-- HSN / SAC MASTER
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS hsn_sac_master (
+  id                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  code                VARCHAR(20) NOT NULL,
+  description         VARCHAR(500) NOT NULL,
+  suggested_gst_rate  DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+  entry_type          ENUM('GOODS','SERVICE','JOBWORK') NOT NULL DEFAULT 'GOODS',
+  chapter             VARCHAR(50) NULL,
+  keywords            TEXT NULL,
+  is_active           TINYINT(1) NOT NULL DEFAULT 1,
+  created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_hsn_sac_master_code (code),
+  INDEX idx_hsn_sac_type (entry_type),
+  INDEX idx_hsn_sac_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS hsn_sac_requests (
+  id                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id             INT UNSIGNED NOT NULL,
+  code                VARCHAR(20) NOT NULL,
+  description         VARCHAR(500) NULL,
+  requested_for_type  ENUM('GOODS','SERVICE','JOBWORK') NOT NULL DEFAULT 'GOODS',
+  created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  INDEX idx_hsn_sac_requests_user (user_id),
+  INDEX idx_hsn_sac_requests_code (code),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
 -- ACTIVITY LOG
@@ -1139,5 +1362,248 @@ SET @bills_prev_balance_sql := (
 PREPARE stmt_bills_prev_balance FROM @bills_prev_balance_sql;
 EXECUTE stmt_bills_prev_balance;
 DEALLOCATE PREPARE stmt_bills_prev_balance;
+
+SET @company_profiles_gst_state_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'company_profiles' AND column_name = 'state_code'
+    ),
+    'SELECT 1',
+    'ALTER TABLE company_profiles
+      ADD COLUMN state_code VARCHAR(2) NULL AFTER gstin,
+      ADD COLUMN state_name VARCHAR(120) NULL AFTER state_code'
+  )
+);
+PREPARE stmt_company_profiles_gst_state FROM @company_profiles_gst_state_sql;
+EXECUTE stmt_company_profiles_gst_state;
+DEALLOCATE PREPARE stmt_company_profiles_gst_state;
+
+SET @products_hsn_sac_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'hsn_sac_code'
+    ),
+    'SELECT 1',
+    'ALTER TABLE products
+      ADD COLUMN hsn_sac_code VARCHAR(20) NOT NULL DEFAULT "" AFTER name'
+  )
+);
+PREPARE stmt_products_hsn_sac FROM @products_hsn_sac_sql;
+EXECUTE stmt_products_hsn_sac;
+DEALLOCATE PREPARE stmt_products_hsn_sac;
+
+SET @products_type_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'product_type'
+    ),
+    'SELECT 1',
+    'ALTER TABLE products
+      ADD COLUMN product_type ENUM("TRADING_GOODS","MANUFACTURED_GOODS","JOB_WORK_PROCESSING_SERVICE","SERVICES_OTHER")
+      NOT NULL DEFAULT "TRADING_GOODS" AFTER hsn_sac_code'
+  )
+);
+PREPARE stmt_products_type FROM @products_type_sql;
+EXECUTE stmt_products_type;
+DEALLOCATE PREPARE stmt_products_type;
+
+SET @customers_gst_master_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'customers' AND column_name = 'billing_address'
+    ),
+    'SELECT 1',
+    'ALTER TABLE customers
+      ADD COLUMN billing_address TEXT NULL AFTER address,
+      ADD COLUMN shipping_address TEXT NULL AFTER billing_address,
+      ADD COLUMN country VARCHAR(120) NOT NULL DEFAULT "India" AFTER gstin,
+      ADD COLUMN state_name VARCHAR(120) NULL AFTER country,
+      ADD COLUMN state_code VARCHAR(2) NULL AFTER state_name'
+  )
+);
+PREPARE stmt_customers_gst_master FROM @customers_gst_master_sql;
+EXECUTE stmt_customers_gst_master;
+DEALLOCATE PREPARE stmt_customers_gst_master;
+
+SET @vendors_gst_master_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'vendors' AND column_name = 'billing_address'
+    ),
+    'SELECT 1',
+    'ALTER TABLE vendors
+      ADD COLUMN billing_address TEXT NULL AFTER address,
+      ADD COLUMN shipping_address TEXT NULL AFTER billing_address,
+      ADD COLUMN country VARCHAR(120) NOT NULL DEFAULT "India" AFTER gstin,
+      ADD COLUMN state_name VARCHAR(120) NULL AFTER country,
+      ADD COLUMN state_code VARCHAR(2) NULL AFTER state_name'
+  )
+);
+PREPARE stmt_vendors_gst_master FROM @vendors_gst_master_sql;
+EXECUTE stmt_vendors_gst_master;
+DEALLOCATE PREPARE stmt_vendors_gst_master;
+
+SET @invoices_gst_snapshot_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'invoices' AND column_name = 'taxable_total'
+    ),
+    'SELECT 1',
+    'ALTER TABLE invoices
+      ADD COLUMN customer_salutation VARCHAR(10) NULL AFTER customer_id,
+      ADD COLUMN customer_name VARCHAR(200) NULL AFTER customer_salutation,
+      ADD COLUMN customer_mobile VARCHAR(20) NULL AFTER customer_name,
+      ADD COLUMN customer_email VARCHAR(180) NULL AFTER customer_mobile,
+      ADD COLUMN customer_gstin VARCHAR(20) NULL AFTER customer_email,
+      ADD COLUMN customer_billing_address TEXT NULL AFTER customer_gstin,
+      ADD COLUMN customer_shipping_address TEXT NULL AFTER customer_billing_address,
+      ADD COLUMN customer_country VARCHAR(120) NOT NULL DEFAULT "India" AFTER customer_shipping_address,
+      ADD COLUMN customer_state_name VARCHAR(120) NULL AFTER customer_country,
+      ADD COLUMN customer_state_code VARCHAR(2) NULL AFTER customer_state_name,
+      ADD COLUMN place_of_supply_state_name VARCHAR(120) NULL AFTER customer_state_code,
+      ADD COLUMN place_of_supply_state_code VARCHAR(2) NULL AFTER place_of_supply_state_name,
+      ADD COLUMN place_of_supply_country VARCHAR(120) NULL AFTER place_of_supply_state_code,
+      ADD COLUMN company_state_name VARCHAR(120) NULL AFTER place_of_supply_country,
+      ADD COLUMN company_state_code VARCHAR(2) NULL AFTER company_state_name,
+      ADD COLUMN supply_type ENUM("INTRA_STATE","INTER_STATE","EXPORT") NOT NULL DEFAULT "INTRA_STATE" AFTER company_state_code,
+      ADD COLUMN is_export TINYINT(1) NOT NULL DEFAULT 0 AFTER supply_type,
+      ADD COLUMN price_includes_gst TINYINT(1) NOT NULL DEFAULT 0 AFTER is_export,
+      ADD COLUMN taxable_total DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER discount,
+      ADD COLUMN total_cgst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER taxable_total,
+      ADD COLUMN total_sgst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER total_cgst,
+      ADD COLUMN total_igst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER total_sgst'
+  )
+);
+PREPARE stmt_invoices_gst_snapshot FROM @invoices_gst_snapshot_sql;
+EXECUTE stmt_invoices_gst_snapshot;
+DEALLOCATE PREPARE stmt_invoices_gst_snapshot;
+
+SET @invoice_items_gst_breakup_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'invoice_items' AND column_name = 'hsn_sac_code'
+    ),
+    'SELECT 1',
+    'ALTER TABLE invoice_items
+      ADD COLUMN hsn_sac_code VARCHAR(20) NOT NULL DEFAULT "" AFTER product_id,
+      ADD COLUMN base_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER quantity,
+      ADD COLUMN discount_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER base_value,
+      ADD COLUMN taxable_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER discount_value,
+      ADD COLUMN cgst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER tax_rate,
+      ADD COLUMN cgst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER cgst_rate,
+      ADD COLUMN sgst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER cgst_amount,
+      ADD COLUMN sgst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER sgst_rate,
+      ADD COLUMN igst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER sgst_amount,
+      ADD COLUMN igst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER igst_rate'
+  )
+);
+PREPARE stmt_invoice_items_gst_breakup FROM @invoice_items_gst_breakup_sql;
+EXECUTE stmt_invoice_items_gst_breakup;
+DEALLOCATE PREPARE stmt_invoice_items_gst_breakup;
+
+SET @bills_gst_snapshot_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'bills' AND column_name = 'taxable_total'
+    ),
+    'SELECT 1',
+    'ALTER TABLE bills
+      ADD COLUMN vendor_salutation VARCHAR(10) NULL AFTER vendor_id,
+      ADD COLUMN vendor_name VARCHAR(200) NULL AFTER vendor_salutation,
+      ADD COLUMN vendor_mobile VARCHAR(20) NULL AFTER vendor_name,
+      ADD COLUMN vendor_email VARCHAR(180) NULL AFTER vendor_mobile,
+      ADD COLUMN vendor_gstin VARCHAR(20) NULL AFTER vendor_email,
+      ADD COLUMN vendor_billing_address TEXT NULL AFTER vendor_gstin,
+      ADD COLUMN vendor_shipping_address TEXT NULL AFTER vendor_billing_address,
+      ADD COLUMN vendor_country VARCHAR(120) NOT NULL DEFAULT "India" AFTER vendor_shipping_address,
+      ADD COLUMN vendor_state_name VARCHAR(120) NULL AFTER vendor_country,
+      ADD COLUMN vendor_state_code VARCHAR(2) NULL AFTER vendor_state_name,
+      ADD COLUMN place_of_supply_state_name VARCHAR(120) NULL AFTER vendor_state_code,
+      ADD COLUMN place_of_supply_state_code VARCHAR(2) NULL AFTER place_of_supply_state_name,
+      ADD COLUMN place_of_supply_country VARCHAR(120) NULL AFTER place_of_supply_state_code,
+      ADD COLUMN company_state_name VARCHAR(120) NULL AFTER place_of_supply_country,
+      ADD COLUMN company_state_code VARCHAR(2) NULL AFTER company_state_name,
+      ADD COLUMN supply_type ENUM("INTRA_STATE","INTER_STATE","IMPORT") NOT NULL DEFAULT "INTRA_STATE" AFTER company_state_code,
+      ADD COLUMN is_import TINYINT(1) NOT NULL DEFAULT 0 AFTER supply_type,
+      ADD COLUMN price_includes_gst TINYINT(1) NOT NULL DEFAULT 0 AFTER is_import,
+      ADD COLUMN taxable_total DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER discount,
+      ADD COLUMN total_cgst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER taxable_total,
+      ADD COLUMN total_sgst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER total_cgst,
+      ADD COLUMN total_igst DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER total_sgst'
+  )
+);
+PREPARE stmt_bills_gst_snapshot FROM @bills_gst_snapshot_sql;
+EXECUTE stmt_bills_gst_snapshot;
+DEALLOCATE PREPARE stmt_bills_gst_snapshot;
+
+SET @bill_items_gst_breakup_sql := (
+  SELECT IF(
+    EXISTS(
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = DATABASE() AND table_name = 'bill_items' AND column_name = 'hsn_sac_code'
+    ),
+    'SELECT 1',
+    'ALTER TABLE bill_items
+      ADD COLUMN hsn_sac_code VARCHAR(20) NOT NULL DEFAULT "" AFTER product_id,
+      ADD COLUMN base_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER quantity,
+      ADD COLUMN discount_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER base_value,
+      ADD COLUMN taxable_value DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER discount_value,
+      ADD COLUMN cgst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER tax_rate,
+      ADD COLUMN cgst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER cgst_rate,
+      ADD COLUMN sgst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER cgst_amount,
+      ADD COLUMN sgst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER sgst_rate,
+      ADD COLUMN igst_rate DECIMAL(6,3) NOT NULL DEFAULT 0.000 AFTER sgst_amount,
+      ADD COLUMN igst_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00 AFTER igst_rate'
+  )
+);
+PREPARE stmt_bill_items_gst_breakup FROM @bill_items_gst_breakup_sql;
+EXECUTE stmt_bill_items_gst_breakup;
+DEALLOCATE PREPARE stmt_bill_items_gst_breakup;
+
+INSERT INTO hsn_sac_master (code, description, suggested_gst_rate, entry_type, chapter, keywords) VALUES
+  ('9988', 'Manufacturing services on physical inputs owned by others', 5.00, 'JOBWORK', 'SAC 9988', 'job work processing stitching dyeing printing finishing contract manufacturing'),
+  ('9954', 'Construction services', 18.00, 'SERVICE', 'SAC 9954', 'construction civil contractor building work'),
+  ('9983', 'Other professional, technical and business services', 18.00, 'SERVICE', 'SAC 9983', 'consulting professional technical business advisory'),
+  ('998313', 'Information technology consulting and support services', 18.00, 'SERVICE', 'SAC 9983', 'software development it consulting implementation support'),
+  ('998314', 'IT design and development services', 18.00, 'SERVICE', 'SAC 9983', 'software app website development programming coding'),
+  ('996511', 'Road transport services of goods', 5.00, 'SERVICE', 'SAC 9965', 'transport freight logistics trucking delivery'),
+  ('996601', 'Rental services of transport vehicles', 18.00, 'SERVICE', 'SAC 9966', 'vehicle rental transport hire'),
+  ('997212', 'Accounting and bookkeeping services', 18.00, 'SERVICE', 'SAC 9972', 'accounting bookkeeping gst filing audit'),
+  ('997331', 'Licensing services for software and databases', 18.00, 'SERVICE', 'SAC 9973', 'software license saas subscription'),
+  ('999293', 'Laundry, cleaning and dyeing services', 18.00, 'SERVICE', 'SAC 9992', 'laundry dry clean dyeing cleaning'),
+  ('1001', 'Wheat and meslin', 0.00, 'GOODS', 'Chapter 10', 'wheat grain cereal'),
+  ('1701', 'Cane or beet sugar and chemically pure sucrose', 5.00, 'GOODS', 'Chapter 17', 'sugar sweetener'),
+  ('2402', 'Cigars, cheroots, cigarillos and cigarettes', 28.00, 'GOODS', 'Chapter 24', 'cigarette tobacco smoking'),
+  ('3004', 'Medicaments for therapeutic or prophylactic uses', 12.00, 'GOODS', 'Chapter 30', 'medicine pharma tablet syrup drug'),
+  ('3304', 'Beauty or make-up preparations and skin care', 18.00, 'GOODS', 'Chapter 33', 'cosmetics beauty makeup skincare'),
+  ('3901', 'Polymers of ethylene in primary forms', 18.00, 'GOODS', 'Chapter 39', 'plastic polymer granules resin'),
+  ('4411', 'Fibreboard of wood or other ligneous materials', 18.00, 'GOODS', 'Chapter 44', 'board mdf plywood fibre wood'),
+  ('4819', 'Cartons, boxes and packing containers of paper', 12.00, 'GOODS', 'Chapter 48', 'paper box carton packaging corrugated'),
+  ('5208', 'Woven fabrics of cotton', 5.00, 'GOODS', 'Chapter 52', 'cotton fabric textile cloth'),
+  ('6109', 'T-shirts, singlets and other vests, knitted or crocheted', 5.00, 'GOODS', 'Chapter 61', 'tshirt t-shirt vest knitwear garment apparel'),
+  ('6203', 'Mens or boys suits, ensembles, jackets and trousers', 12.00, 'GOODS', 'Chapter 62', 'mens garments trousers jackets apparel'),
+  ('6403', 'Footwear with outer soles of rubber, plastics or leather', 18.00, 'GOODS', 'Chapter 64', 'shoes footwear sandals'),
+  ('7308', 'Structures and parts of structures, of iron or steel', 18.00, 'GOODS', 'Chapter 73', 'steel structure fabrication beam frame'),
+  ('8471', 'Automatic data processing machines and units thereof', 18.00, 'GOODS', 'Chapter 84', 'computer laptop cpu server hardware'),
+  ('8504', 'Electrical transformers, static converters and inductors', 18.00, 'GOODS', 'Chapter 85', 'transformer inverter charger electrical'),
+  ('8517', 'Telephone sets, smartphones and communication apparatus', 18.00, 'GOODS', 'Chapter 85', 'mobile phone smartphone telecom'),
+  ('8708', 'Parts and accessories of motor vehicles', 28.00, 'GOODS', 'Chapter 87', 'automobile spare parts vehicle accessories'),
+  ('9403', 'Other furniture and parts thereof', 18.00, 'GOODS', 'Chapter 94', 'furniture table chair cabinet'),
+  ('9603', 'Brooms, brushes and mops', 12.00, 'GOODS', 'Chapter 96', 'brush broom mop cleaning')
+ON DUPLICATE KEY UPDATE
+  description = VALUES(description),
+  suggested_gst_rate = VALUES(suggested_gst_rate),
+  entry_type = VALUES(entry_type),
+  chapter = VALUES(chapter),
+  keywords = VALUES(keywords),
+  is_active = 1;
 
 SET FOREIGN_KEY_CHECKS = 1;

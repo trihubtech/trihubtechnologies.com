@@ -2,6 +2,15 @@ const router = require("express").Router();
 const { pool, getNextCode, logActivity } = require("../config/db");
 const { body, param, query, validationResult } = require("express-validator");
 const { requirePermission } = require("../middleware/permissions");
+const { isValidGstRate } = require("../utils/gst");
+const { ensureProductSchemaCompatibility } = require("../utils/productSchema");
+
+const PRODUCT_TYPE_OPTIONS = [
+  "TRADING_GOODS",
+  "MANUFACTURED_GOODS",
+  "JOB_WORK_PROCESSING_SERVICE",
+  "SERVICES_OTHER",
+];
 
 function validationErrors(req, res) {
   const errors = validationResult(req);
@@ -44,11 +53,16 @@ function calcEAN13Check(twelveDigits) {
 
 const productValidation = [
   body("name").trim().notEmpty().withMessage("Name is required"),
+  body("product_type").isIn(PRODUCT_TYPE_OPTIONS).withMessage("Product type is required"),
+  body("hsn_sac_code").optional({ checkFalsy: true }).trim(),
   body("category").trim().notEmpty().withMessage("Category is required"),
   body("unit").trim().notEmpty().withMessage("Unit is required"),
   body("mrp").isFloat({ min: 0 }).withMessage("MRP must be non-negative"),
   body("price").isFloat({ min: 0 }).withMessage("Price must be non-negative"),
-  body("tax_rate").optional().isFloat({ min: 0, max: 100 }).withMessage("Tax rate must be 0-100"),
+  body("tax_rate")
+    .custom((value) => isValidGstRate(value))
+    .withMessage("GST rate must be a valid percentage between 0 and 100, with up to 3 decimal places"),
+  body("product_tag").optional({ checkFalsy: true }).trim(),
 ];
 
 /* ── GET /products?page&pageSize&search&category&active ──────────────── */
@@ -64,6 +78,7 @@ router.get(
   ],
   async (req, res, next) => {
     try {
+      await ensureProductSchemaCompatibility(pool);
       const page = req.query.page || 1;
       const pageSize = req.query.pageSize || 20;
       const offset = (page - 1) * pageSize;
@@ -136,6 +151,7 @@ router.get(
   [param("barcode").trim().notEmpty()],
   async (req, res, next) => {
     try {
+      await ensureProductSchemaCompatibility(pool);
       const [[product]] = await pool.execute(
         `SELECT p.*,
            COALESCE((
@@ -164,6 +180,7 @@ router.get(
 /* ── GET /products/:id ───────────────────────────────────────────────── */
 router.get("/:id", requirePermission("can_view_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
+    await ensureProductSchemaCompatibility(pool);
     const [[product]] = await pool.execute(
       `SELECT p.*,
          COALESCE((
@@ -195,16 +212,20 @@ router.post("/", requirePermission("can_add_products"), productValidation, async
 
   const conn = await pool.getConnection();
   try {
+    await ensureProductSchemaCompatibility(conn);
     await conn.beginTransaction();
 
-    const { name, category, unit, mrp, price, description, tax_rate = 0 } = req.body;
+    const { name, product_type, hsn_sac_code, category, product_tag, unit, mrp, price, description, tax_rate = 0 } = req.body;
+    const normalizedHsnSacCode = product_type === "JOB_WORK_PROCESSING_SERVICE"
+      ? "9988"
+      : String(hsn_sac_code || "").trim().toUpperCase();
     const code = await getNextCode(conn, "PRODUCT");
     const barcode = await generateUniqueBarcode(conn);
 
     const [result] = await conn.execute(
-      `INSERT INTO products (user_id, code, barcode, name, category, unit, mrp, price, description, tax_rate)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [req.user.id, code, barcode, name, category, unit, mrp, price, description || null, tax_rate]
+      `INSERT INTO products (user_id, code, barcode, name, hsn_sac_code, product_type, category, product_tag, unit, mrp, price, description, tax_rate)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [req.user.id, code, barcode, name, normalizedHsnSacCode, product_type, category, product_tag || null, unit, mrp, price, description || null, tax_rate]
     );
 
     await logActivity(conn, {
@@ -238,6 +259,7 @@ router.put("/:id", requirePermission("can_edit_products"), [param("id").isInt().
 
   const conn = await pool.getConnection();
   try {
+    await ensureProductSchemaCompatibility(conn);
     await conn.beginTransaction();
 
     const [[existing]] = await conn.execute(
@@ -256,13 +278,16 @@ router.put("/:id", requirePermission("can_edit_products"), [param("id").isInt().
       barcode = await generateUniqueBarcode(conn);
     }
 
-    const { name, category, unit, mrp, price, description, tax_rate = 0 } = req.body;
+    const { name, product_type, hsn_sac_code, category, product_tag, unit, mrp, price, description, tax_rate = 0 } = req.body;
+    const normalizedHsnSacCode = product_type === "JOB_WORK_PROCESSING_SERVICE"
+      ? "9988"
+      : String(hsn_sac_code || "").trim().toUpperCase();
 
     await conn.execute(
       `UPDATE products
-       SET name = ?, category = ?, unit = ?, mrp = ?, price = ?, description = ?, tax_rate = ?, barcode = ?
+       SET name = ?, hsn_sac_code = ?, product_type = ?, category = ?, product_tag = ?, unit = ?, mrp = ?, price = ?, description = ?, tax_rate = ?, barcode = ?
        WHERE id = ? AND user_id = ?`,
-      [name, category, unit, mrp, price, description || null, tax_rate, barcode, req.params.id, req.user.id]
+      [name, normalizedHsnSacCode, product_type, category, product_tag || null, unit, mrp, price, description || null, tax_rate, barcode, req.params.id, req.user.id]
     );
 
     await conn.commit();
@@ -278,6 +303,7 @@ router.put("/:id", requirePermission("can_edit_products"), [param("id").isInt().
 /* ── DELETE /products/:id ────────────────────────────────────────────── */
 router.delete("/:id", requirePermission("can_delete_products"), [param("id").isInt().toInt()], async (req, res, next) => {
   try {
+    await ensureProductSchemaCompatibility(pool);
     const [[existing]] = await pool.execute(
       "SELECT * FROM products WHERE id = ? AND user_id = ?",
       [req.params.id, req.user.id]

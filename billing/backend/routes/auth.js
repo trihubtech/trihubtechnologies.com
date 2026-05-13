@@ -7,6 +7,15 @@ const { pool, logActivity } = require("../config/db");
 const { requireAuthAllowExpired } = require("../middleware/auth");
 const { insertSubscriptionLog, syncSubscriptionStatus } = require("../utils/subscriptions");
 const { loadAuthContext } = require("../utils/tenancy");
+const { ensureCompanyProfileSchemaCompatibility } = require("../utils/companyProfileSchema");
+const {
+  cleanOptional,
+  findStateByCode,
+  findStateByName,
+  isIndianCountry,
+  normalizeCountry,
+  normalizeStateCode,
+} = require("../utils/gst");
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -23,6 +32,41 @@ function validationErrors(req, res) {
 
 function generateToken(userId) {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
+}
+
+function resolveCompanyLocation(payload) {
+  const country = normalizeCountry(payload.country);
+
+  if (!isIndianCountry(country)) {
+    const stateName = cleanOptional(payload.state_name);
+    if (!stateName) {
+      const error = new Error("State / region is required");
+      error.status = 422;
+      throw error;
+    }
+
+    return {
+      country,
+      stateName,
+      stateCode: null,
+    };
+  }
+
+  const stateFromCode = findStateByCode(payload.state_code);
+  const stateFromName = findStateByName(payload.state_name);
+  const state = stateFromCode || stateFromName;
+
+  if (!state) {
+    const error = new Error("State is required for companies in India");
+    error.status = 422;
+    throw error;
+  }
+
+  return {
+    country,
+    stateName: state.name,
+    stateCode: normalizeStateCode(state.code),
+  };
 }
 
 async function loadUserByEmail(executor, email) {
@@ -55,6 +99,9 @@ router.post(
   [
     body("name").trim().notEmpty().withMessage("Name is required"),
     body("company_name").trim().notEmpty().withMessage("Company name is required"),
+    body("country").trim().notEmpty().withMessage("Country is required"),
+    body("state_name").optional({ checkFalsy: true }).trim(),
+    body("state_code").optional({ checkFalsy: true }).trim(),
     body("email").isEmail().normalizeEmail().withMessage("Valid email is required"),
     body("password")
       .isStrongPassword({
@@ -73,9 +120,11 @@ router.post(
     const conn = await pool.getConnection();
 
     try {
+      await ensureCompanyProfileSchemaCompatibility(conn);
       await conn.beginTransaction();
 
       const { name, company_name: companyName, email, password } = req.body;
+      const { country, stateName, stateCode } = resolveCompanyLocation(req.body);
       const existing = await loadUserByEmail(conn, email);
       if (existing) {
         await conn.rollback();
@@ -111,9 +160,9 @@ router.post(
       );
 
       await conn.execute(
-        `INSERT INTO company_profiles (company_id, user_id, name)
-         VALUES (?, ?, ?)`,
-        [companyId, userId, companyName.trim()]
+        `INSERT INTO company_profiles (company_id, user_id, name, country, state_name, state_code)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [companyId, userId, companyName.trim(), country, stateName, stateCode]
       );
 
       await logActivity(conn, {
@@ -156,6 +205,9 @@ router.post(
   [
     body("credential").notEmpty().withMessage("Google credential is required"),
     body("company_name").trim().notEmpty().withMessage("Company name is required"),
+    body("country").trim().notEmpty().withMessage("Country is required"),
+    body("state_name").optional({ checkFalsy: true }).trim(),
+    body("state_code").optional({ checkFalsy: true }).trim(),
     body("password")
       .isStrongPassword({
         minLength: 8,
@@ -194,7 +246,9 @@ router.post(
       const googleSub = payload.sub;
       const companyName = req.body.company_name.trim();
       const password = req.body.password;
+      const { country, stateName, stateCode } = resolveCompanyLocation(req.body);
 
+      await ensureCompanyProfileSchemaCompatibility(conn);
       await conn.beginTransaction();
 
       
@@ -243,9 +297,9 @@ router.post(
       );
 
       await conn.execute(
-        `INSERT INTO company_profiles (company_id, user_id, name)
-         VALUES (?, ?, ?)`,
-        [companyId, userId, companyName]
+        `INSERT INTO company_profiles (company_id, user_id, name, country, state_name, state_code)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [companyId, userId, companyName, country, stateName, stateCode]
       );
 
       await logActivity(conn, {
