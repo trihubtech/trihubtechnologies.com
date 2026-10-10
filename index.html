@@ -5,11 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="TriHub Technologies – The Central Hub For Digital Growth. We build websites, apps, digital marketing solutions and more for businesses in India and beyond." />
+    content="TriHub Technologies – Govt. MSME Registered Enterprise (UDYAM-TN-17-0084523). The Central Hub For Digital Growth. We build websites, apps, billing CRM, fintech recharge portals, and digital marketing solutions." />
   <meta name="keywords"
-    content="web development, mobile app, digital marketing, SEO, UI/UX, TriHub Technologies, Trichy, Pudukkottai" />
+    content="web development, mobile app, digital marketing, SEO, UI/UX, TriHub Technologies, TriHubPay, TriHub CRM, Trichy, Pudukkottai, MSME" />
   <meta name="author" content="TriHub Technologies" />
-  <title>TriHub Technologies – The Central Hub For Digital Growth</title>
+  <title>TriHub Technologies – The Central Hub For Digital Growth | Govt. MSME UDYAM-TN-17-0084523</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -28,6 +28,33 @@
 
   <!-- AOS Animations -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- Schema.org Structured Data for Google Verification -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TriHub Technologies",
+    "legalName": "TriHub Technologies",
+    "identifier": "UDYAM-TN-17-0084523",
+    "url": "https://trihubtechnologies.com",
+    "logo": "https://trihubtechnologies.com/favicon.svg",
+    "telephone": "+91-8270873279",
+    "email": "trihubtechnologies@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Trichy / Pudukkottai",
+      "addressRegion": "Tamil Nadu",
+      "postalCode": "622101",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/trihub-technologies/",
+      "https://www.facebook.com/people/TriHub-Technologies/61572019447995/",
+      "https://www.instagram.com/trihubtech"
+    ]
+  }
+  </script>
 
   <style>
     /* ============================================================
@@ -314,7 +341,6 @@
       letter-spacing: .06em;
       padding: 6px 16px;
       border-radius: 50px;
-      margin-bottom: 24px;
     }
 
     .hero-badge .dot {
@@ -326,17 +352,27 @@
     }
 
     @keyframes pulse-dot {
-
-      0%,
-      100% {
+      0%, 100% {
         opacity: 1;
         transform: scale(1);
       }
-
       50% {
         opacity: .6;
         transform: scale(1.4);
       }
+    }
+
+    .msme-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green-light);
+      border: 1px solid rgba(22, 163, 74, .25);
+      color: var(--green-dark);
+      font-size: .8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 50px;
     }
 
     .hero-headline {
@@ -402,7 +438,7 @@
       background: transparent;
       color: var(--royal-blue);
       border: 2px solid var(--royal-blue);
-      padding: 12px 30px;
+      padding: 12px 28px;
       border-radius: 50px;
       font-weight: 600;
       font-size: .95rem;
@@ -541,12 +577,9 @@
     }
 
     @keyframes float-card {
-
-      0%,
-      100% {
+      0%, 100% {
         transform: translateY(0);
       }
-
       50% {
         transform: translateY(-8px);
       }
@@ -636,7 +669,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-top: 28px;
+      margin-top: 24px;
     }
 
     .highlight-item {
@@ -669,6 +702,16 @@
       font-size: .82rem;
       color: var(--gray);
       line-height: 1.5;
+    }
+
+    /* Official MSME Credential Card */
+    .msme-credential-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #e8eefb 100%);
+      border: 1.5px solid #86efac;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 24px;
+      box-shadow: var(--shadow-sm);
     }
 
     /* ============================================================
@@ -743,26 +786,34 @@
       line-height: 1.65;
     }
 
-    .svc-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--royal-blue);
-      margin-top: 14px;
-      transition: var(--transition);
+    /* ============================================================
+       PRODUCTS SECTION (CRM & TRIHUBPAY)
+    ============================================================ */
+    #products {
+      background: var(--white);
     }
 
-    .service-card:hover .svc-arrow {
-      gap: 10px;
+    .product-hero-card {
+      background: #fff;
+      border: 2px solid var(--blue-pale);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      height: 100%;
+    }
+
+    .product-hero-card:hover {
+      border-color: var(--royal-blue);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
     }
 
     /* ============================================================
        PROCESS SECTION
     ============================================================ */
     #process {
-      background: var(--white);
+      background: var(--off-white);
     }
 
     .process-wrap {
@@ -803,7 +854,6 @@
     }
 
     @media (max-width: 767.98px) {
-
       .process-step,
       .process-step:nth-child(even) {
         flex-direction: row !important;
@@ -1008,19 +1058,11 @@
       margin-top: 2px;
     }
 
-    .star-row {
-      display: flex;
-      gap: 3px;
-      margin-bottom: 14px;
-      color: var(--yellow);
-      font-size: .85rem;
-    }
-
     /* ============================================================
        FAQ SECTION
     ============================================================ */
     #faq {
-      background: var(--off-white);
+      background: var(--white);
     }
 
     .faq-accordion .accordion-item {
@@ -1062,21 +1104,22 @@
        CONTACT SECTION
     ============================================================ */
     #contact {
-      background: var(--white);
+      background: var(--off-white);
     }
 
     .contact-info-card {
-      background: var(--off-white);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 28px;
+      box-shadow: var(--shadow-sm);
     }
 
     .contact-item {
       display: flex;
       align-items: flex-start;
       gap: 14px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .contact-item:last-child {
@@ -1130,10 +1173,11 @@
     }
 
     .contact-form-wrap {
-      background: var(--off-white);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 32px;
+      box-shadow: var(--shadow-sm);
     }
 
     .form-label {
@@ -1165,7 +1209,7 @@
     .social-links-row {
       display: flex;
       gap: 12px;
-      margin-top: 24px;
+      margin-top: 14px;
       flex-wrap: wrap;
     }
 
@@ -1209,14 +1253,10 @@
       margin-bottom: 14px;
     }
 
-    .footer-logo .brand-icon {
-      background: transparent;
-    }
-
     .footer-slogan {
       font-size: .85rem;
       color: rgba(255, 255, 255, .45);
-      max-width: 260px;
+      max-width: 280px;
       line-height: 1.6;
     }
 
@@ -1311,7 +1351,7 @@
     .footer-bottom {
       padding: 20px 0;
       font-size: .82rem;
-      color: rgba(255, 255, 255, .3);
+      color: rgba(255, 255, 255, .4);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1320,7 +1360,7 @@
     }
 
     .footer-bottom a {
-      color: rgba(255, 255, 255, .4);
+      color: rgba(255, 255, 255, .5);
     }
 
     .footer-bottom a:hover {
@@ -1330,8 +1370,6 @@
     /* ============================================================
        FLOATING ELEMENTS
     ============================================================ */
-
-    /* WhatsApp Button */
     .whatsapp-float {
       position: fixed;
       bottom: 80px;
@@ -1358,18 +1396,14 @@
     }
 
     @keyframes bounce-wa {
-
-      0%,
-      100% {
+      0%, 100% {
         transform: translateY(0);
       }
-
       50% {
         transform: translateY(-6px);
       }
     }
 
-    /* Scroll to top / bottom */
     .scroll-btn {
       position: fixed;
       right: 20px;
@@ -1409,7 +1443,6 @@
       transform: scale(1.1);
     }
 
-    /* Floating social sidebar */
     .float-social {
       position: fixed;
       left: 16px;
@@ -1482,12 +1515,6 @@
       color: #0f766e;
     }
 
-    .slate-bg {
-      background: #f1f5f9;
-      color: #475569;
-    }
-
-    /* Divider */
     .section-divider {
       height: 3px;
       background: linear-gradient(90deg, var(--royal-blue), var(--green), var(--yellow));
@@ -1496,138 +1523,97 @@
       margin: 16px 0 24px;
     }
 
-    /* Animated counter helper */
     .counter {
       display: inline-block;
-    }
-
-    /* Hero gradient text utility */
-    .gradient-text {
-      background: linear-gradient(135deg, var(--royal-blue), var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     /* ============================================================
        RESPONSIVE HELPERS
     ============================================================ */
-
-    /* ---------- Tablet (≤991px) ---------- */
     @media (max-width: 991.98px) {
       section {
         padding: 70px 0;
       }
-
-      /* Navbar */
       .navbar-brand {
         font-size: 1.15rem;
       }
-
       .nav-cta {
         margin-top: 10px;
         text-align: center;
         justify-content: center;
       }
-
-      /* Hero */
       #home {
         padding-top: 80px;
         min-height: auto;
       }
-
       .hero-headline {
         font-size: clamp(2rem, 5vw, 3rem);
       }
-
       .hero-sub {
         font-size: 1rem;
       }
-
       .hero-visual {
         margin-top: 20px;
       }
-
-      /* Process */
       .process-node {
         left: 24px !important;
         transform: none !important;
       }
-
       .process-step:nth-child(odd) .process-card,
       .process-step:nth-child(even) .process-card {
         margin: 0 !important;
       }
-
       .process-spine {
         display: none;
       }
-
-      /* Contact form */
       .contact-form-wrap {
         padding: 24px;
       }
-
       .contact-info-card {
         padding: 22px;
       }
     }
 
-    /* ---------- Mobile (≤767px) ---------- */
     @media (max-width: 767.98px) {
       section {
         padding: 48px 0;
       }
-
-      /* Typography scaling */
       .section-title {
         font-size: clamp(1.5rem, 6vw, 2rem);
       }
-
       .section-sub {
         font-size: .95rem;
       }
-
-      /* Hero */
       #home {
         padding-top: 72px;
         padding-bottom: 36px;
         text-align: center;
       }
-
       .hero-headline {
         font-size: clamp(1.8rem, 7vw, 2.6rem);
       }
-
       .hero-sub {
         margin-left: auto;
         margin-right: auto;
         font-size: .95rem;
       }
-
-      .hero-badge {
+      .hero-badge, .msme-badge {
         margin-left: auto;
         margin-right: auto;
       }
-
       .hero-stats {
         gap: 16px;
         justify-content: center;
       }
-
       .stat-divider {
         display: none;
       }
-
       .stat-item {
         text-align: center;
       }
-
       .d-flex.flex-wrap.gap-3 {
         justify-content: center;
       }
-
-      /* Hero buttons */
       .btn-primary-custom,
       .btn-outline-custom {
         width: 100%;
@@ -1635,120 +1621,88 @@
         padding: 12px 24px;
         font-size: .9rem;
       }
-
-      /* Hero visual card */
       .hero-card-main {
         padding: 20px;
       }
-
       .hero-float-card.card-1 {
         top: -10px;
         right: -6px;
         font-size: .75rem;
         padding: 8px 12px;
       }
-
       .hero-float-card.card-2 {
         bottom: -10px;
         left: -6px;
         font-size: .75rem;
         padding: 8px 12px;
       }
-
       .hero-metric-grid {
         gap: 8px;
       }
-
       .metric-box {
         padding: 10px;
       }
-
       .metric-box .m-val {
         font-size: 1.2rem;
       }
-
-      /* About */
       .about-img-grid {
         gap: 10px;
       }
-
       .highlight-grid {
         grid-template-columns: 1fr;
         gap: 14px;
       }
-
-      /* Services */
       .service-card {
         padding: 22px 18px;
       }
-
-      /* Testimonials */
       .testimonial-card {
         padding: 24px 20px;
       }
-
       .testimonial-text {
         font-size: .88rem;
       }
-
-      /* FAQ */
       .faq-accordion .accordion-button {
         padding: 14px 16px;
         font-size: .88rem;
       }
-
       .faq-accordion .accordion-body {
         padding: 4px 16px 14px;
         font-size: .85rem;
       }
-
-      /* Contact */
       .contact-form-wrap {
         padding: 20px 16px;
       }
-
       .contact-info-card {
         padding: 18px 16px;
       }
-
       .social-links-row {
         gap: 10px;
         justify-content: center;
       }
-
       .map-container iframe {
         height: 180px;
       }
-
-      /* Footer */
       .footer-top {
         padding: 40px 0 30px;
       }
-
       .footer-bottom {
         flex-direction: column;
         text-align: center;
         gap: 6px;
       }
-
       .footer-social {
         justify-content: center;
         flex-wrap: wrap;
       }
-
       .footer-slogan {
         max-width: 100%;
       }
-
       .footer-logo {
         justify-content: center;
       }
-
       .footer-heading {
         margin-top: 8px;
       }
-
-      /* Floating elements */
       .whatsapp-float {
         width: 48px;
         height: 48px;
@@ -1756,169 +1710,123 @@
         bottom: 70px;
         right: 14px;
       }
-
       .scroll-btn {
         width: 38px;
         height: 38px;
         font-size: .8rem;
         right: 14px;
       }
-
       #scrollTop {
         bottom: 124px;
       }
-
       #scrollBottom {
         bottom: 24px;
       }
     }
 
-    /* ---------- Small phones (≤480px) ---------- */
     @media (max-width: 480px) {
       section {
         padding: 40px 0;
       }
-
-      /* Hero */
       .hero-headline {
         font-size: clamp(1.5rem, 8vw, 2.2rem);
       }
-
       .hero-sub {
         font-size: .88rem;
         line-height: 1.7;
         margin-bottom: 28px;
       }
-
       .hero-stats {
         flex-direction: column;
         align-items: center;
         gap: 12px;
       }
-
       .stat-number {
         font-size: 1.5rem;
       }
-
-      /* Hero float cards - hide on very small screens */
       .hero-float-card {
         display: none;
       }
-
-      /* Section labels & titles */
       .section-title {
         font-size: clamp(1.3rem, 7vw, 1.7rem);
       }
-
       .section-label {
         font-size: .7rem;
         padding: 5px 12px;
       }
-
-      /* Buttons */
       .btn-primary-custom,
       .btn-outline-custom {
         padding: 11px 20px;
         font-size: .85rem;
       }
-
-      /* Service cards */
       .service-card {
         padding: 18px 14px;
       }
-
       .svc-title {
         font-size: .92rem;
       }
-
       .svc-desc {
         font-size: .82rem;
       }
-
-      /* About highlights */
       .hi-icon {
         width: 36px;
         height: 36px;
       }
-
       .hi-title {
         font-size: .85rem;
       }
-
       .hi-text {
         font-size: .78rem;
       }
-
-      /* Process */
       .process-card {
         padding: 16px 14px;
       }
-
       .pc-title {
         font-size: .92rem;
       }
-
       .pc-desc {
         font-size: .8rem;
       }
-
-      /* Testimonials */
       .testimonial-card {
         padding: 20px 16px;
       }
-
       .quote-icon {
         font-size: 2rem;
       }
-
       .testimonial-text {
         font-size: .84rem;
       }
-
       .t-name {
         font-size: .88rem;
       }
-
-      /* Contact */
       .contact-form-wrap {
         padding: 16px 12px;
       }
-
       .form-control,
       .form-select {
         padding: 9px 12px;
         font-size: .85rem;
       }
-
       .c-icon {
         width: 36px;
         height: 36px;
         font-size: .85rem;
       }
-
       .c-val {
         font-size: .85rem;
       }
-
       .social-link-btn {
         width: 38px;
         height: 38px;
         font-size: .9rem;
       }
-
-      /* Footer */
       .footer-logo {
         font-size: 1rem;
       }
-
-      .footer-links a {
-        font-size: .82rem;
-      }
-
+      .footer-links a,
       .footer-contact-list li {
         font-size: .82rem;
       }
-
       .footer-bottom {
         font-size: .75rem;
       }
@@ -1931,7 +1839,7 @@
   <!-- ============================================================
      FLOATING: WhatsApp Button
 ============================================================ -->
-  <a href="https://wa.me/916374569225?text=Hi%20TriHub%20Technologies%2C%20I%27m%20interested%20in%20your%20services!"
+  <a href="https://wa.me/918270873279?text=Hi%20TriHub%20Technologies%2C%20I%27m%20interested%20in%20your%20services!"
     class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
@@ -1955,7 +1863,7 @@
     <a href="https://www.instagram.com/trihubtech?utm_source=qr&igsh=MXJ2NjYyM3JldHN1MQ%3D%3D"
       style="background:#e1306c" aria-label="Instagram" target="_blank" rel="noopener"> <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://wa.me/916374569225" style="background:#25d366" aria-label="WhatsApp" target="_blank"> <i
+    <a href="https://wa.me/918270873279" style="background:#25d366" aria-label="WhatsApp" target="_blank"> <i
         class="fab fa-whatsapp"></i> </a>
   </div>
 
@@ -1985,13 +1893,18 @@
           <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
           <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="#crm">CRM Software</a></li>
+          <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
           <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
           <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
           <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
-        <a href="#contact" class="nav-link nav-cta ms-lg-2">Get Started →</a>
+        <div class="d-flex align-items-center gap-2">
+          <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="nav-link d-none d-xl-inline-block text-primary fw-bold" style="font-size:0.85rem;">
+            <i class="fas fa-bolt text-success me-1"></i>TriHubPay
+          </a>
+          <a href="#contact" class="nav-link nav-cta ms-lg-2">Get Started →</a>
+        </div>
       </div>
 
     </div>
@@ -2006,9 +1919,15 @@
 
         <!-- Left content -->
         <div class="col-lg-6" data-aos="fade-right" data-aos-duration="800">
-          <div class="hero-badge" role="status">
-            <span class="dot" aria-hidden="true"></span>
-            Available for New Projects
+          <!-- Dual Status & MSME Trust Badge -->
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <div class="hero-badge" role="status">
+              <span class="dot" aria-hidden="true"></span>
+              Available for New Projects
+            </div>
+            <div class="msme-badge">
+              <i class="fas fa-shield-halved text-success"></i> Govt. MSME: <strong>UDYAM-TN-17-0084523</strong>
+            </div>
           </div>
 
           <h1 class="hero-headline">
@@ -2019,16 +1938,19 @@
 
           <p class="hero-sub">
             TriHub Technologies is your end-to-end digital growth partner —
-            crafting powerful websites, smart apps, and data-driven marketing
-            strategies that transform ideas into impact.
+            crafting powerful websites, smart apps, fintech platforms, and data-driven
+            strategies that transform ideas into scalable business impact.
           </p>
 
-          <div class="d-flex flex-wrap gap-3">
+          <div class="d-flex flex-wrap gap-2 mb-4">
             <a href="#services" class="btn-primary-custom">
-              <i class="fas fa-rocket" aria-hidden="true"></i> Get Started
+              <i class="fas fa-rocket" aria-hidden="true"></i> Explore Services
             </a>
-            <a href="https://trial.billing.trihubtechnologies.com" class="btn-outline-custom">
-              <i class="fas fa-database"></i> View CRM
+            <a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-outline-custom">
+              <i class="fas fa-database"></i> TriHub CRM
+            </a>
+            <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-outline-custom" style="border-color:var(--green);color:var(--green-dark);">
+              <i class="fas fa-bolt" style="color:var(--green)"></i> TriHubPay
             </a>
             <a href="#contact" class="btn-outline-custom">
               <i class="fas fa-paper-plane" aria-hidden="true"></i> Contact Us
@@ -2037,12 +1959,12 @@
 
           <div class="hero-stats" role="list" aria-label="Key statistics">
             <div class="stat-item" role="listitem">
-              <div class="stat-number"><span class="counter" data-target="3">0</span><span>+</span></div>
+              <div class="stat-number"><span class="counter" data-target="15">0</span><span>+</span></div>
               <div class="stat-label">Projects Delivered</div>
             </div>
             <div class="stat-divider" aria-hidden="true"></div>
             <div class="stat-item" role="listitem">
-              <div class="stat-number"><span class="counter" data-target="3">0</span><span>+</span></div>
+              <div class="stat-number"><span class="counter" data-target="10">0</span><span>+</span></div>
               <div class="stat-label">Happy Clients</div>
             </div>
             <div class="stat-divider" aria-hidden="true"></div>
@@ -2066,7 +1988,7 @@
               </div>
               <div>
                 <div style="font-size:.78rem;font-weight:700;color:var(--black)">Project Live!</div>
-                <div style="font-size:.7rem;color:var(--gray)">Deployed in 4 weeks</div>
+                <div style="font-size:.7rem;color:var(--gray)">Govt. Regd Agency</div>
               </div>
             </div>
 
@@ -2080,7 +2002,7 @@
                 style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--black);margin-bottom:4px;">
                 Your Growth Dashboard
               </h3>
-              <p style="font-size:.8rem;color:var(--gray);margin-bottom:0">Driving results across all channels</p>
+              <p style="font-size:.8rem;color:var(--gray);margin-bottom:0">Driving measurable results across Tamil Nadu & beyond</p>
 
               <div class="hero-metric-grid" role="list" aria-label="Metrics">
                 <div class="metric-box" role="listitem">
@@ -2096,31 +2018,21 @@
                   <span class="m-lbl">Client Rating</span>
                 </div>
                 <div class="metric-box" role="listitem">
-                  <span class="m-val">98%</span>
-                  <span class="m-lbl">On-time Delivery</span>
+                  <span class="m-val">99.8%</span>
+                  <span class="m-lbl">System Uptime</span>
                 </div>
               </div>
 
               <!-- Simple bar chart visual -->
               <div style="margin-top:18px;">
-                <div style="font-size:.75rem;font-weight:600;color:var(--gray);margin-bottom:8px;">Monthly Project
-                  Activity</div>
+                <div style="font-size:.75rem;font-weight:600;color:var(--gray);margin-bottom:8px;">Monthly Project Activity</div>
                 <div style="display:flex;align-items:flex-end;gap:6px;height:52px;">
-                  <div
-                    style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:35%;transition:var(--transition)"
-                    class="bar-item"></div>
-                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:55%" class="bar-item">
-                  </div>
-                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:42%" class="bar-item">
-                  </div>
-                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:70%" class="bar-item">
-                  </div>
-                  <div
-                    style="flex:1;background:linear-gradient(0deg,var(--royal-blue),var(--blue-light));border-radius:4px 4px 0 0;height:90%"
-                    class="bar-item"></div>
-                  <div
-                    style="flex:1;background:linear-gradient(0deg,var(--green),#22c55e);border-radius:4px 4px 0 0;height:100%"
-                    class="bar-item"></div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:35%" class="bar-item"></div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:55%" class="bar-item"></div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:42%" class="bar-item"></div>
+                  <div style="flex:1;background:var(--blue-pale);border-radius:4px 4px 0 0;height:70%" class="bar-item"></div>
+                  <div style="flex:1;background:linear-gradient(0deg,var(--royal-blue),var(--blue-light));border-radius:4px 4px 0 0;height:90%" class="bar-item"></div>
+                  <div style="flex:1;background:linear-gradient(0deg,var(--green),#22c55e);border-radius:4px 4px 0 0;height:100%" class="bar-item"></div>
                 </div>
               </div>
             </div>
@@ -2129,11 +2041,11 @@
             <div class="hero-float-card card-2" aria-hidden="true">
               <div class="float-icon blue-bg"
                 style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;">
-                <i class="fas fa-users" style="color:var(--royal-blue)"></i>
+                <i class="fas fa-building-shield" style="color:var(--royal-blue)"></i>
               </div>
               <div>
-                <div style="font-size:.78rem;font-weight:700;color:var(--black)">3+ Clients</div>
-                <div style="font-size:.7rem;color:var(--gray)">Across India</div>
+                <div style="font-size:.78rem;font-weight:700;color:var(--black)">MSME Certified</div>
+                <div style="font-size:.7rem;color:var(--gray)">UDYAM-TN-17-0084523</div>
               </div>
             </div>
 
@@ -2160,8 +2072,7 @@
                   style="background:linear-gradient(160deg,#dde9ff,#c7d9ff); justify-content:center; display:flex; flex-direction:column; align-items:center; gap:12px;">
                   <i class="fas fa-laptop-code" style="font-size:2.6rem;color:var(--royal-blue)"></i>
                   <span
-                    style="font-size:.8rem;font-weight:600;color:var(--blue-dark);text-align:center;padding:0 12px">Digital
-                    Excellence Since Day One</span>
+                    style="font-size:.8rem;font-weight:600;color:var(--blue-dark);text-align:center;padding:0 12px">Digital Excellence Since Day One</span>
                 </div>
               </div>
               <!-- Two right cards -->
@@ -2180,8 +2091,8 @@
 
             <!-- Floating badge -->
             <div class="about-badge-float" aria-hidden="true">
-              <span class="num">3+</span>
-              <span class="txt">Clients Served</span>
+              <span class="num">Govt. Regd</span>
+              <span class="txt">MSME Enterprise</span>
             </div>
           </div>
         </div>
@@ -2196,19 +2107,38 @@
           <div class="section-divider" aria-hidden="true"></div>
 
           <p style="color:var(--gray);font-size:.95rem;margin-bottom:14px;">
-            Founded in Trichy, Tamil Nadu, <strong style="color:var(--black)">TriHub Technologies</strong> is a
-            full-service
-            digital agency dedicated to empowering businesses of all sizes with innovative technology and strategic
-            digital
-            solutions. We serve as <em>the central hub</em> where your growth journey begins and accelerates.
+            Headquartered in Tamil Nadu, <strong style="color:var(--black)">TriHub Technologies</strong> is a
+            Government of India MSME-registered full-service technology agency dedicated to empowering businesses
+            of all sizes with high-velocity software, fintech products, and strategic digital solutions.
           </p>
 
-          <p style="color:var(--gray);font-size:.95rem;margin-bottom:28px;">
-            From agile startups to established enterprises across Trichy, Pudukkottai and beyond, our team of passionate
-            developers, designers, and digital strategists collaborate to deliver solutions that not only look
-            exceptional
-            but drive measurable business results.
+          <p style="color:var(--gray);font-size:.95rem;margin-bottom:20px;">
+            From agile startups to established commercial brands across Trichy, Pudukkottai, and nationwide, our team
+            collaborates to deliver solutions that combine strict regulatory standards, clean code, and measurable business growth.
           </p>
+
+          <!-- Official Govt. MSME Credential Box -->
+          <div class="msme-credential-box mb-4">
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid #86efac;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.3rem;flex-shrink:0;box-shadow:var(--shadow-sm);">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-1">
+                  <span style="font-size:0.73rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);">
+                    Ministry of MSME &bull; Govt. of India
+                  </span>
+                  <span class="badge bg-success" style="font-size:0.68rem;padding:4px 8px;">VERIFIED ENTERPRISE</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:var(--black);">
+                  UDYAM REGISTRATION: <span style="color:var(--royal-blue);font-family:monospace;letter-spacing:0.04em;">UDYAM-TN-17-0084523</span>
+                </div>
+                <div style="font-size:0.8rem;color:#475569;margin-top:2px;">
+                  Enterprise Type: <strong>Micro Enterprise (Services)</strong> &bull; Incorporated in Tamil Nadu, India.
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Highlight grid -->
           <div class="highlight-grid" role="list" aria-label="Company highlights">
@@ -2216,32 +2146,28 @@
               <div class="hi-icon blue-bg" aria-hidden="true"><i class="fas fa-eye"></i></div>
               <div>
                 <div class="hi-title">Our Vision</div>
-                <div class="hi-text">To be Tamil Nadu's most trusted digital growth partner, enabling every business to
-                  thrive in the digital era.</div>
+                <div class="hi-text">To be Tamil Nadu's most trusted digital growth partner, enabling every business to thrive in the digital era.</div>
               </div>
             </div>
             <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="200">
               <div class="hi-icon green-bg" aria-hidden="true"><i class="fas fa-bullseye"></i></div>
               <div>
                 <div class="hi-title">Our Mission</div>
-                <div class="hi-text">Deliver cutting-edge, affordable digital solutions with transparency, speed, and
-                  excellence in every engagement.</div>
+                <div class="hi-text">Deliver cutting-edge, compliant, and affordable digital software with total transparency and engineering excellence.</div>
               </div>
             </div>
             <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="300">
               <div class="hi-icon yellow-bg" aria-hidden="true"><i class="fas fa-star"></i></div>
               <div>
                 <div class="hi-title">Proven Expertise</div>
-                <div class="hi-text">3+ years of hands-on experience across web, mobile, automation, and digital
-                  marketing domains.</div>
+                <div class="hi-text">Hands-on experience in web architecture, mobile apps, fintech switches, and automated digital marketing.</div>
               </div>
             </div>
             <div class="highlight-item" role="listitem" data-aos="fade-up" data-aos-delay="400">
               <div class="hi-icon violet-bg" aria-hidden="true"><i class="fas fa-handshake"></i></div>
               <div>
                 <div class="hi-title">Client-Centric</div>
-                <div class="hi-text">Your goals are our goals. We maintain clear communication, timely delivery, and
-                  post-launch commitment.</div>
+                <div class="hi-text">Direct communication, milestone clarity, secure contractual agreements, and long-term maintenance support.</div>
               </div>
             </div>
           </div>
@@ -2282,8 +2208,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap blue-bg" aria-hidden="true"><i class="fas fa-code"></i></div>
             <h3 class="svc-title">Website Development</h3>
-            <p class="svc-desc">Custom, responsive websites built with modern technologies — from elegant landing pages
-              to complex multi-page portals optimized for speed and SEO.</p>
+            <p class="svc-desc">Custom, responsive websites built with modern technologies — from elegant landing pages to complex multi-page portals optimized for speed and SEO.</p>
           </article>
         </div>
 
@@ -2292,19 +2217,16 @@
           <article class="service-card">
             <div class="svc-icon-wrap green-bg" aria-hidden="true"><i class="fas fa-window-restore"></i></div>
             <h3 class="svc-title">Web Applications</h3>
-            <p class="svc-desc">Feature-rich, scalable web applications with intuitive interfaces — dashboards, CRM
-              systems, booking platforms, and custom business tools.</p>
+            <p class="svc-desc">Feature-rich, scalable web applications with intuitive interfaces — dashboards, CRM systems, booking platforms, and custom business tools.</p>
           </article>
         </div>
 
         <!-- WhatsApp Automation -->
         <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
           <article class="service-card">
-            <div class="svc-icon-wrap" style="background:#dcfce7;color:#16a34a" aria-hidden="true"><i
-                class="fab fa-whatsapp"></i></div>
+            <div class="svc-icon-wrap" style="background:#dcfce7;color:#16a34a" aria-hidden="true"><i class="fab fa-whatsapp"></i></div>
             <h3 class="svc-title">WhatsApp Business Automation</h3>
-            <p class="svc-desc">Automate customer interactions, lead capture, and order management via WhatsApp Business
-              API — saving time and boosting engagement 24/7.</p>
+            <p class="svc-desc">Automate customer interactions, lead capture, and order management via WhatsApp Business API — saving time and boosting engagement 24/7.</p>
           </article>
         </div>
 
@@ -2313,8 +2235,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap violet-bg" aria-hidden="true"><i class="fas fa-mobile-screen-button"></i></div>
             <h3 class="svc-title">Mobile App Development</h3>
-            <p class="svc-desc">Cross-platform iOS and Android apps built with React Native or Flutter — delivering
-              native performance with a single, maintainable codebase.</p>
+            <p class="svc-desc">Cross-platform iOS and Android apps built with React Native or Flutter — delivering native performance with a single, maintainable codebase.</p>
           </article>
         </div>
 
@@ -2323,19 +2244,16 @@
           <article class="service-card">
             <div class="svc-icon-wrap yellow-bg" aria-hidden="true"><i class="fas fa-bullhorn"></i></div>
             <h3 class="svc-title">Digital Marketing</h3>
-            <p class="svc-desc">Strategic campaigns including social media marketing, video editing, motion graphics,
-              poster design, Google Ads, and content creation that converts.</p>
+            <p class="svc-desc">Strategic campaigns including social media marketing, video editing, motion graphics, poster design, Google Ads, and content creation that converts.</p>
           </article>
         </div>
 
         <!-- SEO Optimization -->
         <div class="col-lg-4 col-md-6" role="listitem" data-aos="fade-up" data-aos-delay="120">
           <article class="service-card">
-            <div class="svc-icon-wrap" style="background:#fce7f3;color:#be185d" aria-hidden="true"><i
-                class="fas fa-magnifying-glass-chart"></i></div>
+            <div class="svc-icon-wrap" style="background:#fce7f3;color:#be185d" aria-hidden="true"><i class="fas fa-magnifying-glass-chart"></i></div>
             <h3 class="svc-title">SEO Optimization</h3>
-            <p class="svc-desc">Technical and on-page SEO audits, keyword strategy, backlink building, and performance
-              tuning to rank higher and drive organic traffic consistently.</p>
+            <p class="svc-desc">Technical and on-page SEO audits, keyword strategy, backlink building, and performance tuning to rank higher and drive organic traffic consistently.</p>
           </article>
         </div>
 
@@ -2344,8 +2262,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap orange-bg" aria-hidden="true"><i class="fas fa-pen-ruler"></i></div>
             <h3 class="svc-title">UI/UX Design</h3>
-            <p class="svc-desc">Human-centred design with wireframes, interactive prototypes, design systems, and
-              pixel-perfect visual interfaces that delight and retain users.</p>
+            <p class="svc-desc">Human-centred design with wireframes, interactive prototypes, design systems, and pixel-perfect visual interfaces that delight and retain users.</p>
           </article>
         </div>
 
@@ -2354,8 +2271,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap teal-bg" aria-hidden="true"><i class="fas fa-cart-shopping"></i></div>
             <h3 class="svc-title">E-commerce Development</h3>
-            <p class="svc-desc">End-to-end online store setup with product management, secure payment gateways,
-              inventory tracking, and seamless checkout experiences.</p>
+            <p class="svc-desc">End-to-end online store setup with product management, secure payment gateways, inventory tracking, and seamless checkout experiences.</p>
           </article>
         </div>
 
@@ -2364,8 +2280,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap blue-bg" aria-hidden="true"><i class="fas fa-plug"></i></div>
             <h3 class="svc-title">API Integration</h3>
-            <p class="svc-desc">Seamlessly connect third-party services — payment gateways, CRMs, ERPs, logistics APIs,
-              and social platforms to create a unified business ecosystem.</p>
+            <p class="svc-desc">Seamlessly connect third-party services — payment gateways, CRMs, ERPs, logistics APIs, and social platforms to create a unified business ecosystem.</p>
           </article>
         </div>
 
@@ -2374,8 +2289,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap green-bg" aria-hidden="true"><i class="fas fa-shield-halved"></i></div>
             <h3 class="svc-title">Maintenance & Support</h3>
-            <p class="svc-desc">Proactive monitoring, security patches, performance updates, and dedicated support plans
-              to keep your digital assets running flawlessly.</p>
+            <p class="svc-desc">Proactive monitoring, security patches, performance updates, and dedicated support plans to keep your digital assets running flawlessly.</p>
           </article>
         </div>
 
@@ -2384,8 +2298,7 @@
           <article class="service-card">
             <div class="svc-icon-wrap violet-bg" aria-hidden="true"><i class="fas fa-palette"></i></div>
             <h3 class="svc-title">Branding & Logo Design</h3>
-            <p class="svc-desc">Craft a memorable brand identity — from logo design and colour palettes to brand
-              guidelines and marketing collateral that tell your unique story.</p>
+            <p class="svc-desc">Craft a memorable brand identity — from logo design and colour palettes to brand guidelines and marketing collateral that tell your unique story.</p>
           </article>
         </div>
 
@@ -2394,28 +2307,8 @@
           <article class="service-card">
             <div class="svc-icon-wrap yellow-bg" aria-hidden="true"><i class="fas fa-handshake"></i></div>
             <h3 class="svc-title">Free Consultations Forever</h3>
-            <p class="svc-desc">We proudly provide complimentary, expert consultations across all our services. Whether
-              you need strategic project scoping or technical guidance, we are always here to help refine your vision—at
-              zero cost.</p>
+            <p class="svc-desc">We proudly provide complimentary, expert consultations across all our services. Whether you need strategic project scoping or technical guidance, we are always here to help refine your vision—at zero cost.</p>
           </article>
-        </div>
-
-        <!-- CTA card -->
-        <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="0" aria-hidden="true">
-          <div class="service-card d-flex flex-column justify-content-center align-items-center text-center"
-            style="background:linear-gradient(135deg,var(--royal-blue),var(--blue-light));border:none;min-height:200px;">
-            <i class="fas fa-comments" style="font-size:2rem;color:rgba(255,255,255,.6);margin-bottom:12px;"></i>
-            <h3 style="font-family:var(--font-display);font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:8px;">
-              Need a Custom Solution?
-            </h3>
-            <p style="font-size:.82rem;color:rgba(255,255,255,.75);margin-bottom:18px;">
-              Tell us about your project and we'll craft a bespoke package for you.
-            </p>
-            <a href="#contact" class="btn-primary-custom"
-              style="background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);font-size:.82rem;padding:9px 20px;">
-              Talk to Us →
-            </a>
-          </div>
         </div>
 
       </div>
@@ -2423,161 +2316,80 @@
   </section>
 
   <!-- ============================================================
-    SECTION: TRIHUB BILLING CRM
+    SECTION 5: FLAGSHIP PRODUCTS (CRM & TRIHUBPAY)
   ============================================================ -->
-  <section id="crm" style="background: var(--white);">
+  <section id="products">
     <div class="container">
 
       <!-- Heading -->
       <div class="text-center mb-5" data-aos="fade-up">
-        <span class="section-label"><i class="fas fa-database"></i> Our Product</span>
+        <span class="section-label"><i class="fas fa-cubes-stacked"></i> Flagship Software</span>
         <h2 class="section-title">
-          TriHub Billing <span>CRM Software</span>
+          Enterprise <span>Products Built by TriHub</span>
         </h2>
         <p class="section-sub mx-auto">
-          Smart billing, inventory, CRM, and business insights — all in one powerful platform.
+          Explore our proprietary platforms engineered to automate operations, manage billing, and power multi-service fintech networks.
         </p>
       </div>
 
-      <!-- Top Info -->
-      <div class="row mb-4 text-center">
-        <div class="col-md-4">
-          <div class="service-card">
-            <h5>🎁 Free Trial</h5>
-            <p>Get <strong>7 Days Free Trial</strong> with full features.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-card">
-            <h5>🔐 Easy Access</h5>
-            <p>Signup using <strong>Google Account</strong> and start instantly.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-card">
-            <h5>📊 Complete CRM</h5>
-            <p>Manage Sales, Purchase, Inventory, Reports & Team.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Features Grid -->
-      <div class="row g-4">
-
-        <!-- Dashboard -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>📊 Dashboard</h5>
-            <p>
-              View Total Sales, Purchases, Receivables, Payables, Sales Trends,
-              Top Products, Recent Invoices & Bills with filters like Today,
-              Yesterday, Last 7 Days.
+      <!-- Two Product Showcase Cards -->
+      <div class="row g-4 mb-5">
+        <!-- Product 1: TriHub Billing CRM -->
+        <div class="col-lg-6" data-aos="fade-right">
+          <div class="product-hero-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-primary" style="font-size:0.75rem;padding:6px 12px;">SaaS Product</span>
+              <span class="text-success fw-bold text-xs"><i class="fas fa-check-circle me-1"></i>7-Day Free Trial</span>
+            </div>
+            <h3 style="font-size:1.4rem;font-weight:800;color:var(--black);margin-bottom:8px;">
+              TriHub Billing <span style="color:var(--royal-blue)">CRM Software</span>
+            </h3>
+            <p style="font-size:0.9rem;color:var(--gray);line-height:1.6;margin-bottom:20px;">
+              The all-in-one smart billing, inventory management, vendor tracking, and team collaboration software designed specifically for retail, distribution, and commercial businesses.
             </p>
+            <div class="row g-2 mb-4 font-monospace" style="font-size:0.8rem;">
+              <div class="col-6"><i class="fas fa-check text-primary me-1"></i> GST/Non-GST Invoices</div>
+              <div class="col-6"><i class="fas fa-check text-primary me-1"></i> Live Stock Inventory</div>
+              <div class="col-6"><i class="fas fa-check text-primary me-1"></i> Vendor & Customer Ledgers</div>
+              <div class="col-6"><i class="fas fa-check text-primary me-1"></i> 7 Detailed P&L Reports</div>
+            </div>
+            <a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-primary-custom w-100 justify-content-center">
+              Start Free CRM Trial →
+            </a>
           </div>
         </div>
 
-        <!-- Stock -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>📦 Stock Management</h5>
-            <p>
-              Manage Products & Inventory. Add/Edit/Delete items with unique system IDs
-              and adjust stock levels easily.
+        <!-- Product 2: TriHubPay Fintech Portal -->
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="product-hero-card" style="border-color:#bbf7d0;">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-success" style="font-size:0.75rem;padding:6px 12px;">Fintech Platform</span>
+              <span class="text-primary fw-bold text-xs"><i class="fas fa-bolt me-1"></i>High-Speed Switch</span>
+            </div>
+            <h3 style="font-size:1.4rem;font-weight:800;color:var(--black);margin-bottom:8px;">
+              TriHub<span style="color:var(--green)">Pay</span> Platform
+            </h3>
+            <p style="font-size:0.9rem;color:var(--gray);line-height:1.6;margin-bottom:20px;">
+              Next-generation B2B utility payments and telecom recharge switch for retailers and distributors. Instant margin credits, automatic failovers, and digital thermal receipts.
             </p>
+            <div class="row g-2 mb-4 font-monospace" style="font-size:0.8rem;">
+              <div class="col-6"><i class="fas fa-check text-success me-1"></i> Jio, Airtel, Vi, BSNL</div>
+              <div class="col-6"><i class="fas fa-check text-success me-1"></i> DTH & Bill Payments</div>
+              <div class="col-6"><i class="fas fa-check text-success me-1"></i> Instant UPI Top-up</div>
+              <div class="col-6"><i class="fas fa-check text-success me-1"></i> Double-Entry Ledger</div>
+            </div>
+            <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-primary-custom w-100 justify-content-center" style="background:linear-gradient(135deg,var(--green),var(--green-dark));">
+              Access TriHubPay Portal →
+            </a>
           </div>
         </div>
-
-        <!-- Sales -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>💰 Sales</h5>
-            <p>
-              Manage Customers & Invoices. Generate invoices with/without tax,
-              track payments, and download PDFs (A3, A4, A5, Custom).
-            </p>
-          </div>
-        </div>
-
-        <!-- Purchase -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>🧾 Purchase</h5>
-            <p>
-              Manage Vendors & Bills with full control. Track purchases,
-              generate PDFs, and maintain records efficiently.
-            </p>
-          </div>
-        </div>
-
-        <!-- Reports -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>📈 Reports</h5>
-            <p>
-              7 Powerful Reports: Sales Summary, Invoice Details, Customer Ledger,
-              Purchase Summary, Vendor Ledger, Stock Report & Profit & Loss.
-            </p>
-          </div>
-        </div>
-
-        <!-- Team -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>👥 Team & Chat</h5>
-            <p>
-              Create users, assign permissions, and communicate with your team
-              using built-in Team Chat.
-            </p>
-          </div>
-        </div>
-
-        <!-- Profile -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>⚙️ Profile & Settings</h5>
-            <p>
-              Update profile, add UPI/QR, logo, track activities,
-              and manage your account securely.
-            </p>
-          </div>
-        </div>
-
-        <!-- Billing Filters -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>🔍 Smart Filters</h5>
-            <p>
-              Filter invoices & bills by Paid, Unpaid, Partial.
-              Includes search, pagination, and record control.
-            </p>
-          </div>
-        </div>
-
-        <!-- Subscription -->
-        <div class="col-lg-4 col-md-6">
-          <div class="service-card">
-            <h5>💳 Subscription</h5>
-            <p>
-              Choose Monthly/Yearly plans, pay via QR, upload proof,
-              and get approval from TriHub team.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- CTA -->
-      <div class="text-center mt-5">
-        <a href="https://trial.billing.trihubtechnologies.com" class="btn-primary-custom">
-          Start Your Trial For Free Now ...
-        </a>
       </div>
 
     </div>
   </section>
 
   <!-- ============================================================
-     SECTION 5: OUR PROCESS
+     SECTION 6: OUR PROCESS
 ============================================================ -->
   <section id="process" aria-label="Our work process">
     <div class="container">
@@ -2599,10 +2411,8 @@
           <div class="process-node" aria-label="Step 1">1</div>
           <div class="process-card">
             <div class="pc-step-label">Step 01</div>
-            <h3 class="pc-title"><i class="fas fa-comments me-2" style="color:var(--royal-blue)"
-                aria-hidden="true"></i>Consultation & Requirement Gathering</h3>
-            <p class="pc-desc">We begin with an in-depth discovery call to understand your business, goals, target
-              audience, and technical needs — laying the foundation for everything that follows.</p>
+            <h3 class="pc-title"><i class="fas fa-comments me-2" style="color:var(--royal-blue)" aria-hidden="true"></i>Consultation & Requirement Gathering</h3>
+            <p class="pc-desc">We begin with an in-depth discovery call to understand your business, goals, target audience, and technical needs — laying the foundation for everything that follows.</p>
           </div>
         </div>
 
@@ -2611,10 +2421,8 @@
           <div class="process-node" aria-label="Step 2">2</div>
           <div class="process-card">
             <div class="pc-step-label">Step 02</div>
-            <h3 class="pc-title"><i class="fas fa-map me-2" style="color:var(--green)" aria-hidden="true"></i>Planning &
-              Strategy</h3>
-            <p class="pc-desc">Our team crafts a detailed project plan — technology stack selection, timeline,
-              milestones, resource allocation, and a clear roadmap aligned with your objectives.</p>
+            <h3 class="pc-title"><i class="fas fa-map me-2" style="color:var(--green)" aria-hidden="true"></i>Planning & Strategy</h3>
+            <p class="pc-desc">Our team crafts a detailed project plan — technology stack selection, timeline, milestones, resource allocation, and a clear roadmap aligned with your objectives.</p>
           </div>
         </div>
 
@@ -2623,10 +2431,8 @@
           <div class="process-node" aria-label="Step 3">3</div>
           <div class="process-card">
             <div class="pc-step-label">Step 03</div>
-            <h3 class="pc-title"><i class="fas fa-object-group me-2" style="color:var(--violet)"
-                aria-hidden="true"></i>Wireframe / Prototype Creation</h3>
-            <p class="pc-desc">We design interactive wireframes and clickable prototypes giving you a visual walkthrough
-              of the final product before any development begins.</p>
+            <h3 class="pc-title"><i class="fas fa-object-group me-2" style="color:var(--violet)" aria-hidden="true"></i>Wireframe / Prototype Creation</h3>
+            <p class="pc-desc">We design interactive wireframes and clickable prototypes giving you a visual walkthrough of the final product before any development begins.</p>
           </div>
         </div>
 
@@ -2634,13 +2440,9 @@
         <div class="process-step" data-aos="fade-up" data-aos-delay="240">
           <div class="process-node" aria-label="Step 4">4</div>
           <div class="process-card">
-            <div class="pc-step-label"
-              style="color:var(--yellow);background:var(--yellow-light);padding:2px 10px;border-radius:50px;display:inline-block;">
-              Step 04</div>
-            <h3 class="pc-title" style="margin-top:8px"><i class="fas fa-file-signature me-2"
-                style="color:var(--yellow)" aria-hidden="true"></i>Client Approval & 50% Payment</h3>
-            <p class="pc-desc">Once you approve the prototype and project plan, we formalise the agreement and collect
-              50% of the project fee to initiate full-scale development.</p>
+            <div class="pc-step-label" style="color:var(--yellow);background:var(--yellow-light);padding:2px 10px;border-radius:50px;display:inline-block;">Step 04</div>
+            <h3 class="pc-title" style="margin-top:8px"><i class="fas fa-file-signature me-2" style="color:var(--yellow)" aria-hidden="true"></i>Client Approval & 50% Milestone</h3>
+            <p class="pc-desc">Once you approve the prototype and project plan, we formalise the commercial agreement and commence full-scale agile development.</p>
           </div>
         </div>
 
@@ -2649,10 +2451,8 @@
           <div class="process-node" aria-label="Step 5">5</div>
           <div class="process-card">
             <div class="pc-step-label">Step 05</div>
-            <h3 class="pc-title"><i class="fas fa-laptop-code me-2" style="color:var(--royal-blue)"
-                aria-hidden="true"></i>Development Phase</h3>
-            <p class="pc-desc">Our developers build your solution using industry best practices — clean code, modular
-              architecture, version control, and regular internal reviews to ensure quality.</p>
+            <h3 class="pc-title"><i class="fas fa-laptop-code me-2" style="color:var(--royal-blue)" aria-hidden="true"></i>Development Phase</h3>
+            <p class="pc-desc">Our developers build your solution using industry best practices — clean code, modular architecture, version control, and regular reviews to ensure high quality.</p>
           </div>
         </div>
 
@@ -2661,10 +2461,8 @@
           <div class="process-node" aria-label="Step 6">6</div>
           <div class="process-card">
             <div class="pc-step-label">Step 06</div>
-            <h3 class="pc-title"><i class="fas fa-bell me-2" style="color:var(--green)" aria-hidden="true"></i>Progress
-              Updates (Every 25%)</h3>
-            <p class="pc-desc">You receive structured progress reports at every 25% milestone — screenshots, demo links,
-              and changelogs — keeping you informed and in control throughout.</p>
+            <h3 class="pc-title"><i class="fas fa-bell me-2" style="color:var(--green)" aria-hidden="true"></i>Progress Updates (Every 25%)</h3>
+            <p class="pc-desc">You receive structured progress reports at every 25% milestone — live demo links, walkthroughs, and changelogs — keeping you informed and in control throughout.</p>
           </div>
         </div>
 
@@ -2673,10 +2471,8 @@
           <div class="process-node" aria-label="Step 7">7</div>
           <div class="process-card">
             <div class="pc-step-label">Step 07</div>
-            <h3 class="pc-title"><i class="fas fa-bug-slash me-2" style="color:var(--violet)"
-                aria-hidden="true"></i>Testing & Quality Assurance</h3>
-            <p class="pc-desc">Rigorous multi-device, cross-browser testing, performance benchmarking, and security
-              audits ensure a polished, bug-free product before launch.</p>
+            <h3 class="pc-title"><i class="fas fa-bug-slash me-2" style="color:var(--violet)" aria-hidden="true"></i>Testing & Quality Assurance</h3>
+            <p class="pc-desc">Rigorous multi-device, cross-browser testing, performance benchmarking, and security audits ensure a polished, bug-free product before launch.</p>
           </div>
         </div>
 
@@ -2685,23 +2481,18 @@
           <div class="process-node" aria-label="Step 8">8</div>
           <div class="process-card">
             <div class="pc-step-label">Step 08</div>
-            <h3 class="pc-title"><i class="fas fa-cloud-arrow-up me-2" style="color:var(--royal-blue)"
-                aria-hidden="true"></i>Deployment</h3>
-            <p class="pc-desc">We handle server setup, domain configuration, SSL certificates, CI/CD pipelines, and a
-              smooth zero-downtime go-live — your product launches with confidence.</p>
+            <h3 class="pc-title"><i class="fas fa-cloud-arrow-up me-2" style="color:var(--royal-blue)" aria-hidden="true"></i>Deployment</h3>
+            <p class="pc-desc">We handle cloud infrastructure setup, domain configuration, SSL certificates, CI/CD pipelines, and zero-downtime go-live.</p>
           </div>
         </div>
 
         <!-- Step 9 -->
         <div class="process-step" data-aos="fade-up" data-aos-delay="640">
-          <div class="process-node" aria-label="Step 9"
-            style="background:linear-gradient(135deg,var(--green),var(--green-dark))">9</div>
+          <div class="process-node" aria-label="Step 9" style="background:linear-gradient(135deg,var(--green),var(--green-dark))">9</div>
           <div class="process-card" style="border-color:var(--green);border-width:1.5px">
             <div class="pc-step-label" style="color:var(--green)">Step 09</div>
-            <h3 class="pc-title"><i class="fas fa-headset me-2" style="color:var(--green)"
-                aria-hidden="true"></i>Post-launch Support & Revisions</h3>
-            <p class="pc-desc">Our relationship doesn't end at launch. We provide ongoing support, performance
-              monitoring, content updates, and revisions to ensure your product continues to evolve.</p>
+            <h3 class="pc-title"><i class="fas fa-headset me-2" style="color:var(--green)" aria-hidden="true"></i>Post-launch Support & Evolution</h3>
+            <p class="pc-desc">Our commitment continues beyond launch. We provide ongoing support, performance monitoring, updates, and scaling consultations.</p>
           </div>
         </div>
 
@@ -2710,7 +2501,7 @@
   </section>
 
   <!-- ============================================================
-     SECTION 6: TESTIMONIALS
+     SECTION 7: TESTIMONIALS
 ============================================================ -->
   <section id="testimonials" aria-label="Client testimonials">
     <div class="container">
@@ -2733,22 +2524,19 @@
               Trihub Technologies provided us with a complete digital solution, including a professional website and an
               efficient CRM system tailored for our conference and the Diabetes Club of Tiruchirappalli.
               This has significantly improved how we manage registrations, member data, and administrative operations.
-              Their ability to combine technical expertise with practical organizational needs made a real difference.
-              We now handle our events and club activities more efficiently thanks to their work.
             </p>
             <div class="testimonial-author"
               style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
               <div class="t-avatar" aria-hidden="true" style="flex-shrink: 0;">RV</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Dr. R. Vijayakumar</div>
-                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Annai
-                  Hospital</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Annai Hospital</div>
                 <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
                     class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Trichy
                 </div>
                 <a href="http://dctcontrichy.com/" target="_blank" rel="noopener"
                   style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
-                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                  Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
                 </a>
               </div>
             </div>
@@ -2762,9 +2550,7 @@
             <p class="testimonial-text">
               Trihub Technologies helped bring my vision to life in a way that truly reflects the purpose behind GoNXT.
               What started as an emotional and meaningful mission needed a platform that people could trust and easily
-              use—and they delivered exactly that. The website makes wheelchair booking simple and accessible, helping
-              us serve elderly devotees with dignity. Their team understood the heart behind this project, not just the
-              technical side.
+              use—and they delivered exactly that. The website makes wheelchair booking simple and accessible.
             </p>
             <div class="testimonial-author"
               style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
@@ -2772,14 +2558,12 @@
                 style="flex-shrink: 0; background:linear-gradient(135deg,var(--violet),#a855f7);">VS</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Vinothraj Seshan</div>
-                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">GoNXT Happy
-                  Wheels</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">GoNXT Happy Wheels</div>
                 <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
-                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i>
-                  Tiruvannamalai</div>
+                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Tiruvannamalai</div>
                 <a href="https://gonxt.in/" target="_blank" rel="noopener"
                   style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
-                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                  Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
                 </a>
               </div>
             </div>
@@ -2791,10 +2575,9 @@
           <article class="testimonial-card">
             <p class="quote-icon" aria-hidden="true">"</p>
             <p class="testimonial-text">
-              Working with Trihub Technologies was one of the best decisions for my business. They truly understood my
-              vision and created a beautiful, user-friendly website that perfectly represents my mehendi work. Since
-              launching the site, I’ve seen a noticeable increase in customer inquiries and bookings. Their team was
-              professional, responsive, and delivered exactly what I needed to grow my business online.
+              Working with Trihub Technologies was one of the best decisions for my business. They created a beautiful,
+              user-friendly website that perfectly represents my mehendi work. Since launching the site, I’ve seen a
+              noticeable increase in customer inquiries and bookings.
             </p>
             <div class="testimonial-author"
               style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
@@ -2802,14 +2585,12 @@
                 style="flex-shrink: 0; background:linear-gradient(135deg,#f59e0b,#d97706);">AR</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Asmath Raihana</div>
-                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Asmath
-                  Mehandi</div>
+                <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Asmath Mehandi</div>
                 <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
-                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i>
-                  Pudukkottai</div>
+                    class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Pudukkottai</div>
                 <a href="https://asmath-professional-mehandhi.netlify.app/" target="_blank" rel="noopener"
                   style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
-                  Check it <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                  Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
                 </a>
               </div>
             </div>
@@ -2821,7 +2602,7 @@
   </section>
 
   <!-- ============================================================
-     SECTION 7: FAQ
+     SECTION 8: FAQ
 ============================================================ -->
   <section id="faq" aria-label="Frequently asked questions">
     <div class="container">
@@ -2833,8 +2614,7 @@
             <span class="section-label" aria-hidden="true"><i class="fas fa-circle-question"></i> Got Questions?</span>
             <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
             <p class="section-sub mx-auto">
-              Transparent answers to the questions we hear most — so you can make
-              informed decisions with confidence.
+              Transparent answers to the questions we hear most — so you can make informed decisions with confidence.
             </p>
           </div>
 
@@ -2847,17 +2627,14 @@
                   aria-expanded="true" aria-controls="faq1">
                   <i class="fas fa-cubes me-3 text-primary" aria-hidden="true"
                     style="color:var(--royal-blue)!important"></i>
-                  What types of applications do you build?
+                  What types of software and applications do you build?
                 </button>
               </h3>
               <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
                   We build a wide spectrum of digital products: business websites, landing pages, e-commerce stores,
-                  custom web applications (CRM, ERP, booking systems, portals), cross-platform mobile apps (iOS &
-                  Android),
-                  WhatsApp automation systems, and admin dashboards. Whether you need something straightforward or
-                  highly
-                  complex, we have the expertise to deliver it.
+                  custom SaaS applications (CRM, billing portals, booking engines), fintech transaction switches (like TriHubPay),
+                  cross-platform mobile apps (iOS & Android), WhatsApp automation systems, and high-security admin consoles.
                 </div>
               </div>
             </div>
@@ -2867,19 +2644,13 @@
               <h3 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
-                  <i class="fas fa-code me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
-                  What technologies and tech stack do you use?
+                  <i class="fas fa-certificate me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
+                  Is TriHub Technologies a legally registered entity?
                 </button>
               </h3>
               <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  Our stack is modern and versatile. For web frontend we use HTML5, CSS3, JavaScript, React.js, Next.js,
-                  and
-                  Tailwind CSS. Backend technologies include Node.js, Express, Python (Django/FastAPI), and PHP
-                  (Laravel).
-                  For mobile apps we use React Native and Flutter. Databases include MySQL, PostgreSQL, MongoDB, and
-                  Firebase.
-                  We deploy on AWS, GCP, Vercel, and cPanel hosting depending on project requirements.
+                  Yes, TriHub Technologies is a Government of India recognized enterprise registered under the Ministry of Micro, Small and Medium Enterprises (MSME) with official Udyam Registration Number: <strong>UDYAM-TN-17-0084523</strong>. All our client engagements are governed by formal legal contracts and data confidentiality agreements.
                 </div>
               </div>
             </div>
@@ -2895,12 +2666,7 @@
               </h3>
               <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  Timelines vary based on project scope and complexity. A basic website or landing page typically takes
-                  <strong>1–2 weeks</strong>. A custom web application or e-commerce store usually takes
-                  <strong>4–8 weeks</strong>. Mobile apps generally require <strong>8–16 weeks</strong>. We always
-                  provide
-                  a detailed timeline during the planning phase and keep you updated at every 25% milestone throughout
-                  development.
+                  Timelines vary based on scope. A clean business website typically takes <strong>1–2 weeks</strong>. Custom web applications or e-commerce stores usually take <strong>3–6 weeks</strong>. Mobile apps and specialized fintech platforms take <strong>6–12 weeks</strong>. We provide milestone-based tracking at every 25% phase.
                 </div>
               </div>
             </div>
@@ -2911,18 +2677,12 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
                   <i class="fas fa-indian-rupee-sign me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
-                  What is your pricing model?
+                  What is your pricing and milestone structure?
                 </button>
               </h3>
               <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  We follow a milestone-based payment structure. After the project plan is finalised and the prototype
-                  is
-                  approved, we collect <strong>50% upfront</strong> to commence development. The remaining balance is
-                  due
-                  upon project completion and final delivery. For ongoing maintenance retainers, we offer flexible
-                  monthly
-                  or quarterly plans. All pricing is transparent — no hidden fees.
+                  We follow a transparent, milestone-oriented payment model. After project approval and prototype confirmation, development initiates. The remaining balance is completed upon final delivery and deployment. We guarantee zero hidden costs.
                 </div>
               </div>
             </div>
@@ -2933,17 +2693,12 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
                   <i class="fas fa-headset me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
-                  Do you provide support after project delivery?
+                  Do you provide post-launch maintenance and technical support?
                 </button>
               </h3>
               <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  Absolutely. Every project includes a complimentary post-launch support window (duration depends on
-                  project
-                  size) to address any bugs, minor adjustments, or deployment issues. Beyond that, we offer ongoing
-                  maintenance packages that cover security updates, performance monitoring, content changes, and
-                  priority
-                  support — ensuring your product remains reliable, secure, and up-to-date long after launch.
+                  Absolutely. Every project includes complimentary post-launch support to guarantee zero downtime and smooth operations. Furthermore, we offer continuous maintenance retainers for cloud hosting management, automated backups, and feature upgrades.
                 </div>
               </div>
             </div>
@@ -2954,18 +2709,12 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
                   <i class="fas fa-location-dot me-3" aria-hidden="true" style="color:var(--royal-blue)"></i>
-                  Do you work with clients outside Trichy / Tamil Nadu?
+                  Do you serve clients outside Tamil Nadu?
                 </button>
               </h3>
               <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                  Yes! While we're based in Trichy and Pudukkottai, we work with clients across India and
-                  internationally.
-                  Our entire workflow is optimised for remote collaboration — using Zoom, Google Meet, WhatsApp, and
-                  project
-                  management tools to ensure seamless communication regardless of your location. Distance is never a
-                  barrier
-                  to great work.
+                  Yes! While our physical office is in Pudukkottai and Trichy, Tamil Nadu, we serve clients across all of India and globally. Our workflows are completely adapted for smooth remote collaboration through Zoom, Google Meet, and WhatsApp.
                 </div>
               </div>
             </div>
@@ -2974,7 +2723,7 @@
 
           <!-- Bottom CTA -->
           <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="200">
-            <p style="color:var(--gray);margin-bottom:18px;">Still have questions? We're happy to help.</p>
+            <p style="color:var(--gray);margin-bottom:18px;">Still have questions? We're always here to discuss your vision.</p>
             <a href="#contact" class="btn-primary-custom">
               <i class="fas fa-envelope" aria-hidden="true"></i> Send Us a Message
             </a>
@@ -2986,16 +2735,16 @@
   </section>
 
   <!-- ============================================================
-     SECTION 8: CONTACT US
+     SECTION 9: CONTACT US
 ============================================================ -->
-  <section id="contact" style="background:var(--off-white);" aria-label="Contact us">
+  <section id="contact" aria-label="Contact us">
     <div class="container">
 
       <div class="text-center mb-5" data-aos="fade-up">
         <span class="section-label" aria-hidden="true"><i class="fas fa-paper-plane"></i> Get In Touch</span>
         <h2 class="section-title">Let's Start Your <span>Digital Journey</span></h2>
         <p class="section-sub mx-auto">
-          Have a project in mind? Fill out the form and we'll get back to you within 24 hours.
+          Have a project in mind? Reach out directly or send us an enquiry — we respond within 24 hours.
         </p>
       </div>
 
@@ -3006,15 +2755,26 @@
 
           <div class="contact-info-card mb-4">
             <h3
-              style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:22px;color:var(--black)">
+              style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:20px;color:var(--black)">
               Contact Information
             </h3>
 
             <div class="contact-item">
               <div class="c-icon" aria-hidden="true"><i class="fas fa-location-dot"></i></div>
               <div>
-                <div class="c-label">Office Address</div>
-                <div class="c-val">Trichy / Pudukkottai,<br>Tamil Nadu, India</div>
+                <div class="c-label">Office Location</div>
+                <div class="c-val">Trichy / Pudukkottai,<br>Tamil Nadu, India &bull; PIN: 622101</div>
+              </div>
+            </div>
+
+            <!-- MSME Registration Row -->
+            <div class="contact-item">
+              <div class="c-icon green-bg" aria-hidden="true"><i class="fas fa-award text-success"></i></div>
+              <div>
+                <div class="c-label">Govt. MSME Registration</div>
+                <div class="c-val font-monospace" style="color:var(--royal-blue);font-weight:700;">
+                  UDYAM-TN-17-0084523
+                </div>
               </div>
             </div>
 
@@ -3022,14 +2782,14 @@
               <div class="c-icon" aria-hidden="true"><i class="fas fa-phone"></i></div>
               <div>
                 <div class="c-label">Phone / WhatsApp</div>
-                <div class="c-val"><a href="tel:+916374569225">+91 63745 69225</a></div>
+                <div class="c-val"><a href="tel:+918270873279">+91 82708 73279</a></div>
               </div>
             </div>
 
             <div class="contact-item">
               <div class="c-icon" aria-hidden="true"><i class="fas fa-envelope"></i></div>
               <div>
-                <div class="c-label">Email</div>
+                <div class="c-label">Official Email</div>
                 <div class="c-val"><a href="mailto:trihubtechnologies@gmail.com">trihubtechnologies@gmail.com</a></div>
               </div>
             </div>
@@ -3037,9 +2797,8 @@
             <div class="contact-item">
               <div class="c-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>
               <div>
-                <div class="c-label">Website</div>
-                <div class="c-val"><a href="https://trihubtechnologies.com" target="_blank"
-                    rel="noopener">trihubtechnologies.com</a></div>
+                <div class="c-label">Official Website</div>
+                <div class="c-val"><a href="https://trihubtechnologies.com" target="_blank" rel="noopener">trihubtechnologies.com</a></div>
               </div>
             </div>
 
@@ -3056,7 +2815,7 @@
           <div class="contact-info-card" style="padding-top:20px;padding-bottom:20px">
             <h4
               style="font-family:var(--font-display);font-weight:700;font-size:.9rem;color:var(--black);margin-bottom:14px;">
-              Follow Us
+              Connect With Us
             </h4>
             <div class="social-links-row" role="list" aria-label="Social media links">
               <a href="https://www.facebook.com/people/TriHub-Technologies/61572019447995/?rdid=qxmlaSUmcjh4igS9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1H8tms9zUM%2F"
@@ -3074,7 +2833,7 @@
                 target="_blank" rel="noopener">
                 <i class="fab fa-instagram" aria-hidden="true"></i>
               </a>
-              <a href="https://wa.me/916374569225" class="social-link-btn" style="background:#25d366;color:#fff;"
+              <a href="https://wa.me/918270873279" class="social-link-btn" style="background:#25d366;color:#fff;"
                 aria-label="WhatsApp" target="_blank" rel="noopener" role="listitem">
                 <i class="fab fa-whatsapp" aria-hidden="true"></i>
               </a>
@@ -3097,7 +2856,7 @@
           <div class="contact-form-wrap">
             <h3
               style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-bottom:24px;color:var(--black)">
-              Send Us a Message
+              Send Us a Direct Message
             </h3>
 
             <form id="contactForm" novalidate aria-label="Contact form">
@@ -3106,7 +2865,7 @@
                 <div class="col-md-6">
                   <label class="form-label" for="contactName">Full Name <span style="color:red"
                       aria-hidden="true">*</span></label>
-                  <input type="text" class="form-control" id="contactName" name="name" placeholder="e.g. Nandha"
+                  <input type="text" class="form-control" id="contactName" name="name" placeholder="e.g. Paris Ahamed"
                     required aria-required="true" />
                 </div>
 
@@ -3119,7 +2878,7 @@
 
                 <div class="col-md-6">
                   <label class="form-label" for="contactPhone">Phone / WhatsApp</label>
-                  <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="+91 XXXXX XXXXX" />
+                  <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="+91 82708 73279" />
                 </div>
 
                 <div class="col-md-6">
@@ -3128,6 +2887,8 @@
                     <option value="">Select a service…</option>
                     <option>Website Development</option>
                     <option>Web Application</option>
+                    <option>TriHub Billing CRM</option>
+                    <option>TriHubPay Recharge Gateway</option>
                     <option>Mobile App Development</option>
                     <option>WhatsApp Business Automation</option>
                     <option>Digital Marketing</option>
@@ -3163,7 +2924,7 @@
                   </button>
                   <p style="font-size:.75rem;color:var(--gray);margin-top:10px;text-align:center;">
                     <i class="fas fa-lock" aria-hidden="true" style="margin-right:4px;"></i>
-                    Your message opens your email client pre-filled — we never store form data.
+                    Your message opens your email client pre-filled — we never store form data without consent.
                   </p>
                 </div>
 
@@ -3178,7 +2939,7 @@
   </section>
 
   <!-- ============================================================
-     SECTION 9: FOOTER
+     SECTION 10: FOOTER
 ============================================================ -->
   <footer id="footer" aria-label="Site footer">
     <div class="footer-top">
@@ -3192,8 +2953,15 @@
                   height="38" /></div>
               <span>TriHub <span style="color:var(--green)">Technologies</span></span>
             </div>
-            <p class="footer-slogan">The Central Hub For Digital Growth — your end-to-end partner for web, mobile, and
-              marketing excellence.</p>
+            <p class="footer-slogan">The Central Hub For Digital Growth — your end-to-end partner for web, mobile, SaaS, and marketing excellence.</p>
+
+            <!-- MSME Badge in footer -->
+            <div class="mt-3">
+              <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);font-size:0.78rem;">
+                <i class="fas fa-certificate text-success"></i>
+                <span class="text-white-50">Govt. MSME: <strong class="text-white font-monospace">UDYAM-TN-17-0084523</strong></span>
+              </div>
+            </div>
 
             <div class="footer-social mt-3" aria-label="Footer social links">
               <a href="https://www.facebook.com/people/TriHub-Technologies/61572019447995/?rdid=qxmlaSUmcjh4igS9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1H8tms9zUM%2F"
@@ -3204,7 +2972,7 @@
               <a href="https://www.instagram.com/trihubtech?utm_source=qr&igsh=MXJ2NjYyM3JldHN1MQ%3D%3D"
                 aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"
                   aria-hidden="true"></i></a>
-              <a href="https://wa.me/916374569225" aria-label="WhatsApp" target="_blank" rel="noopener"><i
+              <a href="https://wa.me/918270873279" aria-label="WhatsApp" target="_blank" rel="noopener"><i
                   class="fab fa-whatsapp" aria-hidden="true"></i></a>
             </div>
           </div>
@@ -3216,6 +2984,7 @@
               <li><a href="#home"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
               <li><a href="#about"><i class="fas fa-chevron-right" aria-hidden="true"></i> About Us</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Services</a></li>
+              <li><a href="#products"><i class="fas fa-chevron-right" aria-hidden="true"></i> Products</a></li>
               <li><a href="#process"><i class="fas fa-chevron-right" aria-hidden="true"></i> Process</a></li>
               <li><a href="#testimonials"><i class="fas fa-chevron-right" aria-hidden="true"></i> Testimonials</a></li>
               <li><a href="#faq"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a></li>
@@ -3223,33 +2992,35 @@
             </ul>
           </div>
 
-          <!-- Services links -->
+          <!-- Products & Services links -->
           <div class="col-lg-3 col-md-6 col-6">
-            <p class="footer-heading">Our Services</p>
+            <p class="footer-heading">Products & Services</p>
             <ul class="footer-links">
-              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Website Development</a>
-              </li>
+              <li><a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener"><i class="fas fa-chevron-right text-warning" aria-hidden="true"></i> TriHub CRM Software</a></li>
+              <li><a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener"><i class="fas fa-chevron-right text-success" aria-hidden="true"></i> TriHubPay Platform</a></li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Website Development</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Web Applications</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Mobile App Dev</a></li>
-              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> WhatsApp Automation</a>
-              </li>
+              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> WhatsApp Automation</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Digital Marketing</a></li>
-              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> SEO Optimization</a></li>
-              <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> UI/UX Design</a></li>
             </ul>
           </div>
 
           <!-- Contact details -->
           <div class="col-lg-3 col-md-6">
-            <p class="footer-heading">Contact Details</p>
+            <p class="footer-heading">Registered Office</p>
             <ul class="footer-contact-list">
               <li>
                 <i class="fas fa-location-dot" aria-hidden="true"></i>
-                <span>Trichy / Pudukkottai,<br>Tamil Nadu, India</span>
+                <span>Trichy / Pudukkottai,<br>Tamil Nadu, India &bull; 622101</span>
+              </li>
+              <li>
+                <i class="fas fa-id-card text-success" aria-hidden="true"></i>
+                <span class="font-monospace text-white-50">UDYAM-TN-17-0084523</span>
               </li>
               <li>
                 <i class="fas fa-phone" aria-hidden="true"></i>
-                <a href="tel:+916374569225">+91 63745 69225</a>
+                <a href="tel:+918270873279">+91 82708 73279</a>
               </li>
               <li>
                 <i class="fas fa-envelope" aria-hidden="true"></i>
@@ -3274,11 +3045,11 @@
     <div class="container">
       <div class="footer-bottom">
         <span>
-          &copy; <span id="footerYear"></span> TriHub Technologies. All rights reserved.
+          &copy; <span id="footerYear"></span> TriHub Technologies &bull; Govt. MSME Regd: <strong>UDYAM-TN-17-0084523</strong>. All rights reserved.
         </span>
         <span>
           Crafted with <i class="fas fa-heart" style="color:var(--green);margin:0 3px;" aria-hidden="true"></i>
-          in Tamil Nadu, India
+          in Pudukkottai & Trichy, Tamil Nadu, India
         </span>
       </div>
     </div>
@@ -3403,7 +3174,7 @@
           message,
           '',
           '---',
-          'Sent via trihubtechnologies.com contact form',
+          'Sent via trihubtechnologies.com contact form (Govt. MSME: UDYAM-TN-17-0084523)',
         ].filter(l => l !== undefined);
 
         const mailtoSubject = encodeURIComponent(`[TriHub Enquiry] ${subject}`);
