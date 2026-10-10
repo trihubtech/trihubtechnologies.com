@@ -1900,8 +1900,8 @@
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
         <div class="d-flex align-items-center gap-2">
-          <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="nav-link d-none d-xl-inline-block text-primary fw-bold" style="font-size:0.85rem;">
-            <i class="fas fa-bolt text-success me-1"></i>TriHubPay
+          <a href="#products" class="nav-link d-none d-xl-inline-block text-primary fw-bold" style="font-size:0.85rem;">
+            <i class="fas fa-bolt text-success me-1"></i>TriHubPay <span class="badge bg-success-subtle text-success border border-success-subtle ms-1" style="font-size:0.65rem;vertical-align:middle;">Coming Soon</span>
           </a>
           <a href="#contact" class="nav-link nav-cta ms-lg-2">Get Started →</a>
         </div>
@@ -1946,11 +1946,11 @@
             <a href="#services" class="btn-primary-custom">
               <i class="fas fa-rocket" aria-hidden="true"></i> Explore Services
             </a>
-            <a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-outline-custom">
-              <i class="fas fa-database"></i> TriHub CRM
+            <a href="#products" class="btn-outline-custom">
+              <i class="fas fa-database text-primary"></i> TriHub CRM <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem;">In Dev</span>
             </a>
-            <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-outline-custom" style="border-color:var(--green);color:var(--green-dark);">
-              <i class="fas fa-bolt" style="color:var(--green)"></i> TriHubPay
+            <a href="#products" class="btn-outline-custom" style="border-color:var(--green);color:var(--green-dark);">
+              <i class="fas fa-bolt" style="color:var(--green)"></i> TriHubPay <span class="badge bg-success text-white ms-1" style="font-size:0.65rem;">Coming Soon</span>
             </a>
             <a href="#contact" class="btn-outline-custom">
               <i class="fas fa-paper-plane" aria-hidden="true"></i> Contact Us
@@ -2339,7 +2339,7 @@
           <div class="product-hero-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <span class="badge bg-primary" style="font-size:0.75rem;padding:6px 12px;">SaaS Product</span>
-              <span class="text-success fw-bold text-xs"><i class="fas fa-check-circle me-1"></i>7-Day Free Trial</span>
+              <span class="badge bg-warning-subtle text-dark border border-warning-subtle fw-semibold px-2.5 py-1.5"><i class="fas fa-hammer me-1 text-warning"></i> Under Development</span>
             </div>
             <h3 style="font-size:1.4rem;font-weight:800;color:var(--black);margin-bottom:8px;">
               TriHub Billing <span style="color:var(--royal-blue)">CRM Software</span>
@@ -2353,9 +2353,16 @@
               <div class="col-6"><i class="fas fa-check text-primary me-1"></i> Vendor & Customer Ledgers</div>
               <div class="col-6"><i class="fas fa-check text-primary me-1"></i> 7 Detailed P&L Reports</div>
             </div>
-            <a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-primary-custom w-100 justify-content-center">
-              Start Free CRM Trial →
-            </a>
+            <div class="d-flex flex-column gap-2">
+              <button type="button" class="btn btn-light border w-100 py-3 rounded-pill fw-bold text-secondary" style="background:#f1f5f9;border-color:#cbd5e1;cursor:not-allowed;" disabled>
+                <i class="fas fa-tools me-2 text-warning"></i> In Development — Launching Soon
+              </button>
+              <div class="text-center">
+                <a href="#contact" class="text-decoration-none text-muted" style="font-size:0.8rem;">
+                  <i class="fas fa-bell me-1 text-primary"></i> Interested in early access? Join waitlist →
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2364,7 +2371,7 @@
           <div class="product-hero-card" style="border-color:#bbf7d0;">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <span class="badge bg-success" style="font-size:0.75rem;padding:6px 12px;">Fintech Platform</span>
-              <span class="text-primary fw-bold text-xs"><i class="fas fa-bolt me-1"></i>High-Speed Switch</span>
+              <span class="badge bg-success-subtle text-success border border-success-subtle fw-semibold px-2.5 py-1.5"><i class="fas fa-flask me-1"></i> Private Beta • Testing</span>
             </div>
             <h3 style="font-size:1.4rem;font-weight:800;color:var(--black);margin-bottom:8px;">
               TriHub<span style="color:var(--green)">Pay</span> Platform
@@ -2378,9 +2385,16 @@
               <div class="col-6"><i class="fas fa-check text-success me-1"></i> Instant UPI Top-up</div>
               <div class="col-6"><i class="fas fa-check text-success me-1"></i> Double-Entry Ledger</div>
             </div>
-            <a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener" class="btn-primary-custom w-100 justify-content-center" style="background:linear-gradient(135deg,var(--green),var(--green-dark));">
-              Access TriHubPay Portal →
-            </a>
+            <div class="d-flex flex-column gap-2">
+              <button type="button" class="btn btn-light border w-100 py-3 rounded-pill fw-bold" style="background:#f0fdf4;border-color:#86efac;color:#166534;cursor:not-allowed;" disabled>
+                <i class="fas fa-bolt me-2 text-success"></i> Coming Soon — Under Final Testing
+              </button>
+              <div class="text-center">
+                <a href="#contact" class="text-decoration-none text-muted" style="font-size:0.8rem;">
+                  <i class="fas fa-user-plus me-1 text-success"></i> Retailer / Distributor? Request early onboarding →
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2996,8 +3010,8 @@
           <div class="col-lg-3 col-md-6 col-6">
             <p class="footer-heading">Products & Services</p>
             <ul class="footer-links">
-              <li><a href="https://trial.billing.trihubtechnologies.com" target="_blank" rel="noopener"><i class="fas fa-chevron-right text-warning" aria-hidden="true"></i> TriHub CRM Software</a></li>
-              <li><a href="https://pay.trihubtechnologies.com" target="_blank" rel="noopener"><i class="fas fa-chevron-right text-success" aria-hidden="true"></i> TriHubPay Platform</a></li>
+              <li><a href="#products"><i class="fas fa-chevron-right text-warning" aria-hidden="true"></i> TriHub CRM Software <span class="badge bg-warning-subtle text-dark border border-warning ms-1" style="font-size:0.6rem;">In Dev</span></a></li>
+              <li><a href="#products"><i class="fas fa-chevron-right text-success" aria-hidden="true"></i> TriHubPay Platform <span class="badge bg-success-subtle text-success border border-success ms-1" style="font-size:0.6rem;">Coming Soon</span></a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Website Development</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Web Applications</a></li>
               <li><a href="#services"><i class="fas fa-chevron-right" aria-hidden="true"></i> Mobile App Dev</a></li>
