@@ -996,8 +996,11 @@
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, .12);
       border-radius: var(--radius-lg);
-      padding: 32px 28px;
+      padding: 30px 26px;
       height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       transition: var(--transition);
       position: relative;
     }
@@ -2568,30 +2571,42 @@
         </div>
       </div>
 
-      <div class="row g-4">
+      <div class="row g-4 align-items-stretch">
 
         <!-- Testimonial 1 -->
         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
           <article class="testimonial-card">
-            <p class="quote-icon" aria-hidden="true">"</p>
-            <p class="testimonial-text">
-              Trihub Technologies provided us with a complete digital solution, including a professional website and an
-              efficient CRM system tailored for our conference and the Diabetes Club of Tiruchirappalli.
-              This has significantly improved how we manage registrations, member data, and administrative operations.
-            </p>
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 0.72rem; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-circle-check" style="color: #22c55e;"></i> Verified Enterprise Client
+                </span>
+                <div style="color: #fbbf24; font-size: 0.8rem; display: flex; gap: 2px;">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="quote-icon" aria-hidden="true" style="margin-bottom: 10px;">"</p>
+              <p class="testimonial-text" style="margin-bottom: 24px;">
+                Trihub Technologies provided us with a complete digital solution, including a professional website and an
+                efficient CRM system tailored for our conference and the Diabetes Club of Tiruchirappalli.
+                This has significantly improved how we manage registrations, member data, and administrative operations.
+              </p>
+            </div>
             <div class="testimonial-author"
-              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;">
               <div class="t-avatar" aria-hidden="true" style="flex-shrink: 0;">RV</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Dr. R. Vijayakumar</div>
                 <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Annai Hospital</div>
-                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                <div class="t-loc" style="margin-bottom:8px; color:rgba(255,255,255,0.7);"><i
                     class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Trichy
                 </div>
-                <a href="http://dctcontrichy.com/" target="_blank" rel="noopener"
-                  style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
-                  Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
-                </a>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; min-height: 28px; align-items: center;">
+                  <a href="http://dctcontrichy.com/" target="_blank" rel="noopener"
+                    style="display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:6px; text-decoration:none; font-weight:500;">
+                    Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </article>
@@ -2600,25 +2615,37 @@
         <!-- Testimonial 2 -->
         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="120">
           <article class="testimonial-card">
-            <p class="quote-icon" aria-hidden="true">"</p>
-            <p class="testimonial-text">
-              Trihub Technologies helped bring my vision to life in a way that truly reflects the purpose behind GoNXT.
-              What started as an emotional and meaningful mission needed a platform that people could trust and easily
-              use—and they delivered exactly that. The website makes wheelchair booking simple and accessible.
-            </p>
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 0.72rem; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-circle-check" style="color: #22c55e;"></i> Verified Startup Client
+                </span>
+                <div style="color: #fbbf24; font-size: 0.8rem; display: flex; gap: 2px;">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="quote-icon" aria-hidden="true" style="margin-bottom: 10px;">"</p>
+              <p class="testimonial-text" style="margin-bottom: 24px;">
+                Trihub Technologies helped bring my vision to life in a way that truly reflects the purpose behind GoNXT.
+                What started as an emotional and meaningful mission needed a platform that people could trust and easily
+                use—and they delivered exactly that. The website makes wheelchair booking simple and accessible.
+              </p>
+            </div>
             <div class="testimonial-author"
-              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;">
               <div class="t-avatar" aria-hidden="true"
                 style="flex-shrink: 0; background:linear-gradient(135deg,var(--violet),#a855f7);">VS</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Vinothraj Seshan</div>
                 <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">GoNXT Happy Wheels</div>
-                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                <div class="t-loc" style="margin-bottom:8px; color:rgba(255,255,255,0.7);"><i
                     class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Tiruvannamalai</div>
-                <a href="https://gonxt.in/" target="_blank" rel="noopener"
-                  style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:4px; text-decoration:none; font-weight:500;">
-                  Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
-                </a>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; min-height: 28px; align-items: center;">
+                  <a href="https://gonxt.in/" target="_blank" rel="noopener"
+                    style="display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:6px; text-decoration:none; font-weight:500;">
+                    Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </article>
@@ -2626,42 +2653,44 @@
 
         <!-- Testimonial 3: Verified Google Review -->
         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="240">
-          <article class="testimonial-card" style="border: 1px solid rgba(251, 191, 36, 0.45); position: relative;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-              <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                </svg>
-                Google Verified Review
-              </span>
-              <div style="color: #fbbf24; font-size: 0.8rem; display: flex; gap: 2px;">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <article class="testimonial-card">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 0.72rem; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                  </svg>
+                  Google Verified Review
+                </span>
+                <div style="color: #fbbf24; font-size: 0.8rem; display: flex; gap: 2px;">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
               </div>
+              <p class="quote-icon" aria-hidden="true" style="margin-bottom: 10px;">"</p>
+              <p class="testimonial-text" style="margin-bottom: 24px;">
+                I had a great experience with TriHub Technologies! Their service is excellent, and their team is professional, helpful, and supportive. I appreciate their dedication, quality of work, and commitment to customer satisfaction. Highly recommended to everyone looking for reliable and trustworthy service. Keep up the great work!
+              </p>
             </div>
-            <p class="quote-icon" aria-hidden="true">"</p>
-            <p class="testimonial-text">
-              I had a great experience with TriHub Technologies! Their service is excellent, and their team is professional, helpful, and supportive. I appreciate their dedication, quality of work, and commitment to customer satisfaction. Highly recommended to everyone looking for reliable and trustworthy service. Keep up the great work!
-            </p>
             <div class="testimonial-author"
-              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap;">
+              style="display: flex; align-items: flex-start; gap: 14px; flex-wrap: nowrap; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;">
               <div class="t-avatar" aria-hidden="true"
                 style="flex-shrink: 0; background:linear-gradient(135deg,#f59e0b,#d97706);">AR</div>
               <div style="flex-grow: 1; min-width: 0;">
                 <div class="t-name" style="color: #fff;">Asmath Rasool</div>
                 <div class="t-loc" style="font-weight:600; color:rgba(255,255,255,0.9); margin-bottom:2px;">Asmath Professional Mehandi</div>
-                <div class="t-loc" style="margin-bottom:6px; color:rgba(255,255,255,0.7);"><i
+                <div class="t-loc" style="margin-bottom:8px; color:rgba(255,255,255,0.7);"><i
                     class="fas fa-location-dot" aria-hidden="true" style="font-size:.7rem;margin-right:4px;"></i> Pudukkottai</div>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <div style="display:flex; gap:6px; flex-wrap:wrap; min-height: 28px; align-items: center;">
                   <a href="https://asmath-professional-mehandhi.netlify.app/" target="_blank" rel="noopener"
-                    style="display:inline-block; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 10px; border-radius:4px; text-decoration:none; font-weight:500;">
-                    Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem; margin-left:4px;"></i>
+                    style="display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.6); color:#fff; font-size:0.75rem; padding:4px 10px; border-radius:6px; text-decoration:none; font-weight:500;">
+                    Visit Site <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
                   </a>
                   <a href="https://g.page/r/CUrL1mv52MN3EBM" target="_blank" rel="noopener"
-                    style="display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:#fff; font-size:0.75rem; padding:4px 10px; border-radius:4px; text-decoration:none; font-weight:500;">
-                    Google Review <i class="fab fa-google" style="font-size:0.65rem; margin-left:4px;"></i>
+                    style="display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:#fff; font-size:0.75rem; padding:4px 10px; border-radius:6px; text-decoration:none; font-weight:500;">
+                    Google Review <i class="fab fa-google" style="font-size:0.65rem;"></i>
                   </a>
                 </div>
               </div>
