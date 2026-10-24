@@ -1163,15 +1163,15 @@
     }
 
     .map-container {
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border);
-      margin-top: 20px;
+      box-shadow: var(--shadow-sm);
     }
 
     .map-container iframe {
       width: 100%;
-      height: 220px;
+      height: 320px;
       border: none;
       display: block;
     }
@@ -2941,15 +2941,6 @@
             </div>
           </div>
 
-          <!-- Embedded Google Map -->
-          <div class="map-container mt-4" data-aos="fade-up" data-aos-delay="200">
-            <iframe src="https://maps.google.com/maps?q=Vilathuppatti,Iluppur,Pudukkottai,Tamil+Nadu,622101&t=&z=14&ie=UTF8&iwloc=&output=embed"
-              title="TriHub Technologies Registered Office – Pudukkottai, Tamil Nadu" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              aria-label="Map showing office location in Pudukkottai, Tamil Nadu">
-            </iframe>
-          </div>
-
         </div>
 
         <!-- Contact Form -->
@@ -3035,6 +3026,19 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Full-Width Interactive Google Map -->
+      <div class="row mt-4 pt-2">
+        <div class="col-12" data-aos="fade-up" data-aos-delay="200">
+          <div class="map-container">
+            <iframe src="https://maps.google.com/maps?q=Vilathuppatti,Iluppur,Pudukkottai,Tamil+Nadu,622101&t=&z=14&ie=UTF8&iwloc=&output=embed"
+              title="TriHub Technologies Registered Office – Pudukkottai, Tamil Nadu" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              aria-label="Map showing office location in Pudukkottai, Tamil Nadu">
+            </iframe>
+          </div>
+        </div>
       </div>
     </div>
   </section>
