@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TriHubPay™ | Official B2B Mobile Recharge & Utility Switch | TriHub Technologies</title>
+  
+  <!-- SEO & Social Open Graph -->
+  <meta name="description" content="TriHubPay is Tamil Nadu's premier B2B multi-recharge and bill payment switch by TriHub Technologies (MSME: UDYAM-TN-17-0084523 | GSTIN: 33DQFPN0936N1ZK). High wholesale retailer commissions, 0.8s recharges, thermal slips, and instant UPI top-ups.">
+  <meta property="og:title" content="TriHubPay™ - Supercharge Your Retail Store With Highest Commissions">
+  <meta property="og:description" content="0.8s Recharges for Jio, Airtel, Vi, BSNL, DTH. Instant UPI Wallet Top-up & Bluetooth Thermal Receipts.">
+  <meta property="og:image" content="https://trihubtechnologies.com/company_logo.png">
+  <meta property="og:url" content="https://trihubtechnologies.com/ad.html">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts & Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #0b1220;
+      --bg-card: #111a2e;
+      --bg-card-hover: #16223b;
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.35);
+      --accent-blue: #38bdf8;
+      --accent-indigo: #6366f1;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --border-color: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 14px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glow Background */
+    .glow-sphere-1 {
+      position: fixed;
+      top: -100px;
+      left: -100px;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(26, 63, 196, 0.25) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-sphere-2 {
+      position: fixed;
+      bottom: -120px;
+      right: -120px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ad-container {
+      width: 100%;
+      max-width: 560px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      padding: 28px 24px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(16, 185, 129, 0.08);
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(20px);
+    }
+
+    /* Header Bar */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Hero Headline */
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .hero-title span.grad {
+      background: linear-gradient(135deg, #34d399 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      padding: 0 10px;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      background: var(--bg-card-hover);
+    }
+
+    .feature-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .icon-bolt { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+    .icon-rupee { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+    .icon-print { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+    .icon-bank { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+
+    .feature-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .feature-desc {
+      font-size: 0.74rem;
+      color: var(--text-sub);
+      line-height: 1.35;
+    }
+
+    /* Action Buttons */
+    .cta-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .btn-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 16px 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px var(--primary-glow);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-main:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 12px 18px;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(51, 65, 85, 0.8);
+      border-color: #475569;
+      color: #fff;
+    }
+
+    /* Clickable Contact Box */
+    .contact-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .contact-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #38bdf8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .contact-numbers-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .phone-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid #334155;
+      padding: 10px 8px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .phone-btn:hover {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    .phone-label {
+      font-size: 0.68rem;
+      color: var(--text-sub);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .phone-val {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .contact-links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .contact-link-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid #1e293b;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .contact-link-pill:hover {
+      color: #fff;
+      background: rgba(51, 65, 85, 0.7);
+    }
+
+    .contact-link-pill i {
+      font-size: 0.85rem;
+    }
+
+    .pill-wa { color: #25d366; }
+    .pill-mail { color: #fbbf24; }
+    .pill-web { color: #38bdf8; }
+    .pill-share { color: #a78bfa; }
+
+    /* Footer Legal */
+    .ad-legal {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.7rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* Action Modal Sheet (For Phone Click: Call or WhatsApp) */
+    .action-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .action-modal-sheet {
+      background: #111a2e;
+      border: 1px solid #334155;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .modal-btn-call {
+      background: #1e3a8a;
+      color: #bfdbfe;
+    }
+
+    .modal-btn-call:hover {
+      background: #1d4ed8;
+      color: #fff;
+    }
+
+    .modal-btn-wa {
+      background: #064e3b;
+      color: #a7f3d0;
+    }
+
+    .modal-btn-wa:hover {
+      background: #047857;
+      color: #fff;
+    }
+
+    .modal-btn-copy {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    .modal-btn-copy:hover {
+      background: #334155;
+    }
+
+    .modal-btn-cancel {
+      background: transparent;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #10b981;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1100;
+    }
+
+    @media (max-width: 420px) {
+      .hero-title { font-size: 1.7rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .contact-numbers-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-sphere-1"></div>
+  <div class="glow-sphere-2"></div>
+
+  <div class="ad-container">
+    
+    <!-- Header with Official Logo -->
+    <header class="brand-header">
+      <div class="brand-logo-wrap">
+        <img src="company_logo.png" alt="TriHub Technologies Logo" class="brand-logo" onerror="this.src='favicon.svg'">
+        <div>
+          <div class="brand-title">TRIHUB TECHNOLOGIES</div>
+          <div class="brand-sub">Govt. MSME: UDYAM-TN-17-0084523</div>
+        </div>
+      </div>
+      <div class="live-badge">
+        <span class="pulse-dot"></span>
+        APP LIVE
+      </div>
+    </header>
+
+    <!-- Main Title -->
+    <h1 class="hero-title">TriHub<span class="grad">Pay</span>™</h1>
+    <p class="hero-subtitle">
+      Tamil Nadu's Most Profitable B2B Recharge & Utility Switch. Earn instant pass-down commissions on every single transaction!
+    </p>
+
+    <!-- 4 High-Converting Feature Cards -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap icon-bolt">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="feature-name">0.8s Fast Recharges</div>
+        <div class="feature-desc">Direct A1Topup Switch Core. Jio, Airtel, Vi, BSNL & DTH.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap icon-rupee">
+          <i class="fas fa-coins"></i>
+        </div>
+        <div class="feature-name">Highest Margins</div>
+        <div class="feature-desc">Instant cashback up to 5% credited directly into your wallet.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap icon-print">
+          <i class="fas fa-print"></i>
+        </div>
+        <div class="feature-name">Bluetooth Receipts</div>
+        <div class="feature-desc">Instant customer proof on 58mm & 80mm wireless thermal printers.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap icon-bank">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <div class="feature-name">HDFC Banking Rails</div>
+        <div class="feature-desc">Instant UPI topup & automated double-entry ledger.</div>
+      </div>
+    </div>
+
+    <!-- Download & Web CTAs -->
+    <div class="cta-stack">
+      <a href="https://pay.trihubtechnologies.com/download" class="btn-main" id="btnDownloadApk">
+        <i class="fab fa-android fa-lg"></i>
+        <span>Download TriHubPay Android App (APK)</span>
+      </a>
+      
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <a href="https://pay.trihubtechnologies.com" target="_blank" class="btn-secondary">
+          <i class="fas fa-globe"></i>
+          <span>Open Web Portal</span>
+        </a>
+        <a href="TriHubPay_Official_Digital_Brochure.pdf" download class="btn-secondary" style="border-color:#38bdf8; color:#38bdf8;">
+          <i class="fas fa-file-pdf"></i>
+          <span>Digital Brochure</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Clickable Contact & Helplines -->
+    <div class="contact-box">
+      <div class="contact-title">
+        <i class="fas fa-headset"></i> Tap Number to Call or WhatsApp:
+      </div>
+
+      <div class="contact-numbers-row">
+        <div class="phone-btn" onclick="openContactSheet('+91 63745 69225', '6374569225')">
+          <span class="phone-label"><i class="fas fa-phone-volume text-primary"></i> Primary Helpline</span>
+          <span class="phone-val">+91 63745 69225</span>
+        </div>
+
+        <div class="phone-btn" onclick="openContactSheet('+91 88255 38776', '8825538776')">
+          <span class="phone-label"><i class="fas fa-phone-volume text-primary"></i> Support Desk</span>
+          <span class="phone-val">+91 88255 38776</span>
+        </div>
+      </div>
+
+      <div class="contact-links-grid">
+        <a href="https://wa.me/916374569225?text=Hello%20TriHubPay%20Team%2C%20I%20want%20to%20register%20as%20a%20retailer" target="_blank" class="contact-link-pill">
+          <i class="fab fa-whatsapp pill-wa"></i> WhatsApp Chat
+        </a>
+        <a href="mailto:trihubtechnologies@gmail.com?subject=TriHubPay%20Retailer%20Inquiry" class="contact-link-pill">
+          <i class="fas fa-envelope pill-mail"></i> Send Email
+        </a>
+        <a href="https://trihubtechnologies.com" target="_blank" class="contact-link-pill">
+          <i class="fas fa-globe pill-web"></i> Company Website
+        </a>
+        <button onclick="shareAd()" class="contact-link-pill" style="border:none; cursor:pointer;">
+          <i class="fas fa-share-nodes pill-share"></i> Share Ad
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Legal Footer -->
+    <footer class="ad-legal">
+      TriHub Technologies &bull; GSTIN: <strong>33DQFPN0936N1ZK</strong> &bull; MSME: <strong>UDYAM-TN-17-0084523</strong><br>
+      Door No. 57/A, Middle Street, Vilathuppatti, Iluppur, Pudukkottai, Tamil Nadu 622101
+    </footer>
+
+  </div>
+
+  <!-- Interactive Action Sheet / Dialog for Phone Numbers -->
+  <div class="action-modal-backdrop" id="contactSheet" onclick="closeContactSheet(event)">
+    <div class="action-modal-sheet" onclick="event.stopPropagation()">
+      <h3 class="modal-title" id="sheetNumberTitle">+91 63745 69225</h3>
+      <p class="modal-sub">How would you like to connect with TriHubPay?</p>
+
+      <div class="modal-actions">
+        <a id="sheetCallBtn" href="tel:+916374569225" class="modal-btn modal-btn-call">
+          <i class="fas fa-phone-alt"></i> Make a Phone Call
+        </a>
+        <a id="sheetWaBtn" href="https://wa.me/916374569225?text=Hello%20TriHubPay%20Team%2C%20I%20want%20to%20register%20as%20a%20retailer" target="_blank" class="modal-btn modal-btn-wa">
+          <i class="fab fa-whatsapp fa-lg"></i> Chat on WhatsApp
+        </a>
+        <button onclick="copyCurrentNumber()" class="modal-btn modal-btn-copy">
+          <i class="fas fa-copy"></i> Copy Mobile Number
+        </button>
+        <button onclick="closeContactSheet()" class="modal-btn modal-btn-cancel">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastMsg">Number Copied!</div>
+
+  <script>
+    let activeRawNumber = '';
+
+    function openContactSheet(displayNumber, rawNumber) {
+      activeRawNumber = rawNumber;
+      document.getElementById('sheetNumberTitle').textContent = displayNumber;
+      document.getElementById('sheetCallBtn').href = 'tel:+91' + rawNumber;
+      document.getElementById('sheetWaBtn').href = 'https://wa.me/91' + rawNumber + '?text=' + encodeURIComponent('Hello TriHubPay Team, I would like to know more about becoming a retailer for TriHubPay.');
+      document.getElementById('contactSheet').style.display = 'flex';
+    }
+
+    function closeContactSheet(e) {
+      document.getElementById('contactSheet').style.display = 'none';
+    }
+
+    function copyCurrentNumber() {
+      navigator.clipboard.writeText('+91' + activeRawNumber).then(() => {
+        showToast('Phone number copied to clipboard!');
+        closeContactSheet();
+      }).catch(() => {
+        showToast('+91' + activeRawNumber);
+        closeContactSheet();
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastMsg');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function shareAd() {
+      const shareData = {
+        title: 'TriHubPay™ - B2B Mobile Recharge Platform',
+        text: 'Boost your retail earnings with TriHubPay™! 0.8s mobile recharges, highest commissions & Bluetooth receipts. Download app now:',
+        url: 'https://trihubtechnologies.com/ad.html'
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText('TriHubPay™ Mobile Recharge App:\nDownload: https://pay.trihubtechnologies.com/download\nHelpline: +91 63745 69225 / +91 88255 38776\nWebsite: https://trihubtechnologies.com').then(() => {
+          showToast('Ad details copied to clipboard!');
+        });
+      }
+    }
+  </script>
+</body>
+</html>
